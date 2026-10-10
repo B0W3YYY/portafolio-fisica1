@@ -9,7 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23a5402d'/%3E%3Ctext x='16' y='22.5' font-size='19' text-anchor='middle' fill='white' font-family='Georgia,serif'%3EF%3C/text%3E%3C/svg%3E">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
   <script>
     try { const t = localStorage.getItem("tema"); if (t) document.documentElement.dataset.tema = t; } catch (e) {}
   </script>
@@ -17,7 +17,7 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script defer src="script.js?v=5"></script>
+  <script defer src="script.js?v=6"></script>
 </head>
 <body>
 
@@ -271,7 +271,11 @@
 
   <h4>ii. La ecuación</h4>
   <p>Quien está parado en el piso del anillo hace movimiento circular uniforme (Serway y Jewett, 2015):</p>
-  <div class="eq">$$a_c = \frac{v^{2}}{r} = \omega^{2} r, \qquad \omega = \frac{2\pi}{T} = \frac{2\pi N}{60}, \qquad v = \omega r$$</div>
+  <div class="eq-grupo">
+    <div class="eq">$$a_c = \frac{v^{2}}{r} = \omega^{2} r$$</div>
+    <div class="eq">$$\omega = \frac{2\pi}{T} = \frac{2\pi N}{60}$$</div>
+    <div class="eq">$$v = \omega r$$</div>
+  </div>
   <p>donde \(N\) son las revoluciones por minuto y \(T\) el período en segundos. Para sentir 1 g pido \(\omega^{2} r = g\),
   y de ahí sale el diseño completo:</p>
   <div class="eq">$$r = \frac{g}{\omega^{2}}$$</div>
@@ -381,7 +385,10 @@
     \(r = \dfrac{g}{\omega^{2}} = \dfrac{9{,}81}{(0{,}209)^{2}} \approx 224\ \text{m}\).</p>
     <p>Comprobación con el toro de Stanford (\(r = 830\ \text{m}\), \(N = 1\ \text{rpm}\)):
     \(\omega = 0{,}1047\ \text{rad/s}\) y</p>
-    <div class="eq">$$a_c = (0{,}1047)^{2}(830) = 9{,}10\ \text{m/s}^2 \approx 0{,}93\ g$$</div>
+    <div class="eq-grupo">
+      <div class="eq">$$a_c = (0{,}1047)^{2}(830)$$</div>
+      <div class="eq">$$a_c = 9{,}10\ \text{m/s}^2 \approx 0{,}93\ g$$</div>
+    </div>
     <p>que cae dentro del 0,95 ± 0,05 g que pedía el estudio, aunque cerca del límite de abajo.</p>
     <p>Conclusión: 1 g se logra con 100 m a 3 rpm o con 224 m a 2 rpm. Menos rpm es más cómodo, pero un radio mayor significa
     una estructura más grande y más cara.</p>
@@ -429,7 +436,11 @@
   <h4>ii. La ecuación</h4>
   <p>El modelo de clase dice que la fricción máxima es proporcional a la fuerza normal (Serway y Jewett, 2015). En un carro
   de F1 la normal incluye la carga aerodinámica:</p>
-  <div class="eq">$$f_s \le \mu_s N, \qquad f_k = \mu_k N, \qquad N = m g + F_{\text{aero}}$$</div>
+  <div class="eq-grupo">
+    <div class="eq">$$f_s \le \mu_s N$$</div>
+    <div class="eq">$$f_k = \mu_k N$$</div>
+    <div class="eq">$$N = m g + F_{\text{aero}}$$</div>
+  </div>
   <p>En una curva de radio \(r\) la fricción es la fuerza centrípeta, así que la rapidez máxima sería:</p>
   <div class="eq">$$\mu N = \frac{m v^{2}}{r} \quad\Rightarrow\quad v_{\max} = \sqrt{\frac{\mu\,N\,r}{m}}$$</div>
   <p>Según este modelo, si duplico \(N\) duplico la fricción. En una llanta real no pasa así: \(\mu\) baja cuando la carga
@@ -499,7 +510,7 @@
   <div class="eq">$$\vec F_{\text{gatillo sobre dedo}} = -\,\vec F_{\text{dedo sobre gatillo}}$$</div>
   <p>Para imitar un arco, el juego puede usar una constante pequeña al inicio y una mucho mayor a partir de cierto punto
   \(x_p\), como si hubiera una "pared". En magnitud:</p>
-  <div class="eq">$$|F(x)| = \begin{cases} k_1\,x & \text{si } 0 \le x < x_p \\[4pt] k_1\,x_p + k_2\,(x - x_p) & \text{si } x \ge x_p \end{cases}$$</div>
+  <div class="eq eq-larga">$$|F(x)| = \begin{cases} k_1\,x & \text{si } 0 \le x < x_p \\[4pt] k_1\,x_p + k_2\,(x - x_p) & \text{si } x \ge x_p \end{cases}$$</div>
   <p>Para que esto funcione el control tiene que medir \(x\) todo el tiempo y calcular la fuerza que debe hacer el motor.
   No hay ningún resorte de verdad; la fuerza la calcula el programa con esa ecuación y la hace el motor.</p>
 

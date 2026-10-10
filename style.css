@@ -431,4 +431,7 @@ p { margin: 0 0 14px; }
   .grafica { height: 260px; padding: 4px; }
   .caso, .analisis { padding: 5px 12px; }
   .sim { padding: 10px; }
+  .eq-larga .katex { font-size: 0.85em; }
+  .tabla-apa { font-size: 14px; }
+  .tabla-apa th, .tabla-apa td { padding: 5px 6px; }
 }
