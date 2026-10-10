@@ -151,7 +151,7 @@ function llenarProximos() {
     // También en el menú, bloqueado y sin enlace.
     const item = document.createElement("li");
     item.className = "bloqueado";
-    item.innerHTML = `<span><span class="n">${primero + i}</span>${titulo}</span>${CANDADO}`;
+    item.innerHTML = `<span><span class="n"></span>Tema ${primero + i}</span>${CANDADO}`;
     document.getElementById("submenu").append(item);
   });
 }

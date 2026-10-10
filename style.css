@@ -168,6 +168,7 @@ a { color: var(--enlace); }
 .submenu a.activo { background: var(--caja); color: var(--acento); font-weight: normal; }
 .submenu .n { min-width: 20px; font-weight: bold; color: var(--acento); }
 .submenu .bloqueado { justify-content: space-between; color: var(--tenue); cursor: default; }
+.submenu .bloqueado > span { display: flex; gap: 8px; }
 .submenu .bloqueado .n { color: var(--tenue); }
 .submenu .bloqueado .candado { width: 18px; height: 18px; }
 .submenu .bloqueado:first-of-type { border-top: 1px solid var(--linea); border-radius: 0 0 6px 6px; margin-top: 4px; padding-top: 9px; }
