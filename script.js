@@ -98,8 +98,23 @@ function prepararIndice() {
 
   const cerrar = () => {
     lista.classList.remove("abierto");
+    document.getElementById("submenu").classList.remove("abierto");
     boton.setAttribute("aria-expanded", "false");
   };
+
+  // Submenú "Temas": se abre con el mouse (CSS) o tocándolo.
+  const botonTemas = document.querySelector(".desplegable-boton");
+  const submenu = document.getElementById("submenu");
+  botonTemas.addEventListener("click", () => {
+    const abierto = submenu.classList.toggle("abierto");
+    botonTemas.setAttribute("aria-expanded", String(abierto));
+  });
+  document.addEventListener("click", e => {
+    if (!e.target.closest(".desplegable")) {
+      submenu.classList.remove("abierto");
+      botonTemas.setAttribute("aria-expanded", "false");
+    }
+  });
 
   boton.addEventListener("click", () => {
     const abierto = lista.classList.toggle("abierto");
@@ -132,6 +147,12 @@ function llenarProximos() {
     const li = document.createElement("li");
     li.innerHTML = `<strong>Tema ${primero + i}</strong>${CANDADO}`;
     ol.append(li);
+
+    // También en el menú, bloqueado y sin enlace.
+    const item = document.createElement("li");
+    item.className = "bloqueado";
+    item.innerHTML = `<span><span class="n">${primero + i}</span>${titulo}</span>${CANDADO}`;
+    document.getElementById("submenu").append(item);
   });
 }
 

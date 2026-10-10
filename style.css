@@ -117,6 +117,61 @@ a { color: var(--enlace); }
 .indice-lista a:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
 .indice-lista a.activo { background: #fff; color: var(--barra); font-weight: 600; }
 
+/* Submenú "Temas" con los 13 temas (6 a 13 bloqueados) */
+.desplegable { position: relative; }
+
+.desplegable-boton {
+  font: inherit;
+  font-size: 15px;
+  color: #dddddd;
+  background: transparent;
+  border: 0;
+  border-radius: 20px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+.desplegable-boton:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 430px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--hoja);
+  border: 1px solid var(--linea);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+/* el borde transparente de arriba evita que se cierre al bajar el mouse */
+.submenu::before { content: ""; position: absolute; left: 0; right: 0; top: -10px; height: 10px; }
+.desplegable:hover .submenu,
+.desplegable:focus-within .submenu,
+.submenu.abierto { display: block; }
+
+.submenu a,
+.submenu .bloqueado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 15px;
+  line-height: 1.35;
+}
+.submenu a { color: var(--tinta); }
+.submenu a:hover,
+.submenu a.activo { background: var(--caja); color: var(--acento); font-weight: normal; }
+.submenu .n { min-width: 20px; font-weight: bold; color: var(--acento); }
+.submenu .bloqueado { justify-content: space-between; color: var(--tenue); cursor: default; }
+.submenu .bloqueado .n { color: var(--tenue); }
+.submenu .bloqueado .candado { width: 18px; height: 18px; }
+.submenu .bloqueado:first-of-type { border-top: 1px solid var(--linea); border-radius: 0 0 6px 6px; margin-top: 4px; padding-top: 9px; }
+
 /* En computadora la barra "desaparece" y sus hijos se acomodan en la fila del menú;
    así el botón de tema queda a la derecha. */
 .indice {
@@ -416,6 +471,26 @@ p { margin: 0 0 14px; }
   .indice-lista { display: none; padding-bottom: 8px; }
   .indice-lista.abierto { display: block; }
   .indice-lista a { padding: 8px 12px; border-radius: 6px; }
+
+  /* en celular el submenú va siempre abierto dentro de la lista */
+  .indice { max-height: 100vh; overflow-y: auto; }
+  .desplegable-boton { padding: 8px 12px; pointer-events: none; }
+  .desplegable-boton span { display: none; }
+  .submenu {
+    display: block;
+    position: static;
+    transform: none;
+    width: auto;
+    padding: 0 0 0 10px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  .submenu a { color: #dddddd; }
+  .submenu a:hover, .submenu a.activo { background: #fff; color: var(--barra); }
+  .submenu .bloqueado, .submenu .bloqueado .n { color: #999; }
+  .submenu .bloqueado .candado { stroke: #999; }
+  .submenu .bloqueado:first-of-type { border-top-color: rgba(255, 255, 255, 0.2); }
 }
 
 @media (max-width: 800px) {
