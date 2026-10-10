@@ -76,7 +76,7 @@ a { color: var(--enlace); }
 
 /* ===== Menú de arriba ===== */
 
-/* el padding lateral alinea el menú con el ancho del contenido (900px) */
+/* Menú de arriba: nombre a la izquierda, links al centro y botón de tema a la derecha */
 .indice {
   position: sticky;
   top: 0;
@@ -87,7 +87,7 @@ a { color: var(--enlace); }
   align-items: center;
   flex-wrap: wrap;
   gap: 6px 20px;
-  padding: 10px max(20px, calc((100% - 860px) / 2));
+  padding: 10px 24px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
@@ -125,7 +125,7 @@ a { color: var(--enlace); }
 }
 .indice-barra { display: contents; }
 .indice-nombre { grid-column: 1; grid-row: 1; }
-.indice-lista { grid-column: 2; grid-row: 1; justify-content: center; }
+.indice-lista { grid-column: 2; grid-row: 1; justify-content: center; flex-wrap: nowrap; }
 .boton-tema { grid-column: 3; grid-row: 1; justify-self: end; }
 
 .boton-tema {
