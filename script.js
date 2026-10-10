@@ -47,7 +47,11 @@ function prepararBotonTema(alCambiar) {
   const sistemaOscuro = () => window.matchMedia("(prefers-color-scheme: dark)").matches;
   const estaOscuro = () => raiz.dataset.tema ? raiz.dataset.tema === "oscuro" : sistemaOscuro();
 
-  const texto = () => { boton.textContent = estaOscuro() ? "☀ Modo claro" : "☾ Modo oscuro"; };
+  // El switch está "encendido" cuando la página está en modo oscuro.
+  const texto = () => {
+    boton.setAttribute("aria-checked", String(estaOscuro()));
+    boton.title = estaOscuro() ? "Cambiar a modo claro" : "Cambiar a modo oscuro";
+  };
   prepararBotonTema.texto = texto;
   texto();
 

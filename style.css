@@ -7,10 +7,10 @@
   --tinta: #222222;      /* texto */
   --tenue: #666666;      /* texto secundario */
   --linea: #d0d0d0;
-  --barra: #134e4a;      /* menú de arriba (verde azulado oscuro) */
-  --acento: #0f766e;
-  --enlace: #0d7368;
-  --brillo: rgba(15, 118, 110, 0.35);
+  --barra: #2b2b2b;      /* menú de arriba (gris carbón) */
+  --acento: #c4501b;     /* naranja quemado */
+  --enlace: #b5461a;
+  --brillo: rgba(196, 80, 27, 0.35);
   --caja: #f3f6f9;
   --s1: #1f77b4;         /* colores de las series */
   --s2: #d62728;
@@ -28,10 +28,10 @@
     --tinta: #e6e6e6;
     --tenue: #a0a0a0;
     --linea: #3a3d3f;
-    --barra: #0f2e2c;
-    --acento: #5ec4b6;
-    --enlace: #6fd0c2;
-    --brillo: rgba(94, 196, 182, 0.35);
+    --barra: #111111;
+    --acento: #f0894f;
+    --enlace: #f5a06e;
+    --brillo: rgba(240, 137, 79, 0.35);
     --caja: #22272b;
     --s1: #5fa8e8;
     --s2: #f0716f;
@@ -47,10 +47,10 @@
   --tinta: #e6e6e6;
   --tenue: #a0a0a0;
   --linea: #3a3d3f;
-  --barra: #0f2e2c;
-  --acento: #5ec4b6;
-  --enlace: #6fd0c2;
-  --brillo: rgba(94, 196, 182, 0.35);
+  --barra: #111111;
+  --acento: #f0894f;
+  --enlace: #f5a06e;
+  --brillo: rgba(240, 137, 79, 0.35);
   --caja: #22272b;
   --s1: #5fa8e8;
   --s2: #f0716f;
@@ -108,7 +108,7 @@ a { color: var(--enlace); }
   display: block;
   padding: 5px 12px;
   border-radius: 20px;
-  color: #d5ebe8;
+  color: #dddddd;
   text-decoration: none;
   font-size: 15px;
   transition: background 0.15s;
@@ -128,18 +128,45 @@ a { color: var(--enlace); }
 .indice-lista { grid-column: 2; grid-row: 1; justify-content: center; flex-wrap: nowrap; }
 .boton-tema { grid-column: 3; grid-row: 1; justify-self: end; }
 
+/* Switch de tema: una perilla que se desliza; muestra un sol (claro) o una luna (oscuro) */
 .boton-tema {
-  font: inherit;
-  font-size: 14px;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 20px;
-  padding: 4px 12px;
+  position: relative;
+  width: 58px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 15px;
+  background: #5b8fc9;            /* cielo de día */
   cursor: pointer;
-  white-space: nowrap;
+  transition: background 0.3s;
 }
-.boton-tema:hover { background: rgba(255, 255, 255, 0.25); }
+.boton-tema[aria-checked="true"] { background: #1c2340; }   /* cielo de noche */
+.boton-tema:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+.perilla {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffd54a;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s, background 0.3s;
+}
+.boton-tema[aria-checked="true"] .perilla { transform: translateX(28px); background: #e9e6da; }
+
+.perilla svg {
+  position: absolute;
+  inset: 3px;
+  width: 16px;
+  height: 16px;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.icono-sol  { fill: none; stroke: #b7791f; stroke-width: 2; stroke-linecap: round; }
+.icono-luna { fill: #8a8673; opacity: 0; transform: rotate(-90deg); }
+.boton-tema[aria-checked="true"] .icono-sol  { opacity: 0; transform: rotate(90deg); }
+.boton-tema[aria-checked="true"] .icono-luna { opacity: 1; transform: rotate(0); }
 
 /* ===== Contenido ===== */
 
