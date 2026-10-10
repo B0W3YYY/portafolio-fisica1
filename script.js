@@ -126,7 +126,7 @@ function llenarProximos() {
   ol.innerHTML = "";
   PROXIMOS.forEach((titulo, i) => {
     const li = document.createElement("li");
-    li.innerHTML = `<div><strong>Tema ${primero + i}</strong><span class="pronto">Próximamente</span></div>${CANDADO}`;
+    li.innerHTML = `<strong>Tema ${primero + i}</strong>${CANDADO}`;
     ol.append(li);
   });
 }

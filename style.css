@@ -341,7 +341,6 @@ p { margin: 0 0 14px; }
 .proximos li:hover .candado { stroke: var(--acento); }
 
 .proximos strong { display: block; font-size: 18px; }
-.proximos .pronto { color: var(--tenue); font-size: 14px; }
 
 .candado {
   width: 26px;
