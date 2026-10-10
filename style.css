@@ -434,4 +434,6 @@ p { margin: 0 0 14px; }
   .eq-larga .katex { font-size: 0.85em; }
   .tabla-apa { font-size: 14px; }
   .tabla-apa th, .tabla-apa td { padding: 5px 6px; }
+  .proximos { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .proximos li { padding: 12px; }
 }
