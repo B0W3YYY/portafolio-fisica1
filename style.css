@@ -92,7 +92,7 @@ a { color: var(--enlace); }
 }
 
 .indice-barra { display: flex; align-items: center; justify-content: space-between; }
-.indice-nombre { font-weight: bold; font-size: 18px; letter-spacing: 0.5px; }
+.indice-nombre { font-weight: bold; font-size: 18px; letter-spacing: 0.5px; white-space: nowrap; }
 .indice-boton { display: none; }
 
 .indice-lista {
@@ -372,9 +372,8 @@ p { margin: 0 0 14px; }
 
 /* ===== Celular ===== */
 
-@media (max-width: 800px) {
-  .figuras { grid-template-columns: minmax(0, 1fr); }
-
+/* Menú desplegable cuando no caben todos los links en una fila */
+@media (max-width: 1000px) {
   .indice { display: block; padding: 0 15px; }
   .indice-barra { display: flex; min-height: 52px; gap: 8px; }
   .indice-nombre { margin-right: auto; }
@@ -391,6 +390,10 @@ p { margin: 0 0 14px; }
   .indice-lista { display: none; padding-bottom: 8px; }
   .indice-lista.abierto { display: block; }
   .indice-lista a { padding: 8px 12px; border-radius: 6px; }
+}
+
+@media (max-width: 800px) {
+  .figuras { grid-template-columns: minmax(0, 1fr); }
 
   .contenido { padding: 0 15px 30px; }
   .portada h1 { font-size: 28px; }
