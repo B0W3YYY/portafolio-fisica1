@@ -60,8 +60,7 @@
   <p>
     En este portafolio busco casos reales en los que un programa usa la cinemática y la dinámica que vemos en Física I.
     Para cada tema escogí un producto o sistema que existe, escribí la ecuación que lo describe y expliqué por qué conviene
-    calcular la física en vez de usar valores fijos o animaciones hechas a mano. Cada tema trae además un recurso de apoyo:
-    gráficas, una simulación, un diagrama o un video con análisis. Este es el primer avance (temas 1 a 5) y la página va a
+    calcular la física en vez de usar valores fijos o animaciones hechas a mano. Este es el primer avance (temas 1 a 5) y la página va a
     seguir creciendo hasta completar los 13 temas.
   </p>
 </section>
@@ -88,7 +87,8 @@
     <div class="eq">$$\vec v(t) = \frac{d\vec r}{dt} = v_x\,\hat{\imath} + v_y\,\hat{\jmath}$$</div>
     <div class="eq">$$\vec a(t) = \frac{d\vec v}{dt} = a_x\,\hat{\imath} + a_y\,\hat{\jmath}$$</div>
   </div>
-  <p>La rapidez que ve el cliente en la app y la dirección del vuelo salen de las componentes:</p>
+  <p>La rapidez que ve el cliente en la app y la dirección del vuelo salen de las componentes (para \(\theta\) hay que
+  revisar el signo de \(v_x\) para escoger el cuadrante correcto):</p>
   <div class="eq">$$|\vec v| = \sqrt{v_x^{2} + v_y^{2}}, \qquad \theta = \tan^{-1}\!\left(\frac{v_y}{v_x}\right)$$</div>
   <p>Entre dos lecturas del GPS, separadas un tiempo \(\Delta t\), el programa puede estimar dónde va a estar el dron con
   la ecuación de aceleración constante que usamos en clase:</p>
@@ -152,7 +152,8 @@
   </div>
   <p class="nota"><em>Nota.</em> Datos de elaboración propia, calculados en <code>script.js</code> con las funciones de la
   ruta (un punto por segundo). La rapidez máxima es 25 m/s (90 km/h) a la mitad del viaje, por debajo del máximo de
-  97 km/h que da Wing (s. f.-a).</p>
+  97 km/h que da Wing (s. f.-a). Una simplificación del modelo: \(v_y\) no empieza en cero (vale
+  \(\pi A/T \approx 6{,}3\ \text{m/s}\) en \(t = 0\)), cosa que un dron real no haría al salir.</p>
   <p>Algo que noté al hacer las gráficas: a los 75 s la aceleración en \(x\) es cero justo cuando la rapidez es máxima,
   como en los ejemplos de clase de \(v\) contra \(t\). La aceleración en \(y\), en cambio, no es cero en ese momento,
   porque ahí el dron está curvando para regresar a la línea recta.</p>
@@ -373,8 +374,9 @@
     \(\omega = \dfrac{2\pi(2)}{60} = 0{,}209\ \text{rad/s}\) y
     \(r = \dfrac{g}{\omega^{2}} = \dfrac{9{,}81}{(0{,}209)^{2}} \approx 224\ \text{m}\).</p>
     <p>Comprobación con el toro de Stanford (\(r = 830\ \text{m}\), \(N = 1\ \text{rpm}\)):
-    \(\omega = 0{,}1047\ \text{rad/s}\) y \(a_c = (0{,}1047)^{2}(830) = 9{,}10\ \text{m/s}^2 \approx 0{,}93\ g\), que cae
-    dentro del 0,95 ± 0,05 g que pedía el estudio.</p>
+    \(\omega = 0{,}1047\ \text{rad/s}\) y</p>
+    <div class="eq">$$a_c = (0{,}1047)^{2}(830) = 9{,}10\ \text{m/s}^2 \approx 0{,}93\ g$$</div>
+    <p>que cae dentro del 0,95 ± 0,05 g que pedía el estudio, aunque cerca del límite de abajo.</p>
     <p>Conclusión: 1 g se logra con 100 m a 3 rpm o con 224 m a 2 rpm. Menos rpm es más cómodo, pero un radio mayor significa
     una estructura más grande y más cara.</p>
   </div>
@@ -431,7 +433,7 @@
     <div class="eq">$$F_{y,\max} = \mu(F_z, T)\,F_z$$</div>
     <div class="eq">$$\mu(F_z) \approx \mu_0 - k\,F_z$$</div>
   </div>
-  <p>Al juntar las dos, la fuerza lateral máxima queda</p>
+  <p>Si dejo la temperatura fija dentro de la ventana y junto las dos, la fuerza lateral máxima queda</p>
   <div class="eq">$$F_{y,\max} = \mu_0 F_z - k F_z^{2}$$</div>
   <p>que ya no es una recta sino una parábola que crece cada vez menos.</p>
 
@@ -440,7 +442,7 @@
   carro. Con \(\mu\) que depende de \(F_z\) y de \(T\), el programa reproduce lo que pasa en una carrera de verdad: hay que
   calentar las llantas antes de exigirlas, derrapar las sobrecalienta y les quita agarre, y poner más carga aerodinámica
   ayuda, pero cada vez menos.</p>
-  <p>Lo malo es que la Magic Formula tiene muchos coeficientes que se obtienen midiendo llantas reales en pruebas, y
+  <p>Lo malo es que la Magic Formula tiene muchos coeficientes que se obtienen midiendo llantas reales en pruebas (Pacejka, 2012), y
   calcular la temperatura de cada llanta en cada instante gasta procesador. Para un juego casual es demasiado; para un
   equipo de F1, que gana o pierde décimas por esto, sí vale la pena.</p>
   <p>En el tema 3 la normal producía la aceleración centrípeta. Aquí ese papel lo hace la fricción en la curva, y la normal
@@ -475,10 +477,10 @@
   <h3>a) Caso de uso en ingeniería del software</h3>
 
   <h4>i. El caso</h4>
-  <p>El control DualSense del PlayStation 5 tiene gatillos adaptativos. Sony dice que con ellos el jugador siente
-  "distintos niveles de fuerza y tensión" al interactuar con el entorno, en los juegos que lo soportan (Sony Interactive
+  <p>El control DualSense del PlayStation 5 tiene gatillos adaptativos. Sony explica que con ellos el jugador siente
+  más o menos tensión en el gatillo según lo que pasa en el juego, en los juegos que lo soportan (Sony Interactive
   Entertainment, s. f.). Dentro del control hay un mecanismo con motor que empuja el gatillo de vuelta contra el dedo; en
-  el video de la parte b se ve funcionando con el control abierto (Restore Technique, <span class="pendiente">[COMPLETAR: año]</span>).</p>
+  el video de la parte b se ve funcionando con el control abierto (Restore Technique, 2021).</p>
   <p>El juego le dice al control cuánta resistencia poner según qué tan apretado está el gatillo. Así uno puede sentir,
   por ejemplo, que tensa la cuerda de un arco que no existe.</p>
 
@@ -486,8 +488,8 @@
   <p>El software imita un resorte con la ley de Hooke: la fuerza crece con lo que se aprieta y apunta en contra
   (Serway y Jewett, 2015).</p>
   <div class="eq">$$F_{\text{resorte}} = -k\,x, \qquad U = \frac{1}{2}\,k\,x^{2}$$</div>
-  <p>Por la tercera ley de Newton, si el dedo empuja el gatillo con una fuerza, el gatillo (movido por el motor) empuja el
-  dedo con la misma fuerza en sentido contrario:</p>
+  <p>Por la tercera ley de Newton, si el dedo empuja el gatillo con una fuerza, el gatillo empuja el dedo con la misma
+  fuerza en sentido contrario. El motor es lo que le permite al gatillo sostener esa fuerza sin hundirse:</p>
   <div class="eq">$$\vec F_{\text{gatillo sobre dedo}} = -\,\vec F_{\text{dedo sobre gatillo}}$$</div>
   <p>Para imitar un arco, el juego puede usar una constante pequeña al inicio y una mucho mayor a partir de cierto punto
   \(x_p\), como si hubiera una "pared". En magnitud:</p>
@@ -500,8 +502,8 @@
   arco de un freno o de un gatillo trabado. Con \(F = -kx\) la fuerza crece mientras más se aprieta, y eso es lo que uno
   reconoce como estirar algo elástico. Cambiando \(k\) y \(x_p\), el mismo motor imita objetos distintos sin tocar el
   hardware.</p>
-  <p>También tiene sus desventajas. El motor gasta batería, y el cálculo tiene que ser muy rápido, porque si la fuerza llega tarde el gatillo se
-  siente "esponjoso". Además el motor tiene una fuerza máxima, así que el resorte virtual no puede ser tan rígido como uno
+  <p>También tiene sus desventajas. El motor gasta batería, y el cálculo tiene que ser muy rápido, porque supongo que si la fuerza llega tarde el
+  gatillo se sentiría "esponjoso". Además el motor tiene una fuerza máxima, así que el resorte virtual no puede ser tan rígido como uno
   quiera.</p>
   <p>Igual que la normal del tema 4, es una fuerza de contacto que siempre aparece en pareja (tercera ley). Y la energía
   \(U = \tfrac12 kx^2\) que guarda el arco al tensarse es energía potencial elástica, lo que conecta este tema con trabajo y
@@ -518,22 +520,25 @@
         referrerpolicy="strict-origin-when-cross-origin"></iframe>
     </div>
   </figure>
-  <p class="nota"><em>Nota.</em> Video de Restore Technique (<span class="pendiente">[COMPLETAR: año]</span>), publicado en YouTube.</p>
+  <p class="nota"><em>Nota.</em> Video de Restore Technique (2021), publicado en YouTube.</p>
 
   <div class="analisis">
     <h4>Análisis</h4>
-    <p>En el video se usa el gatillo con el control desarmado mientras corre un juego, así que se ve la pieza que el motor
-    mueve contra el gatillo. Lo que me interesa es el momento en que el gatillo deja de ir suelto y empieza a empujar de
-    vuelta.</p>
-    <p>En el <span class="pendiente">[COMPLETAR: minuto:segundo]</span> se aprieta el gatillo y al principio baja fácil, pero
-    después cuesta cada vez más: ahí aparece la fuerza restauradora. En la figura 5.1 eso es el primer tramo, donde la fuerza
-    crece en línea recta con pendiente \(k_1\). Cuando se suelta, el gatillo regresa solo a su posición; eso es el signo
-    menos de \(F = -kx\), porque la fuerza siempre apunta hacia el equilibrio.</p>
-    <p>En el <span class="pendiente">[COMPLETAR: minuto:segundo]</span> el mecanismo llega al punto de "pared" \(x_p\): el
-    gatillo casi deja de avanzar aunque se empuje más, porque la pendiente \(k_2\) es mucho mayor. En la gráfica se ve como
-    el quiebre de la línea.</p>
-    <p>Durante todo el video el dedo y el gatillo se empujan con fuerzas iguales y opuestas (tercera ley): mientras el
-    gatillo está apretado, el motor responde con una fuerza igual a la del dedo pero en sentido contrario.</p>
+    <p>En el video el control está abierto mientras se juega <cite>Astro's Playroom</cite>, así que se ve el mecanismo: un
+    motor pequeño hace girar un tornillo sinfín, el tornillo mueve un engranaje en forma de abanico y ese engranaje empuja
+    el brazo del gatillo en contra del dedo. No hay un resorte que cambie de rigidez: lo que cambia es cuánto empuja el
+    motor, y eso lo decide el juego.</p>
+    <p>En el 3:15 el juego activa el modo en que el gatillo se pone duro y además vibra. Con muy poco recorrido el dedo ya
+    siente mucha fuerza en contra. En la figura 5.1 eso corresponde al tramo de pendiente grande \(k_2\): para un
+    desplazamiento pequeño la fuerza restauradora ya es alta, como un resorte muy rígido.</p>
+    <p>En el 3:47 el gatillo funciona como un resorte que se comprime: según cuánto se apriete y qué tan rápido se suelte, el
+    muñeco sale volando o no. Mientras más se aprieta (mayor \(x\)), más fuerza devuelve el gatillo, como en \(F = -kx\), y
+    más energía \(U = \tfrac12 kx^2\) "guarda" el resorte virtual. Al soltar, el juego usa esa energía para el lanzamiento.
+    El signo menos se nota en que el gatillo siempre regresa solo hacia su posición inicial.</p>
+    <p>En todo el video, por la tercera ley, el gatillo empuja el dedo con una fuerza igual y opuesta a la que el dedo hace
+    sobre el gatillo. Cuando el gatillo está quieto, además, la fuerza del motor sobre el gatillo equilibra la del dedo
+    (segunda ley con \(a = 0\)). Son dos ideas distintas: la primera habla de dos cuerpos y la segunda de las fuerzas sobre
+    uno solo.</p>
   </div>
 
   <figure class="figura">
@@ -549,7 +554,7 @@
 <!-- ========================= PRÓXIMOS TEMAS ========================= -->
 <section id="proximos">
   <h2>Próximos temas</h2>
-  <p>Estos temas se van a agregar en el Avance 2 y en la entrega final.</p>
+  <p>Los temas 6 a 9 se agregan en el Avance 2 y los temas 10 a 13 en la entrega final.</p>
   <ol class="proximos" id="listaProximos" start="6"><!-- se llena desde script.js --></ol>
 </section>
 
@@ -562,9 +567,9 @@
     <li>Johnson, R. D., y Holbrow, C. (Eds.). (1977). <em>Space settlements: A design study</em> (NASA SP-413). National Aeronautics and Space Administration. <a href="https://ntrs.nasa.gov/citations/19770014162">https://ntrs.nasa.gov/citations/19770014162</a></li>
     <li>Milliken, W. F., y Milliken, D. L. (1995). <em>Race car vehicle dynamics</em>. SAE International.</li>
     <li>Pacejka, H. B. (2012). <em>Tire and vehicle dynamics</em> (3.ª ed.). Butterworth-Heinemann.</li>
-    <li>Pirelli. (2017). <em>Seeing through the window: How working range affects tyre performance</em>. <a href="https://www.pirelli.com/global/en-ww/race/racingspot/seeing-through-the-window-50931/">https://www.pirelli.com/global/en-ww/race/racingspot/seeing-through-the-window-50931/</a></li>
-    <li>Pittman, K. (2016). <em>Math for game programmers: Building a better jump</em> [Conferencia]. Game Developers Conference, San Francisco, CA, Estados Unidos. <a href="https://www.gdcvault.com/play/1023559/Math-for-Game-Programmers-Building">https://www.gdcvault.com/play/1023559/Math-for-Game-Programmers-Building</a></li>
-    <li>Restore Technique. (<span class="pendiente">[COMPLETAR: año, día de mes]</span>). <em>PS5 adaptive trigger live mechanics in game: Full teardown</em> [Video]. YouTube. <a href="https://www.youtube.com/watch?v=8VBZ1upH93w">https://www.youtube.com/watch?v=8VBZ1upH93w</a></li>
+    <li>Pirelli. (2017, 5 de junio). <em>Seeing through the window: How working range affects tyre performance</em>. <a href="https://www.pirelli.com/global/en-ww/race/racingspot/seeing-through-the-window-50931/">https://www.pirelli.com/global/en-ww/race/racingspot/seeing-through-the-window-50931/</a></li>
+    <li>Pittman, K. (2016, marzo). <em>Math for game programmers: Building a better jump</em> [Presentación en conferencia]. Game Developers Conference, San Francisco, CA, Estados Unidos. <a href="https://www.gdcvault.com/play/1023559/Math-for-Game-Programmers-Building">https://www.gdcvault.com/play/1023559/Math-for-Game-Programmers-Building</a></li>
+    <li>Restore Technique. (2021). <em>PS5 adaptive trigger live mechanics in game: Full teardown</em> [Video]. YouTube. <a href="https://www.youtube.com/watch?v=8VBZ1upH93w">https://www.youtube.com/watch?v=8VBZ1upH93w</a></li>
     <li>Serway, R. A., y Jewett, J. W. (2015). <em>Física para ciencias e ingeniería</em> (9.ª ed., Vol. 1). Cengage Learning.</li>
     <li>Siemens. (s. f.). <em>Simcenter Tire</em>. <a href="https://www.siemens.com/en-us/products/simcenter/mechanical-simulation/tire-simulation/">https://www.siemens.com/en-us/products/simcenter/mechanical-simulation/tire-simulation/</a></li>
     <li>Sony Interactive Entertainment. (s. f.). <em>Mando inalámbrico DualSense</em>. PlayStation. <a href="https://www.playstation.com/es-es/accessories/dualsense-wireless-controller/">https://www.playstation.com/es-es/accessories/dualsense-wireless-controller/</a></li>

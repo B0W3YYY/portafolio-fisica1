@@ -415,7 +415,6 @@ p { margin: 0 0 1rem; }
 .d-persona line   { stroke: var(--tinta); stroke-width: 2.4; stroke-linecap: round; }
 .d-vel     { stroke: var(--s1); stroke-width: 3; }
 .d-acc     { stroke: var(--acento); stroke-width: 3; }
-.d-caja    { fill: var(--papel); stroke: var(--linea); }
 .d-fill-tinta { fill: var(--tinta); }
 .d-fill-vel   { fill: var(--s1); }
 .d-fill-acc   { fill: var(--acento); }

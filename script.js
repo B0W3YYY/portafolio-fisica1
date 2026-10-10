@@ -6,14 +6,14 @@
 // 2) agrego su enlace al índice,
 // 3) lo borro de esta lista.
 const PROXIMOS = [
-  "[COMPLETAR: nombre del tema 6 según la consigna]",
-  "[COMPLETAR: nombre del tema 7 según la consigna]",
-  "[COMPLETAR: nombre del tema 8 según la consigna]",
-  "[COMPLETAR: nombre del tema 9 según la consigna]",
-  "[COMPLETAR: nombre del tema 10 según la consigna]",
-  "[COMPLETAR: nombre del tema 11 según la consigna]",
-  "[COMPLETAR: nombre del tema 12 según la consigna]",
-  "[COMPLETAR: nombre del tema 13 según la consigna]",
+  "Frenado regenerativo en un vehículo eléctrico",
+  "El coeficiente de restitución en un motor de videojuego",
+  "Ruedas de reacción en satélites",
+  "Asistencia gravitatoria de la Voyager",
+  "Spring animations en interfaces",
+  "Síntesis de sonido y armónicos",
+  "Resonancia estructural y Tacoma Narrows",
+  "Enfriamiento líquido de un centro de datos",
 ];
 
 const G_TIERRA = 9.81;
@@ -105,7 +105,7 @@ function llenarProximos() {
     if (titulo.startsWith("[COMPLETAR")) texto.className = "pendiente";
     const pronto = document.createElement("span");
     pronto.className = "pronto";
-    pronto.textContent = "próximamente";
+    pronto.textContent = "Próximamente";
     li.append(texto, pronto);
     ol.append(li);
   });
