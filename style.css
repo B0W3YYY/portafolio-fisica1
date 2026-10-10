@@ -147,7 +147,7 @@ p { margin: 0 0 14px; }
 
 .figuras {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 0 20px;
 }
 
@@ -282,7 +282,7 @@ p { margin: 0 0 14px; }
 /* ===== Celular ===== */
 
 @media (max-width: 800px) {
-  .figuras { grid-template-columns: 1fr; }
+  .figuras { grid-template-columns: minmax(0, 1fr); }
 
   .indice { display: block; padding: 0 15px; }
   .indice-barra { min-height: 48px; }
