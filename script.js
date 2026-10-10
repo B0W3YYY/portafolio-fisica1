@@ -93,20 +93,19 @@ function prepararIndice() {
   document.querySelectorAll("main section[id]").forEach(s => observador.observe(s));
 }
 
+// Candado dibujado en SVG (usa el color del texto).
+const CANDADO = '<svg class="candado" viewBox="0 0 24 24" aria-hidden="true">' +
+  '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+
+// Cada tema que falta sale como una caja con "Tema N" y un candado.
+// Los nombres siguen en PROXIMOS para saber cuántos son y para cuando los agregue.
 function llenarProximos() {
   const ol = document.getElementById("listaProximos");
   const primero = Number(ol.getAttribute("start")) || 6;
   ol.innerHTML = "";
   PROXIMOS.forEach((titulo, i) => {
     const li = document.createElement("li");
-    li.value = primero + i;
-    const texto = document.createElement("span");
-    texto.textContent = titulo;
-    if (titulo.startsWith("[COMPLETAR")) texto.className = "pendiente";
-    const pronto = document.createElement("span");
-    pronto.className = "pronto";
-    pronto.textContent = "Próximamente";
-    li.append(texto, pronto);
+    li.innerHTML = `<div><strong>Tema ${primero + i}</strong><span class="pronto">Próximamente</span></div>${CANDADO}`;
     ol.append(li);
   });
 }

@@ -56,6 +56,7 @@ a { color: var(--enlace); }
 
 /* ===== Menú de arriba ===== */
 
+/* el padding lateral alinea el menú con el ancho del contenido (900px) */
 .indice {
   position: sticky;
   top: 0;
@@ -65,11 +66,13 @@ a { color: var(--enlace); }
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  padding: 0 20px;
+  gap: 6px 20px;
+  padding: 10px max(20px, calc((100% - 860px) / 2));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 .indice-barra { display: flex; align-items: center; justify-content: space-between; }
-.indice-nombre { font-weight: bold; margin-right: 25px; }
+.indice-nombre { font-weight: bold; font-size: 18px; letter-spacing: 0.5px; }
 .indice-boton { display: none; }
 
 .indice-lista {
@@ -78,17 +81,21 @@ a { color: var(--enlace); }
   padding: 0;
   display: flex;
   flex-wrap: wrap;
+  gap: 4px;
 }
 
 .indice-lista a {
   display: block;
-  padding: 14px 12px;
-  color: #fff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  color: #dce8f3;
   text-decoration: none;
+  font-size: 15px;
+  transition: background 0.15s;
 }
 
-.indice-lista a:hover,
-.indice-lista a.activo { background: rgba(255, 255, 255, 0.15); }
+.indice-lista a:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+.indice-lista a.activo { background: #fff; color: var(--barra); font-weight: 600; }
 
 /* ===== Contenido ===== */
 
@@ -260,8 +267,37 @@ p { margin: 0 0 14px; }
 
 /* ===== Próximos temas ===== */
 
-.proximos li { margin-bottom: 6px; }
-.proximos .pronto { margin-left: 8px; color: var(--tenue); font-size: 15px; font-style: italic; }
+.proximos {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.proximos li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--caja);
+  border: 1px solid var(--linea);
+  border-left: 4px solid var(--acento);
+  border-radius: 6px;
+}
+
+.proximos strong { display: block; font-size: 18px; }
+.proximos .pronto { color: var(--tenue); font-size: 14px; }
+
+.candado {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--tenue);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
 
 /* ===== Referencias (sangría francesa) ===== */
 
@@ -285,19 +321,20 @@ p { margin: 0 0 14px; }
   .figuras { grid-template-columns: minmax(0, 1fr); }
 
   .indice { display: block; padding: 0 15px; }
-  .indice-barra { min-height: 48px; }
+  .indice-barra { min-height: 52px; }
   .indice-boton {
     display: block;
     font: inherit;
     color: #fff;
     background: transparent;
-    border: 1px solid #fff;
-    padding: 4px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    padding: 4px 14px;
     cursor: pointer;
   }
   .indice-lista { display: none; padding-bottom: 8px; }
   .indice-lista.abierto { display: block; }
-  .indice-lista a { padding: 8px 4px; }
+  .indice-lista a { padding: 8px 12px; border-radius: 6px; }
 
   .contenido { padding: 0 15px 30px; }
   .portada h1 { font-size: 28px; }
