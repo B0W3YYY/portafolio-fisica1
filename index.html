@@ -9,7 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23a5402d'/%3E%3Ctext x='16' y='22.5' font-size='19' text-anchor='middle' fill='white' font-family='Georgia,serif'%3EF%3C/text%3E%3C/svg%3E">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-  <link rel="stylesheet" href="style.css?v=7">
+  <link rel="stylesheet" href="style.css?v=8">
   <script>
     try { const t = localStorage.getItem("tema"); if (t) document.documentElement.dataset.tema = t; } catch (e) {}
   </script>
@@ -17,7 +17,7 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script defer src="script.js?v=7"></script>
+  <script defer src="script.js?v=8"></script>
 </head>
 <body>
 
@@ -327,14 +327,14 @@
         <!-- eje: el punto indica que sale de la hoja -->
         <circle cx="260" cy="220" r="20" class="d-eje"/>
         <circle cx="260" cy="220" r="4" class="d-fill-tinta"/>
-        <text x="298" y="18" class="d-txt">eje de giro</text>
-        <text x="298" y="35" class="d-txt d-chico">(perpendicular a la hoja)</text>
-        <line x1="318" y1="40" x2="267" y2="201" class="d-guia"/>
+        <text x="446" y="18" class="d-txt" text-anchor="end">eje de giro</text>
+        <text x="446" y="37" class="d-txt d-chico" text-anchor="end">(perpendicular a la hoja)</text>
+        <line x1="372" y1="44" x2="267" y2="201" class="d-guia"/>
 
         <!-- sentido de giro y sus ecuaciones -->
         <path d="M298.3,187.9 A50,50 0 0 0 221.7,187.9" class="d-giro" marker-end="url(#flechaW)"/>
-        <text x="218" y="150" class="d-mat" text-anchor="end">ω = 2π/T</text>
-        <text x="218" y="172" class="d-mat" text-anchor="end">ω = 2πN/60</text>
+        <text x="218" y="146" class="d-mat" text-anchor="end">ω = 2π/T</text>
+        <text x="218" y="174" class="d-mat" text-anchor="end">ω = 2πN/60</text>
 
         <!-- radio -->
         <line x1="260" y1="220" x2="410.4" y2="165.3" class="d-radio"/>
@@ -352,8 +352,8 @@
 
         <!-- aceleración centrípeta: apunta al eje -->
         <line x1="260" y1="324" x2="260" y2="250" class="d-acc" marker-end="url(#flechaA)"/>
-        <text x="252" y="300" class="d-mat d-acc-t" text-anchor="end">a<tspan dy="4" font-size="13">c</tspan><tspan dy="-4"> = ω²r</tspan></text>
-        <text x="252" y="321" class="d-mat d-acc-t" text-anchor="end">= v²/r</text>
+        <text x="252" y="295" class="d-mat d-acc-t" text-anchor="end">a<tspan dy="4" font-size="13">c</tspan><tspan dy="-4"> = ω²r</tspan></text>
+        <text x="252" y="324" class="d-mat d-acc-t" text-anchor="end">= v²/r</text>
         <text x="268" y="296" class="d-txt d-chico d-acc-t">hacia el eje</text>
 
         <!-- velocidad: tangente al anillo -->
