@@ -7,9 +7,10 @@
   --tinta: #222222;      /* texto */
   --tenue: #666666;      /* texto secundario */
   --linea: #d0d0d0;
-  --barra: #1f4e79;      /* menú de arriba */
-  --acento: #1f4e79;
-  --enlace: #1a5fa8;
+  --barra: #134e4a;      /* menú de arriba (verde azulado oscuro) */
+  --acento: #0f766e;
+  --enlace: #0d7368;
+  --brillo: rgba(15, 118, 110, 0.35);
   --caja: #f3f6f9;
   --s1: #1f77b4;         /* colores de las series */
   --s2: #d62728;
@@ -27,9 +28,10 @@
     --tinta: #e6e6e6;
     --tenue: #a0a0a0;
     --linea: #3a3d3f;
-    --barra: #13324f;
-    --acento: #7fb2e5;
-    --enlace: #7fb2e5;
+    --barra: #0f2e2c;
+    --acento: #5ec4b6;
+    --enlace: #6fd0c2;
+    --brillo: rgba(94, 196, 182, 0.35);
     --caja: #22272b;
     --s1: #5fa8e8;
     --s2: #f0716f;
@@ -45,9 +47,10 @@
   --tinta: #e6e6e6;
   --tenue: #a0a0a0;
   --linea: #3a3d3f;
-  --barra: #13324f;
-  --acento: #7fb2e5;
-  --enlace: #7fb2e5;
+  --barra: #0f2e2c;
+  --acento: #5ec4b6;
+  --enlace: #6fd0c2;
+  --brillo: rgba(94, 196, 182, 0.35);
   --caja: #22272b;
   --s1: #5fa8e8;
   --s2: #f0716f;
@@ -105,7 +108,7 @@ a { color: var(--enlace); }
   display: block;
   padding: 5px 12px;
   border-radius: 20px;
-  color: #dce8f3;
+  color: #d5ebe8;
   text-decoration: none;
   font-size: 15px;
   transition: background 0.15s;
@@ -116,9 +119,14 @@ a { color: var(--enlace); }
 
 /* En computadora la barra "desaparece" y sus hijos se acomodan en la fila del menú;
    así el botón de tema queda a la derecha. */
+.indice {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+}
 .indice-barra { display: contents; }
-.indice-lista { order: 2; }
-.boton-tema { order: 3; margin-left: auto; }
+.indice-nombre { grid-column: 1; grid-row: 1; }
+.indice-lista { grid-column: 2; grid-row: 1; justify-content: center; }
+.boton-tema { grid-column: 3; grid-row: 1; justify-self: end; }
 
 .boton-tema {
   font: inherit;
@@ -320,7 +328,17 @@ p { margin: 0 0 14px; }
   border: 1px solid var(--linea);
   border-left: 4px solid var(--acento);
   border-radius: 6px;
+  cursor: default;
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
 }
+
+.proximos li:hover {
+  border-color: var(--acento);
+  box-shadow: 0 0 14px var(--brillo);
+  transform: translateY(-2px);
+}
+
+.proximos li:hover .candado { stroke: var(--acento); }
 
 .proximos strong { display: block; font-size: 18px; }
 .proximos .pronto { color: var(--tenue); font-size: 14px; }
@@ -333,6 +351,7 @@ p { margin: 0 0 14px; }
   stroke: var(--tenue);
   stroke-width: 2;
   stroke-linecap: round;
+  transition: stroke 0.2s;
 }
 
 /* ===== Referencias (sangría francesa) ===== */
