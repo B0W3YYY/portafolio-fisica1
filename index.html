@@ -10,6 +10,9 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <link rel="stylesheet" href="style.css">
+  <script>
+    try { const t = localStorage.getItem("tema"); if (t) document.documentElement.dataset.tema = t; } catch (e) {}
+  </script>
 
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -23,6 +26,7 @@
 <nav class="indice" aria-label="Índice">
   <div class="indice-barra">
     <span class="indice-nombre">Física I</span>
+    <button class="boton-tema" type="button" id="botonTema">Modo oscuro</button>
     <button class="indice-boton" type="button" aria-expanded="false" aria-controls="indice-lista">Menú</button>
   </div>
   <ol id="indice-lista" class="indice-lista">

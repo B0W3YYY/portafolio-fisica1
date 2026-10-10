@@ -19,9 +19,9 @@
   --sans: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Modo oscuro */
+/* Modo oscuro: sigue al sistema, salvo que se elija otro con el botón del menú */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-tema="claro"]) {
     --papel: #181a1b;
     --hoja: #202324;
     --tinta: #e6e6e6;
@@ -37,6 +37,23 @@
     --ventana: rgba(108, 201, 108, 0.16);
     --pendiente: #6b5a10;
   }
+}
+
+:root[data-tema="oscuro"] {
+  --papel: #181a1b;
+  --hoja: #202324;
+  --tinta: #e6e6e6;
+  --tenue: #a0a0a0;
+  --linea: #3a3d3f;
+  --barra: #13324f;
+  --acento: #7fb2e5;
+  --enlace: #7fb2e5;
+  --caja: #22272b;
+  --s1: #5fa8e8;
+  --s2: #f0716f;
+  --s3: #6cc96c;
+  --ventana: rgba(108, 201, 108, 0.16);
+  --pendiente: #6b5a10;
 }
 
 * { box-sizing: border-box; }
@@ -96,6 +113,25 @@ a { color: var(--enlace); }
 
 .indice-lista a:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
 .indice-lista a.activo { background: #fff; color: var(--barra); font-weight: 600; }
+
+/* En computadora la barra "desaparece" y sus hijos se acomodan en la fila del menú;
+   así el botón de tema queda a la derecha. */
+.indice-barra { display: contents; }
+.indice-lista { order: 2; }
+.boton-tema { order: 3; margin-left: auto; }
+
+.boton-tema {
+  font: inherit;
+  font-size: 14px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  padding: 4px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.boton-tema:hover { background: rgba(255, 255, 255, 0.25); }
 
 /* ===== Contenido ===== */
 
@@ -321,7 +357,8 @@ p { margin: 0 0 14px; }
   .figuras { grid-template-columns: minmax(0, 1fr); }
 
   .indice { display: block; padding: 0 15px; }
-  .indice-barra { min-height: 52px; }
+  .indice-barra { display: flex; min-height: 52px; gap: 8px; }
+  .indice-nombre { margin-right: auto; }
   .indice-boton {
     display: block;
     font: inherit;

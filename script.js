@@ -35,8 +35,29 @@ document.addEventListener("DOMContentLoaded", () => {
   // Si el sistema cambia entre modo claro y oscuro, se vuelven a pintar con los colores nuevos.
   const oscuro = window.matchMedia("(prefers-color-scheme: dark)");
   const alCambiar = () => { if (window.Chart) crearGraficas(); sim.dibujar(); };
-  if (oscuro.addEventListener) oscuro.addEventListener("change", alCambiar);
+  if (oscuro.addEventListener) oscuro.addEventListener("change", () => { prepararBotonTema.texto(); alCambiar(); });
+  prepararBotonTema(alCambiar);
 });
+
+// ---------- Botón de modo claro / oscuro ----------
+
+function prepararBotonTema(alCambiar) {
+  const boton = document.getElementById("botonTema");
+  const raiz = document.documentElement;
+  const sistemaOscuro = () => window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const estaOscuro = () => raiz.dataset.tema ? raiz.dataset.tema === "oscuro" : sistemaOscuro();
+
+  const texto = () => { boton.textContent = estaOscuro() ? "☀ Modo claro" : "☾ Modo oscuro"; };
+  prepararBotonTema.texto = texto;
+  texto();
+
+  boton.addEventListener("click", () => {
+    raiz.dataset.tema = estaOscuro() ? "claro" : "oscuro";
+    try { localStorage.setItem("tema", raiz.dataset.tema); } catch (e) {}
+    texto();
+    alCambiar();
+  });
+}
 
 // ---------- Utilidades ----------
 
