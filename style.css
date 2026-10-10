@@ -125,7 +125,7 @@ p { margin: 0 0 14px; }
 
 /* ===== Ecuaciones ===== */
 
-.eq { margin: 5px 0 15px; overflow-x: auto; overflow-y: hidden; }
+.eq { margin: 5px 0 15px; padding: 2px 5px; overflow-x: auto; overflow-y: hidden; }
 
 .eq-grupo {
   display: flex;
@@ -135,7 +135,7 @@ p { margin: 0 0 14px; }
   margin: 5px 0 15px;
 }
 
-.eq-grupo .eq { margin: 0; max-width: 100%; }
+.eq-grupo .eq { margin: 0; max-width: 100%; padding: 2px 5px; }
 .katex-display { margin: 8px 0; }
 
 /* ===== Figuras ===== */
