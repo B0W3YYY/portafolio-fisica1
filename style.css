@@ -1,408 +1,236 @@
-/* Portafolio Física I
-   Estilo de informe: papel claro, tinta oscura, un solo color de acento.
-   Las variables de color también las usa script.js para las gráficas. */
+/* Portafolio Física I - estilos
+   Los colores están en variables porque script.js los lee para pintar las gráficas. */
 
 :root {
-  --papel: #fbfaf6;
-  --hoja: #ffffff;
-  --tinta: #22201c;
-  --tenue: #6b665c;
-  --linea: #dcd6c9;
-  --acento: #a5402d;
-  --enlace: #2c5a7a;
-  --s1: #2c5a7a;   /* serie 1: azul tinta */
-  --s2: #c0562f;   /* serie 2: óxido */
-  --s3: #6b7d2a;   /* serie 3: oliva */
-  --ventana: rgba(107, 125, 42, 0.14);
-  --pendiente: #fff1a8;
-
-  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --sans: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+  --papel: #ffffff;      /* fondo */
+  --hoja: #ffffff;       /* fondo de gráficas y cajas */
+  --tinta: #222222;      /* texto */
+  --tenue: #666666;      /* texto secundario */
+  --linea: #d0d0d0;
+  --barra: #1f4e79;      /* menú de arriba */
+  --acento: #1f4e79;
+  --enlace: #1a5fa8;
+  --caja: #f3f6f9;
+  --s1: #1f77b4;         /* colores de las series */
+  --s2: #d62728;
+  --s3: #2ca02c;
+  --ventana: rgba(44, 160, 44, 0.15);
+  --pendiente: #ffeb80;
+  --sans: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* Modo oscuro */
 @media (prefers-color-scheme: dark) {
   :root {
-    --papel: #1b1a17;
-    --hoja: #23221e;
-    --tinta: #ebe7df;
-    --tenue: #a8a296;
-    --linea: #3b3832;
-    --acento: #e0866b;
-    --enlace: #8cb8d8;
-    --s1: #8cb8d8;
-    --s2: #e88a62;
-    --s3: #b3c46a;
-    --ventana: rgba(179, 196, 106, 0.16);
-    --pendiente: #5c5218;
+    --papel: #181a1b;
+    --hoja: #202324;
+    --tinta: #e6e6e6;
+    --tenue: #a0a0a0;
+    --linea: #3a3d3f;
+    --barra: #13324f;
+    --acento: #7fb2e5;
+    --enlace: #7fb2e5;
+    --caja: #22272b;
+    --s1: #5fa8e8;
+    --s2: #f0716f;
+    --s3: #6cc96c;
+    --ventana: rgba(108, 201, 108, 0.16);
+    --pendiente: #6b5a10;
   }
 }
 
-*, *::before, *::after { box-sizing: border-box; }
+* { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 1.5rem;
-  -webkit-text-size-adjust: 100%;
-}
+html { scroll-behavior: smooth; scroll-padding-top: 60px; }
 
 body {
   margin: 0;
   background: var(--papel);
   color: var(--tinta);
-  font-family: var(--serif);
-  font-size: 1.0625rem;
-  line-height: 1.7;
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
 }
 
 a { color: var(--enlace); }
-code { font-size: 0.88em; }
-cite { font-style: italic; }
 
-/* ---------- Distribución: índice a la izquierda, texto a la derecha ---------- */
-
-.layout {
-  display: grid;
-  grid-template-columns: 17rem minmax(0, 1fr);
-  max-width: 70rem;
-  margin: 0 auto;
-}
-
-.contenido {
-  max-width: 47rem;
-  padding: 0 2.5rem 3rem 3.5rem;
-}
-
-/* ---------- Índice ---------- */
+/* ===== Menú de arriba ===== */
 
 .indice {
   position: sticky;
   top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  border-right: 1px solid var(--linea);
-  padding: 2.2rem 1.4rem 2rem 1.6rem;
-  font-family: var(--sans);
-  font-size: 0.93rem;
-  line-height: 1.35;
+  z-index: 10;
+  background: var(--barra);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0 20px;
 }
 
-.indice-nombre {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 1.2rem;
-  color: var(--tinta);
-}
-
+.indice-barra { display: flex; align-items: center; justify-content: space-between; }
+.indice-nombre { font-weight: bold; margin-right: 25px; }
 .indice-boton { display: none; }
 
 .indice-lista {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .indice-lista a {
-  display: grid;
-  grid-template-columns: 1.3rem 1fr;
-  padding: 0.42rem 0 0.42rem 0.6rem;
-  border-left: 2px solid transparent;
-  color: var(--tenue);
+  display: block;
+  padding: 14px 12px;
+  color: #fff;
   text-decoration: none;
 }
 
-.indice-lista a:hover { color: var(--tinta); }
+.indice-lista a:hover,
+.indice-lista a.activo { background: rgba(255, 255, 255, 0.15); }
 
-.indice-lista a.activo {
-  color: var(--tinta);
-  border-left-color: var(--acento);
+/* ===== Contenido ===== */
+
+.contenido {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
 }
 
-.indice-lista .n { color: var(--acento); }
+.portada { padding: 30px 0 10px; }
+.portada-sup { margin: 0; color: var(--tenue); }
+.portada h1 { margin: 5px 0 15px; font-size: 34px; color: var(--acento); }
 
-/* ---------- Portada ---------- */
-
-.portada {
-  padding: 3.2rem 0 1.8rem;
-  border-bottom: 2px solid var(--tinta);
-}
-
-.portada-sup {
-  margin: 0;
-  font-family: var(--sans);
-  color: var(--acento);
-  font-size: 0.98rem;
-}
-
-.portada h1 {
-  margin: 0.2rem 0 1.4rem;
-  font-size: clamp(2rem, 5vw, 2.9rem);
-  font-weight: 600;
-  line-height: 1.15;
-}
-
-.datos {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 0.15rem 1.2rem;
-  margin: 0;
-  font-size: 1rem;
-}
-
-.datos dt {
-  font-family: var(--sans);
-  color: var(--tenue);
-}
-
+.datos { display: grid; grid-template-columns: auto 1fr; gap: 2px 15px; margin: 0; }
+.datos dt { font-weight: bold; }
 .datos dd { margin: 0; }
 
-/* ---------- Secciones ---------- */
+section { padding-top: 20px; }
 
-section { padding-top: 2.6rem; }
-
-.tema {
-  margin-top: 1.6rem;
-  border-top: 1px solid var(--linea);
-}
-
-.tema-num {
-  margin: 0;
-  font-family: var(--sans);
-  font-weight: 600;
-  color: var(--acento);
-}
+.tema { margin-top: 30px; }
+.tema-num { margin: 0; color: var(--tenue); font-weight: bold; }
 
 h2 {
-  margin: 0.1rem 0 1rem;
-  font-size: clamp(1.45rem, 3.4vw, 1.85rem);
-  font-weight: 600;
-  line-height: 1.25;
+  margin: 0 0 15px;
+  font-size: 26px;
+  border-bottom: 2px solid var(--acento);
+  padding-bottom: 5px;
 }
 
-h3 {
-  margin: 2.4rem 0 0.6rem;
-  font-family: var(--sans);
-  font-size: 1.18rem;
-  font-weight: 600;
+h3 { margin: 30px 0 10px; font-size: 20px; color: var(--acento); }
+h4 { margin: 20px 0 5px; font-size: 17px; }
+
+p { margin: 0 0 14px; }
+
+/* ===== Ecuaciones ===== */
+
+.eq { margin: 5px 0 15px; overflow-x: auto; overflow-y: hidden; }
+
+.eq-grupo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 40px;
+  margin: 5px 0 15px;
 }
 
-h4 {
-  margin: 1.6rem 0 0.4rem;
-  font-size: 1.05rem;
-  font-weight: 400;
-  font-style: italic;
-}
+.eq-grupo .eq { margin: 0; max-width: 100%; }
+.katex-display { margin: 8px 0; }
 
-p { margin: 0 0 1rem; }
+/* ===== Figuras ===== */
 
-.eq {
-  margin: 0.4rem 0 1.1rem;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 0.1rem 0.3rem;
-}
-
-.katex { font-size: 1.08em; }
-.katex-display { margin: 0.5rem 0; }
-
-/* ---------- Figuras con formato APA ---------- */
-
-.figura { margin: 1.8rem 0 0.6rem; }
-
-.fig-num {
-  margin: 0;
-  font-family: var(--sans);
-  font-weight: 600;
-  font-size: 0.98rem;
-}
-
-.fig-titulo {
-  margin: 0 0 0.6rem;
-  font-style: italic;
-}
-
-.nota {
-  font-size: 0.93rem;
-  color: var(--tenue);
-  line-height: 1.6;
-}
+.figura { margin: 25px 0 10px; }
+.fig-num { margin: 0; font-weight: bold; }
+.fig-titulo { margin: 0 0 8px; font-style: italic; }
+.nota { font-size: 15px; color: var(--tenue); }
 
 .figuras {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 1.6rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
 }
 
-/* Si un título ocupa dos líneas y el de al lado una, las gráficas igual quedan alineadas abajo. */
-.figuras .figura {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-}
-
+.figuras .figura { display: flex; flex-direction: column; }
 .figuras .grafica { margin-top: auto; }
 
 .grafica {
   position: relative;
-  height: 290px;
+  height: 300px;
   background: var(--hoja);
   border: 1px solid var(--linea);
-  padding: 0.6rem 0.6rem 0.3rem;
+  padding: 8px;
 }
 
-/* ---------- Tabla APA (solo líneas horizontales) ---------- */
+/* ===== Tabla ===== */
 
 .tabla-scroll { overflow-x: auto; }
 
-.tabla-apa {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: var(--sans);
-  font-size: 0.96rem;
-  font-variant-numeric: tabular-nums;
-  border-top: 2px solid var(--tinta);
-  border-bottom: 2px solid var(--tinta);
-}
+.tabla-apa { width: 100%; border-collapse: collapse; }
 
 .tabla-apa th,
 .tabla-apa td {
-  padding: 0.4rem 0.7rem;
-  text-align: right;
+  border: 1px solid var(--linea);
+  padding: 6px 10px;
+  text-align: center;
   white-space: nowrap;
 }
 
-.tabla-apa th:first-child,
-.tabla-apa td:first-child { text-align: left; }
+.tabla-apa thead th { background: var(--caja); }
 
-.tabla-apa thead th {
-  font-weight: 600;
-  border-bottom: 1px solid var(--tinta);
-}
-
-/* ---------- Caso numérico y análisis ---------- */
+/* ===== Caso numérico y análisis del video ===== */
 
 .caso,
 .analisis {
-  margin: 1.8rem 0;
-  padding: 0.2rem 0 0.2rem 1.3rem;
-  border-left: 3px solid var(--linea);
-}
-
-.caso h4,
-.analisis h4 { margin-top: 0.6rem; }
-
-.caso ol { padding-left: 1.3rem; }
-.caso li { margin-bottom: 0.45rem; }
-
-.pendiente {
-  background: var(--pendiente);
-  padding: 0 0.25em;
-  font-family: var(--sans);
-  font-weight: 600;
-}
-
-/* ---------- Simulación del salto ---------- */
-
-.sim {
-  background: var(--hoja);
+  background: var(--caja);
   border: 1px solid var(--linea);
-  padding: 1rem 1.1rem 1.1rem;
-  font-family: var(--sans);
+  padding: 5px 20px;
+  margin: 25px 0;
 }
 
-#simSalto {
-  display: block;
-  width: 100%;
-  border: 1px solid var(--linea);
-  background: var(--papel);
-}
+.caso li { margin-bottom: 6px; }
 
-.sim-leyenda {
-  margin: 0.5rem 0 0.9rem;
-  font-size: 0.9rem;
-  color: var(--tenue);
-}
+.pendiente { background: var(--pendiente); font-weight: bold; }
 
-.sim-leyenda .item {
-  display: inline-block;
-  white-space: nowrap;
-  margin-right: 1.2rem;
-}
+/* ===== Simulación ===== */
+
+.sim { border: 1px solid var(--linea); padding: 15px; background: var(--hoja); }
+
+#simSalto { display: block; width: 100%; border: 1px solid var(--linea); background: var(--papel); }
+
+.sim-leyenda { font-size: 15px; color: var(--tenue); }
+.sim-leyenda .item { margin-right: 20px; white-space: nowrap; }
 
 .muestra {
   display: inline-block;
-  width: 1.8rem;
+  width: 28px;
   vertical-align: middle;
-  margin-right: 0.4rem;
+  margin-right: 5px;
   border-top: 3px solid var(--s1);
 }
 .muestra-tierra { border-top: 2px dashed var(--tenue); }
 
-.sim-controles {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.15rem;
-}
+.sim-controles label { display: block; margin-top: 8px; }
+.sim-controles input[type="range"] { width: 100%; }
 
-.sim-controles label { font-size: 0.97rem; margin-top: 0.4rem; }
-.sim-controles output { font-weight: 600; font-variant-numeric: tabular-nums; }
-
-.sim-controles input[type="range"] {
-  width: 100%;
-  margin: 0.25rem 0 0.2rem;
-  accent-color: var(--acento);
-}
-
-.sim-botones {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin: 0.9rem 0 1rem;
-}
+.sim-botones { margin: 15px 0; }
 
 .sim-botones button {
   font: inherit;
-  font-size: 0.97rem;
-  padding: 0.45rem 1rem;
-  border: 1px solid var(--tinta);
-  border-radius: 3px;
-  background: transparent;
-  color: var(--tinta);
+  padding: 6px 14px;
+  margin: 0 8px 8px 0;
   cursor: pointer;
 }
 
-.sim-botones button:first-child {
-  background: var(--tinta);
-  color: var(--papel);
-}
+.sim-datos { width: 100%; border-collapse: collapse; }
+.sim-datos th, .sim-datos td { border-top: 1px solid var(--linea); padding: 5px 0; }
+.sim-datos th { text-align: left; font-weight: normal; }
+.sim-datos td { text-align: right; font-weight: bold; }
 
-.sim-botones button:hover { border-color: var(--acento); }
-.sim-botones button:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+/* ===== Diagrama SVG del tema 3 ===== */
 
-.sim-datos {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.97rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.sim-datos th,
-.sim-datos td {
-  padding: 0.35rem 0;
-  border-top: 1px solid var(--linea);
-}
-
-.sim-datos th { text-align: left; font-weight: 400; color: var(--tenue); }
-.sim-datos td { text-align: right; font-weight: 600; }
-
-/* ---------- Diagrama SVG ---------- */
-
-.diagrama {
-  background: var(--hoja);
-  border: 1px solid var(--linea);
-  padding: 0.8rem;
-}
-
-.diagrama svg { display: block; width: 100%; max-width: 32rem; height: auto; margin: 0 auto; }
+.diagrama { border: 1px solid var(--linea); padding: 10px; background: var(--hoja); }
+.diagrama svg { display: block; width: 100%; max-width: 500px; height: auto; margin: 0 auto; }
 
 .d-anillo  { fill: url(#rayado); stroke: var(--tinta); stroke-width: 1.6; }
 .d-rayado  { stroke: var(--tenue); stroke-width: 1; opacity: 0.6; }
@@ -414,148 +242,71 @@ p { margin: 0 0 1rem; }
 .d-persona circle { fill: var(--tinta); }
 .d-persona line   { stroke: var(--tinta); stroke-width: 2.4; stroke-linecap: round; }
 .d-vel     { stroke: var(--s1); stroke-width: 3; }
-.d-acc     { stroke: var(--acento); stroke-width: 3; }
+.d-acc     { stroke: var(--s2); stroke-width: 3; }
 .d-fill-tinta { fill: var(--tinta); }
 .d-fill-vel   { fill: var(--s1); }
-.d-fill-acc   { fill: var(--acento); }
+.d-fill-acc   { fill: var(--s2); }
 
 .d-txt   { fill: var(--tinta); font-family: var(--sans); font-size: 15px; }
 .d-chico { font-size: 14px; fill: var(--tenue); }
-.d-mat   { fill: var(--tinta); font-family: var(--serif); font-style: italic; font-size: 18px; }
+.d-mat   { fill: var(--tinta); font-family: "Times New Roman", serif; font-style: italic; font-size: 18px; }
 .d-vel-t { fill: var(--s1); }
-.d-acc-t { fill: var(--acento); }
+.d-acc-t { fill: var(--s2); }
 
-/* ---------- Video ---------- */
+/* ===== Video ===== */
 
-.video {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  background: #000;
-}
+.video { position: relative; aspect-ratio: 16 / 9; background: #000; }
+.video iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-.video iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
+/* ===== Próximos temas ===== */
 
-/* ---------- Próximos temas ---------- */
+.proximos li { margin-bottom: 6px; }
+.proximos .pronto { margin-left: 8px; color: var(--tenue); font-size: 15px; font-style: italic; }
 
-.proximos { padding-left: 2rem; }
-.proximos li { margin-bottom: 0.45rem; padding-left: 0.3rem; }
-.proximos li::marker { color: var(--tenue); font-family: var(--sans); }
+/* ===== Referencias (sangría francesa) ===== */
 
-.proximos .pronto {
-  margin-left: 0.5rem;
-  font-family: var(--sans);
-  font-size: 0.85rem;
-  color: var(--tenue);
-  font-variant: small-caps;
-  letter-spacing: 0.02em;
-}
+.refs { list-style: none; padding: 0; }
+.refs li { padding-left: 35px; text-indent: -35px; margin-bottom: 10px; overflow-wrap: anywhere; }
 
-/* ---------- Referencias (sangría francesa) ---------- */
-
-.refs { list-style: none; padding: 0; margin: 0; }
-
-.refs li {
-  padding-left: 2.2em;
-  text-indent: -2.2em;
-  margin-bottom: 0.8rem;
-  overflow-wrap: anywhere;
-}
-
-/* ---------- Pie ---------- */
+/* ===== Pie de página ===== */
 
 .pie {
-  margin-top: 3.5rem;
-  padding-top: 1rem;
+  margin-top: 40px;
+  padding-top: 10px;
   border-top: 1px solid var(--linea);
-  font-family: var(--sans);
-  font-size: 0.9rem;
+  font-size: 14px;
   color: var(--tenue);
 }
+.pie p { margin: 0 0 3px; }
 
-.pie p { margin: 0 0 0.2rem; }
+/* ===== Celular ===== */
 
-/* ---------- Pantallas medianas y celular ---------- */
+@media (max-width: 800px) {
+  .figuras { grid-template-columns: 1fr; }
 
-@media (max-width: 1100px) {
-  .figuras { grid-template-columns: minmax(0, 1fr); }
-}
-
-@media (max-width: 900px) {
-  html { scroll-padding-top: 4rem; }
-
-  .layout { display: block; }
-
-  .indice {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    height: auto;
-    max-height: 100vh;
-    border-right: 0;
-    border-bottom: 1px solid var(--linea);
-    background: var(--papel);
-    padding: 0 16px;
-  }
-
-  .indice-barra {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 3.1rem;
-  }
-
-  .indice-nombre { margin: 0; }
-
+  .indice { display: block; padding: 0 15px; }
+  .indice-barra { min-height: 48px; }
   .indice-boton {
     display: block;
     font: inherit;
-    font-weight: 600;
-    padding: 0.35rem 0.8rem;
-    border: 1px solid var(--tinta);
-    border-radius: 3px;
+    color: #fff;
     background: transparent;
-    color: var(--tinta);
+    border: 1px solid #fff;
+    padding: 4px 12px;
     cursor: pointer;
   }
-
-  .indice-lista { display: none; padding-bottom: 0.8rem; }
+  .indice-lista { display: none; padding-bottom: 8px; }
   .indice-lista.abierto { display: block; }
+  .indice-lista a { padding: 8px 4px; }
 
-  .contenido {
-    max-width: none;
-    padding: 0 16px 2rem;
-  }
-
-  .portada { padding-top: 2rem; }
+  .contenido { padding: 0 15px 30px; }
+  .portada h1 { font-size: 28px; }
+  h2 { font-size: 22px; }
 }
 
-@media (max-width: 520px) {
-  body { font-size: 1rem; line-height: 1.65; }
-  .grafica { height: 260px; padding: 0.4rem 0.3rem 0.2rem; }
-  .sim { padding: 0.7rem; }
-  .caso, .analisis { padding-left: 0.9rem; }
-  .tabla-apa th, .tabla-apa td { padding: 0.4rem 0.35rem; }
-  .katex { font-size: 1em; }
+@media (max-width: 500px) {
+  body { font-size: 16px; }
+  .grafica { height: 260px; padding: 4px; }
+  .caso, .analisis { padding: 5px 12px; }
+  .sim { padding: 10px; }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-}
-
-/* Varias ecuaciones en una fila; en pantallas angostas bajan una debajo de otra. */
-.eq-grupo {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  column-gap: 2.6rem;
-  margin: 0.4rem 0 1.1rem;
-}
-
-.eq-grupo .eq { margin: 0; max-width: 100%; padding: 0.1rem 0.3rem; }
