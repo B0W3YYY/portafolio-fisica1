@@ -18,6 +18,7 @@ const LOCAL = "es-CR";
 document.addEventListener("DOMContentLoaded", () => {
   prepararTemas();
   mostrarEcuaciones();
+  prepararEnfoque();
   prepararIndice();
   llenarProximos();
   const sim = prepararSimulacion();
@@ -186,6 +187,44 @@ function prepararTemas() {
     }));
   window.addEventListener("hashchange", abrirDesdeHash);
   if (location.hash) abrirDesdeHash();
+}
+
+// ---------- Resaltar fórmulas ----------
+
+// Al dejar el mouse sobre una fórmula del texto, el resto de la página se oscurece y la fórmula
+// queda iluminada. No aplica a gráficas, simulaciones, diagramas ni al menú, ni en pantallas táctiles.
+function prepararEnfoque() {
+  if (!window.matchMedia("(hover: hover)").matches) return;
+  const velo = document.createElement("div");
+  velo.className = "velo";
+  document.body.append(velo);
+  let actual = null, espera = null;
+
+  const formula = el => {
+    if (!el.closest || el.closest(".sim, .diagrama, .grafica, .indice, .tema-cabecera")) return null;
+    return el.closest(".eq") || el.closest(".katex");
+  };
+  const quitar = () => {
+    if (actual) actual.classList.remove("resaltada");
+    actual = null;
+    document.body.classList.remove("enfoque");
+  };
+
+  document.addEventListener("mouseover", e => {
+    const f = formula(e.target);
+    if (f === actual) return;
+    clearTimeout(espera);
+    if (!f) { quitar(); return; }
+    // Una pequeña espera para que no parpadee al pasar el mouse de largo.
+    espera = setTimeout(() => {
+      quitar();
+      actual = f;
+      f.classList.add("resaltada");
+      document.body.classList.add("enfoque");
+    }, 120);
+  });
+  document.addEventListener("mouseleave", () => { clearTimeout(espera); quitar(); });
+  window.addEventListener("scroll", () => { clearTimeout(espera); quitar(); }, { passive: true });
 }
 
 function abrir(tema) { if (!tema.classList.contains("abierto")) alternar(tema); }
