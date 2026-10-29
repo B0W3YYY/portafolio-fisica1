@@ -343,6 +343,13 @@ body.enfoque .velo { opacity: 1; }
 .eq .katex-display > .katex { margin: 0 auto; }
 .eq:has(.resaltada) { overflow: visible; }
 
+/* Fórmulas dentro del texto: en pantallas con mouse no se parten entre dos renglones y su caja
+   cubre toda su altura (raíces, fracciones), así el resaltado les queda completo. */
+@media (hover: hover) and (min-width: 700px) {
+  .tema-contenido :is(p, li, td) .katex:not(.katex-display > .katex) { display: inline-block; }
+  .katex.resaltada { padding: 2px 4px; margin: -2px -4px; }
+}
+
 /* ===== Figuras ===== */
 
 .figura { margin: 25px 0 10px; }
