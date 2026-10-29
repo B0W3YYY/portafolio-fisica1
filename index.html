@@ -9,7 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23a5402d'/%3E%3Ctext x='16' y='22.5' font-size='19' text-anchor='middle' fill='white' font-family='Georgia,serif'%3EF%3C/text%3E%3C/svg%3E">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-  <link rel="stylesheet" href="style.css?v=11">
+  <link rel="stylesheet" href="style.css?v=12">
   <script>
     // Modo oscuro por defecto; si la persona ya escogió otro con el switch, se respeta.
     let tema = "oscuro";
@@ -20,7 +20,9 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script defer src="script.js?v=11"></script>
+  <script defer src="datos/udds.js"></script>
+  <script defer src="datos/voyager2.js"></script>
+  <script defer src="script.js?v=12"></script>
 </head>
 <body>
 
@@ -47,7 +49,11 @@
         <li><a href="#tema3"><span class="n">3</span>Gravedad artificial por rotación en hábitats espaciales</a></li>
         <li><a href="#tema4"><span class="n">4</span>Llantas de Fórmula 1: la ventana de temperatura y el agarre</a></li>
         <li><a href="#tema5"><span class="n">5</span>El resorte virtual detrás de un control háptico</a></li>
-        <!-- los temas 6 a 13 (bloqueados) se agregan desde script.js -->
+        <li><a href="#tema6"><span class="n">6</span>Frenado regenerativo en un vehículo eléctrico</a></li>
+        <li><a href="#tema7"><span class="n">7</span>El coeficiente de restitución en un motor de videojuego: por qué la pelota rebota mal</a></li>
+        <li><a href="#tema8"><span class="n">8</span>Ruedas de reacción: cómo un satélite se gira sin empujarse contra nada</a></li>
+        <li><a href="#tema9"><span class="n">9</span>Asistencia gravitatoria: cómo la Voyager ganó velocidad sin gastar combustible</a></li>
+        <!-- los temas 10 a 13 (bloqueados) se agregan desde script.js -->
       </ol>
     </li>
     <li><a href="#proximos">Próximos temas</a></li>
@@ -58,13 +64,13 @@
 <div class="contenido">
 
 <header class="portada">
-  <p class="portada-sup">Portafolio de evidencias · Avance 1</p>
+  <p class="portada-sup">Portafolio de evidencias · Avance 2</p>
   <h1>La física detrás del software</h1>
   <dl class="datos">
     <dt>Estudiante</dt><dd>Braden Lee Knuter Córdoba</dd>
     <dt>Curso</dt><dd>Física I</dd>
     <dt>Profesor</dt><dd>Andrés Castro Núñez</dd>
-    <dt>Entrega</dt><dd>10 de octubre de 2026</dd>
+    <dt>Entrega</dt><dd>31 de octubre de 2026</dd>
   </dl>
 </header>
 
@@ -75,8 +81,9 @@
   <p>
     En este portafolio busco casos reales en los que un programa usa la cinemática y la dinámica que vemos en Física I.
     Para cada tema escogí un producto o sistema que existe, escribí la ecuación que lo describe y expliqué por qué conviene
-    calcular la física en vez de usar valores fijos o animaciones hechas a mano. Este es el primer avance (temas 1 a 5) y la página va a
-    seguir creciendo hasta completar los 13 temas.
+    calcular la física en vez de usar valores fijos o animaciones hechas a mano. Este es el segundo avance: trae los temas 1 a 5 de
+    cinemática y dinámica y los temas 6 a 9 de leyes de conservación y gravitación. La página va a seguir creciendo
+    hasta completar los 13 temas.
   </p>
 </section>
 
@@ -188,7 +195,7 @@
   calcula la gravedad y la velocidad inicial que hacen falta. En la misma charla propone que el personaje caiga más rápido
   después de la cima, algo que en la vida real no pasa.</p>
   <p>Esto choca con lo que traen los motores por defecto. Unity, por ejemplo, usa una gravedad de \((0,\,-9{,}8)\) para su
-  física 2D (Unity Technologies, s. f.), que es la de la Tierra. Si un juego de plataformas la deja así, el salto se siente
+  física 2D (Unity Technologies, s. f.-c), que es la de la Tierra. Si un juego de plataformas la deja así, el salto se siente
   lento, como si el personaje flotara.</p>
 
   <h4>ii. La ecuación</h4>
@@ -201,7 +208,10 @@
   <div class="eq">$$h_{\max} = \frac{v_0^{2}}{2g}, \qquad t_{\text{aire}} = \frac{2v_0}{g}$$</div>
   <p>Los motores despejan al revés. Si el personaje avanza con rapidez \(v_x\) y quiero que llegue a una altura \(h\)
   después de recorrer \(x_h\), el tiempo hasta la cima es \(t_h = x_h / v_x\) y entonces:</p>
-  <div class="eq">$$g = \frac{2h}{t_h^{2}} = \frac{2h\,v_x^{2}}{x_h^{2}}, \qquad v_0 = \frac{2h}{t_h} = \frac{2h\,v_x}{x_h}$$</div>
+  <div class="eq-grupo">
+    <div class="eq">$$g = \frac{2h}{t_h^{2}} = \frac{2h\,v_x^{2}}{x_h^{2}}$$</div>
+    <div class="eq">$$v_0 = \frac{2h}{t_h} = \frac{2h\,v_x}{x_h}$$</div>
+  </div>
   <p>Un ejemplo con números. Si quiero que el personaje suba \(h = 3\ \text{m}\) y llegue arriba en \(t_h = 0{,}4\ \text{s}\):</p>
   <div class="eq-grupo">
     <div class="eq">$$g = \frac{2(3\ \text{m})}{(0{,}4\ \text{s})^{2}} = 37{,}5\ \text{m/s}^2$$</div>
@@ -578,11 +588,360 @@
   gatillo.</p>
 </section>
 
+<!-- ============================ TEMA 6 ============================ -->
+<section id="tema6" class="tema">
+  <p class="tema-num">Tema 6</p>
+  <h2>Frenado regenerativo en un vehículo eléctrico</h2>
+
+  <h3>a) Caso de uso en ingeniería del software</h3>
+
+  <h4>i. El caso</h4>
+  <p>En un carro eléctrico como el Tesla Model 3, cuando el conductor suelta el acelerador el motor funciona como
+  generador: frena el carro y manda la energía que sobra de vuelta a la batería. El manual del Model 3 explica que este
+  frenado regenerativo se limita cuando la batería está llena o muy fría, y que en esos casos el carro puede aplicar los
+  frenos normales de forma automática (Tesla, 2026). O sea, el software decide en cada momento cuánto frena el motor y
+  cuánto frenan las pastillas.</p>
+  <p>Según el Departamento de Energía de Estados Unidos, en manejo de ciudad la energía devuelta por el frenado
+  regenerativo equivale a un 32 % de la que entra al sistema, y en carretera solo a un 6 %
+  (U.S. Department of Energy, s. f.). La diferencia tiene sentido: en ciudad se frena mucho más.</p>
+
+  <h4>ii. La ecuación</h4>
+  <p>La energía que se puede recuperar es la energía cinética del carro. Por el teorema de trabajo y energía, el trabajo
+  neto sobre el carro es igual a su cambio de energía cinética (Serway y Jewett, 2015):</p>
+  <div class="eq-grupo">
+    <div class="eq">$$K = \frac{1}{2}\,m\,v^{2}$$</div>
+    <div class="eq">$$W_{\text{neto}} = \Delta K$$</div>
+  </div>
+  <p>Al frenar, no toda la energía cinética llega al motor, porque una parte se la llevan el aire y la rodadura de las
+  llantas. La fuerza de resistencia y la potencia de frenado que sí pasa por las ruedas (contada solo cuando sale
+  positiva, o sea, cuando el carro está frenando) son:</p>
+  <div class="eq-grupo">
+    <div class="eq">$$F_r = C_{rr}\,m\,g + \frac{1}{2}\,\rho\,C_d\,A\,v^{2}$$</div>
+    <div class="eq">$$P_{\text{freno}} = -(m\,a + F_r)\,v$$</div>
+  </div>
+  <p>y la energía que llega a la batería es solo una fracción \(\eta\) de esa energía de frenado:</p>
+  <div class="eq">$$E_{\text{recuperada}} = \eta \int P_{\text{freno}}\,dt$$</div>
+  <p>Un ejemplo con números: un carro de \(m = 1800\ \text{kg}\) que va a 50 km/h (13,9 m/s) tiene
+  \(K = \tfrac12 (1800)(13{,}9)^2 \approx 174\ \text{kJ}\). Si frena hasta cero y la batería recibe el 80 % de eso,
+  recupera unos 139 kJ, que son 0,039 kWh. Parece poco, pero en ciudad se frena cientos de veces.</p>
+
+  <h4>iii. Por qué conviene modelar la física</h4>
+  <p>Con un valor fijo, por ejemplo "el carro siempre recupera 20 %", el software no podría decidir cuánto frenar con el
+  motor en cada momento. La energía disponible depende de \(v^2\) y de la masa, así que frenar desde 80 km/h da cuatro
+  veces más energía que frenar desde 40 km/h. Además, la batería no siempre puede recibir esa energía: si está llena o
+  fría, el carro tiene que pasar la diferencia a los frenos normales (Tesla, 2026). Con el modelo, el programa calcula
+  la potencia de frenado, la reparte entre el motor y los frenos y corrige la autonomía que le muestra al conductor.</p>
+  <p>El costo es que el modelo necesita datos que cambian: la masa con pasajeros, la temperatura y la carga de la batería,
+  y los coeficientes de resistencia. Si están mal, la autonomía estimada sale mal. También hay que coordinar dos sistemas
+  de freno sin que el conductor sienta el cambio entre uno y otro.</p>
+  <p>Este tema es el teorema de trabajo y energía de clase, igual que la energía del resorte del tema 5, solo que aquí la
+  energía no se guarda en un resorte sino en la batería. La aceleración \(a = dv/dt\) es la misma derivada del tema 1, y la
+  resistencia del aire es una fuerza más en la segunda ley de Newton, como la fricción del tema 4.</p>
+
+  <h3>b) Recurso de apoyo: visualización de datos</h3>
+  <p>Para las gráficas usé el ciclo de manejo urbano UDDS de la EPA, que es la ruta de prueba oficial con la que se mide
+  el consumo de los carros en ciudad (EPA, s. f.). Trae la rapidez cada segundo durante 1369 s. Con esos datos calculé,
+  segundo a segundo, la energía que hay que darle al carro, la que se va al frenar y la que vuelve a la batería.</p>
+
+  <div class="figuras">
+    <figure class="figura">
+      <p class="fig-num">Figura 6.1</p>
+      <p class="fig-titulo">Rapidez durante el ciclo urbano UDDS</p>
+      <div class="grafica"><canvas id="g6vel" role="img" aria-label="Gráfica de la rapidez del carro contra el tiempo en el ciclo UDDS"></canvas></div>
+    </figure>
+    <figure class="figura">
+      <p class="fig-num">Figura 6.2</p>
+      <p class="fig-titulo">Balance de energía acumulado a lo largo del ciclo</p>
+      <div class="grafica"><canvas id="g6energia" role="img" aria-label="Gráfica de la energía acumulada de tracción, frenado, recuperada y perdida contra el tiempo"></canvas></div>
+    </figure>
+  </div>
+  <p class="nota"><em>Nota.</em> Rapidez del ciclo UDDS tomada de la EPA (s. f.). Los cálculos son míos, en
+  <code>script.js</code>, con valores aproximados: \(m = 1800\ \text{kg}\) (un sedán eléctrico con conductor),
+  \(C_{rr} = 0{,}010\), \(\rho = 1{,}2\ \text{kg/m}^3\), \(C_d A = 0{,}23 \times 2{,}22\ \text{m}^2\) y \(\eta = 0{,}80\).
+  Escogí \(\eta = 0{,}80\) porque el sistema eléctrico pierde entre 15 y 20 % de la energía (U.S. Department of Energy,
+  s. f.) y supuse que pierde lo mismo al recargar.</p>
+  <p>Resultado del ciclo completo (12,0 km): las ruedas reciben 5701 kJ, de los cuales 2778 kJ (49 %) se tienen que quitar
+  después al frenar. De esos, unos 2223 kJ vuelven a la batería y el resto se pierde en calor. Lo que más me sorprendió es
+  que casi la mitad de la energía de tracción en ciudad termina en el frenado. Eso explica por qué el regenerativo ayuda
+  tanto en ciudad y tan poco en carretera.</p>
+</section>
+
+<!-- ============================ TEMA 7 ============================ -->
+<section id="tema7" class="tema">
+  <p class="tema-num">Tema 7</p>
+  <h2>El coeficiente de restitución en un motor de videojuego: por qué la pelota rebota mal</h2>
+
+  <h3>a) Caso de uso en ingeniería del software</h3>
+
+  <h4>i. El caso</h4>
+  <p>En Unity, cada objeto tiene un material físico con un valor llamado <code>bounciness</code>. La documentación dice
+  que 0 no rebota y que 1 rebota sin perder energía (Unity Technologies, s. f.-b). Ese número es el coeficiente de
+  restitución de clase. Unity además deja escoger cómo se combinan los valores de los dos materiales que chocan, por
+  ejemplo el promedio o el máximo, porque reconoce que en la vida real el rebote depende de los dos materiales y eso es
+  difícil de manejar en un juego (Unity Technologies, s. f.-a).</p>
+  <p>Box2D, el motor de física 2D que usan muchos juegos, hace algo más: cuando la velocidad del choque es pequeña, trata
+  el choque como totalmente inelástico para evitar que los objetos tiemblen (Catto, s. f.). Ese umbral es justo lo que
+  hace que una pelota a veces "se pegue" al piso de golpe en vez de seguir rebotando cada vez menos.</p>
+
+  <h4>ii. La ecuación</h4>
+  <p>En un choque entre dos cuerpos se conserva el momento lineal, y el coeficiente de restitución compara la velocidad
+  relativa después del choque con la de antes (Serway y Jewett, 2015):</p>
+  <div class="eq-grupo">
+    <div class="eq">$$m_1 v_1 + m_2 v_2 = m_1 v_1' + m_2 v_2'$$</div>
+    <div class="eq">$$e = -\,\frac{v_1' - v_2'}{v_1 - v_2}$$</div>
+  </div>
+  <p>Si la pelota choca contra el piso, el piso (la Tierra) casi no se mueve, así que \(v_2 = v_2' = 0\) y queda
+  \(v' = -e\,v\). Entre rebotes la pelota está en caída libre, y de ahí sale la altura de cada rebote:</p>
+  <div class="eq-grupo">
+    <div class="eq">$$h_n = e^{2n}\,h_0$$</div>
+    <div class="eq">$$\frac{K_{\text{después}}}{K_{\text{antes}}} = e^{2}$$</div>
+  </div>
+  <p>Con \(e = 1\) el choque es elástico y la pelota vuelve a la misma altura. Con \(e = 0\) es totalmente inelástico y se
+  queda en el piso. Por ejemplo, con \(e = 0{,}8\) cada rebote llega al 64 % de la altura anterior y se pierde el 36 % de
+  la energía cinética en cada choque.</p>
+
+  <h4>iii. Por qué conviene modelar la física</h4>
+  <p>Si el rebote fuera una animación guardada, la pelota rebotaría igual si cae desde 1 m o desde 10 m, y no podría
+  chocar con objetos que se mueven. Con \(v' = -e\,v\), el motor calcula cada rebote a partir de la velocidad real del
+  choque, así que la pelota se comporta bien desde cualquier altura y contra cualquier cosa, y el diseñador solo cambia un
+  número para que parezca de hule o de plastilina.</p>
+  <p>El problema, y la razón del título, es que los motores no siempre respetan la física. Si se combinan materiales con
+  el máximo, una pelota puede quedar con \(e = 1\) y no detenerse nunca. Un valor mayor a 1 hace que gane energía en cada
+  choque, cosa que ningún material real hace. Y el umbral de Box2D hace que la pelota pase de rebotar a quedarse quieta de
+  repente. El costo de modelar bien es escoger estos valores con cuidado y probarlos, porque un número mal puesto se nota
+  de inmediato al jugar.</p>
+  <p>Entre rebotes la pelota hace la misma caída libre del tema 2, con la misma \(g\). La energía que se pierde en cada
+  choque (\(1 - e^2\)) es la misma idea del tema 6: la energía cinética no desaparece, se convierte en calor y sonido. Y en
+  el tema 9 la asistencia gravitatoria se puede ver como un "rebote" elástico de la sonda contra un planeta.</p>
+
+  <h3>b) Recurso de apoyo: simulación interactiva</h3>
+  <figure class="figura">
+    <p class="fig-num">Figura 7.1</p>
+    <p class="fig-titulo">Simulación de una pelota que rebota con coeficiente de restitución ajustable</p>
+    <div class="sim">
+      <canvas id="simRebote" role="img" aria-label="Simulación de la altura de una pelota que rebota contra el tiempo"></canvas>
+      <p class="sim-leyenda">
+        <span class="item"><span class="muestra muestra-elegida"></span>altura con la \(e\) elegida</span>
+        <span class="item"><span class="muestra muestra-tierra"></span>sin umbral (física ideal)</span>
+      </p>
+      <div class="sim-controles">
+        <label for="eRest">Coeficiente de restitución \(e\): <output id="eOut"></output></label>
+        <input type="range" id="eRest" min="0" max="1.2" step="0.01" value="0.8">
+        <label for="h0Rebote">Altura inicial \(h_0\): <output id="h0Out"></output></label>
+        <input type="range" id="h0Rebote" min="0.5" max="10" step="0.5" value="5">
+        <label><input type="checkbox" id="umbral"> Usar umbral de rebote como Box2D (choques a menos de 1 m/s no rebotan)</label>
+      </div>
+      <div class="sim-botones">
+        <button type="button" id="btnSoltar">Soltar</button>
+      </div>
+      <table class="sim-datos">
+        <tr><th scope="row">Altura del primer rebote</th><td id="h1Out"></td></tr>
+        <tr><th scope="row">Energía cinética que se pierde en cada choque</th><td id="perdidaOut"></td></tr>
+        <tr><th scope="row">Rebotes hasta quedar a menos de 1 cm</th><td id="nOut"></td></tr>
+        <tr><th scope="row">Tiempo hasta detenerse</th><td id="tParOut"></td></tr>
+      </table>
+    </div>
+  </figure>
+  <p class="nota"><em>Nota.</em> Simulación de elaboración propia. Cada vez que se mueve un control, la trayectoria se
+  recalcula con caída libre entre rebotes (\(y = h - \tfrac12 g t^2\)) y \(v' = -e\,v\) en cada choque, con
+  \(g = 9{,}81\ \text{m/s}^2\). Con \(e\) entre 0,7 y 0,9 el rebote se ve como el de una pelota real. Con \(e = 1\) nunca
+  se detiene y con \(e > 1\) cada rebote es más alto, que es como se ve un rebote "mal hecho". Al activar el umbral, la
+  pelota se queda quieta de golpe cuando el choque es lento, igual que en Box2D (Catto, s. f.).</p>
+</section>
+
+<!-- ============================ TEMA 8 ============================ -->
+<section id="tema8" class="tema">
+  <p class="tema-num">Tema 8</p>
+  <h2>Ruedas de reacción: cómo un satélite se gira sin empujarse contra nada</h2>
+
+  <h3>a) Caso de uso en ingeniería del software</h3>
+
+  <h4>i. El caso</h4>
+  <p>El telescopio espacial Hubble apunta con cuatro ruedas de reacción de unos 45 kg cada una. La NASA lo explica con la
+  tercera ley de Newton: si una rueda gira en sentido horario, el telescopio gira en sentido antihorario. Así Hubble se
+  mueve, como mucho, a la velocidad del minutero de un reloj, unos 90° en 15 minutos. Unos magnetorquers ayudan a bajar la
+  velocidad de las ruedas, que va aumentando por el arrastre de la atmósfera (NASA, 2025).</p>
+  <p>El telescopio Kepler muestra qué pasa cuando las ruedas fallan. Tenía cuatro y necesitaba tres para apuntar con la
+  precisión de su misión. Perdió una en julio de 2012 y otra en mayo de 2013 (NASA, 2013). La misión siguió como K2: los
+  ingenieros orientaron la nave para que la presión de la luz del Sol quedara equilibrada, y usaban los propulsores para
+  "descargar" el momento angular de las ruedas más o menos cada 48 horas (Jet Propulsion Laboratory, s. f.).</p>
+
+  <h4>ii. La ecuación</h4>
+  <p>El satélite más la rueda forman un sistema aislado, así que su momento angular total se conserva. Si al inicio nada
+  gira (Serway y Jewett, 2015):</p>
+  <div class="eq-grupo">
+    <div class="eq">$$L = I\,\omega$$</div>
+    <div class="eq">$$I_s\,\omega_s + I_w\,\omega_w = 0$$</div>
+    <div class="eq">$$\omega_s = -\,\frac{I_w}{I_s}\,\omega_w$$</div>
+  </div>
+  <p>El motor le aplica a la rueda un torque \(\tau\) y, por la tercera ley, la rueda le aplica al satélite un torque
+  igual y opuesto:</p>
+  <div class="eq-grupo">
+    <div class="eq">$$\tau = \frac{dL}{dt} = I_w\,\alpha_w$$</div>
+    <div class="eq">$$\alpha_s = -\,\frac{\tau}{I_s}$$</div>
+  </div>
+  <p>El signo menos es el punto clave: el satélite gira al revés que la rueda. Como \(I_s\) es mucho mayor que \(I_w\), la
+  rueda tiene que girar muy rápido para que el satélite gire despacio.</p>
+
+  <h4>iii. Por qué conviene modelar la física</h4>
+  <p>En el espacio no hay contra qué empujarse, y usar propulsores para cada giro gasta combustible que no se puede
+  recargar. Con la conservación del momento angular, el software de control calcula exactamente cuánto acelerar cada rueda
+  para llegar a un ángulo y frenarla para quedarse ahí, solo con electricidad de los paneles solares. Una secuencia fija
+  de giros no serviría, porque el satélite recibe torques pequeños que cambian (el arrastre en el caso de Hubble, la
+  presión de la luz en el de Kepler) y hay que corregirlos todo el tiempo.</p>
+  <p>El costo es que el momento angular que absorben las ruedas se va acumulando. Cuando una rueda llega a su velocidad
+  máxima ya no puede tomar más, y hay que sacarlo con un torque externo: magnetorquers o propulsores. El modelo también
+  tiene que saber los momentos de inercia del satélite, que cambian si se mueven los paneles o se gasta combustible. Y si
+  falla una rueda, como en Kepler, hay que rehacer todo el control.</p>
+  <p>Es la versión rotacional del momento lineal del tema 7: allá se conserva \(m v\), aquí \(I \omega\). La velocidad
+  angular \(\omega\) es la misma del tema 3, y el par de torques entre rueda y satélite es la tercera ley del tema 5.</p>
+
+  <h3>b) Recurso de apoyo: diagrama</h3>
+  <figure class="figura">
+    <p class="fig-num">Figura 8.1</p>
+    <p class="fig-titulo">Satélite con una rueda de reacción: intercambio de momento angular</p>
+    <div class="diagrama">
+      <svg viewBox="0 0 460 440" role="img" aria-labelledby="d8Titulo d8Desc">
+        <title id="d8Titulo">Diagrama de un satélite con rueda de reacción</title>
+        <desc id="d8Desc">Satélite visto de frente con paneles solares a los lados y una rueda de reacción en el centro. La rueda gira en sentido horario y el satélite gira en sentido antihorario. El eje de ambos giros es perpendicular a la hoja. Las ecuaciones de conservación del momento angular están anotadas en el dibujo.</desc>
+        <defs>
+          <marker id="flecha8R" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="d-fill-vel"/></marker>
+          <marker id="flecha8S" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="d-fill-acc"/></marker>
+        </defs>
+
+        <!-- condición de conservación -->
+        <text x="230" y="26" class="d-mat" text-anchor="middle">L total = constante (no hay torque externo)</text>
+
+        <!-- paneles solares -->
+        <rect x="18" y="160" width="84" height="50" class="d-anillo"/>
+        <rect x="358" y="160" width="84" height="50" class="d-anillo"/>
+        <line x1="102" y1="185" x2="120" y2="185" class="d-rayo"/>
+        <line x1="340" y1="185" x2="358" y2="185" class="d-rayo"/>
+
+        <!-- cuerpo del satélite -->
+        <rect x="120" y="100" width="220" height="170" class="d-eje"/>
+        <text x="120" y="92" class="d-txt">satélite (I<tspan dy="4" font-size="12">s</tspan><tspan dy="-4">)</tspan></text>
+
+        <!-- rueda de reacción -->
+        <circle cx="230" cy="185" r="46" class="d-eje"/>
+        <line x1="230" y1="141" x2="230" y2="229" class="d-guia"/>
+        <line x1="186" y1="185" x2="274" y2="185" class="d-guia"/>
+        <circle cx="230" cy="185" r="4" class="d-fill-tinta"/>
+        <text x="230" y="258" class="d-txt d-chico" text-anchor="middle">rueda de reacción (I<tspan dy="4" font-size="11">w</tspan><tspan dy="-4">)</tspan></text>
+
+        <!-- giro de la rueda: horario -->
+        <path d="M176.3,154 A62,62 0 0 1 283.7,154" class="d-vel" fill="none" marker-end="url(#flecha8R)"/>
+        <text x="292" y="146" class="d-mat d-vel-t">ω<tspan dy="4" font-size="13">w</tspan></text>
+
+        <!-- giro del satélite: antihorario -->
+        <path d="M95.8,262.5 A155,155 0 0 0 364.2,262.5" class="d-acc" fill="none" marker-end="url(#flecha8S)"/>
+        <text x="230" y="362" class="d-mat d-acc-t" text-anchor="middle">ω<tspan dy="4" font-size="13">s</tspan> (sentido contrario)</text>
+
+        <!-- ecuaciones -->
+        <text x="230" y="396" class="d-mat" text-anchor="middle">I<tspan dy="4" font-size="13">s</tspan><tspan dy="-4"> ω</tspan><tspan dy="4" font-size="13">s</tspan><tspan dy="-4"> + I</tspan><tspan dy="4" font-size="13">w</tspan><tspan dy="-4"> ω</tspan><tspan dy="4" font-size="13">w</tspan><tspan dy="-4"> = 0</tspan></text>
+        <text x="230" y="426" class="d-mat" text-anchor="middle">τ rueda→satélite = −τ motor→rueda</text>
+      </svg>
+    </div>
+  </figure>
+  <p class="nota"><em>Nota.</em> Diagrama de elaboración propia, dibujado en SVG. No está a escala. El eje de la rueda y el
+  del giro del satélite son perpendiculares a la hoja. La flecha azul es el giro de la rueda y la roja el del satélite;
+  como la suma de los dos momentos angulares es cero, siempre giran en sentidos contrarios.</p>
+
+  <div class="caso">
+    <h4>¿Qué pasa cuando la rueda llega a su velocidad máxima?</h4>
+    <p>Supongamos un satélite pequeño con valores ilustrativos: \(I_s = 0{,}05\ \text{kg·m}^2\),
+    \(I_w = 2{,}0 \times 10^{-5}\ \text{kg·m}^2\) y una rueda que llega hasta 6000 rpm.</p>
+    <ol>
+      <li>Velocidad máxima de la rueda: \(\omega_{w} = \dfrac{2\pi(6000)}{60} = 628\ \text{rad/s}\).</li>
+      <li>Momento angular máximo que puede guardar: \(L_{\max} = I_w\,\omega_w = (2{,}0 \times 10^{-5})(628) = 0{,}0126\ \text{kg·m}^2/\text{s}\).</li>
+      <li>Si toda la rueda se usara para girar el satélite: \(\omega_s = \dfrac{0{,}0126}{0{,}05} = 0{,}25\ \text{rad/s}\), unos 14° por segundo.</li>
+      <li>Pero si un torque externo pequeño, por ejemplo \(\tau = 1 \times 10^{-6}\ \text{N·m}\) de la presión de la luz, empuja
+      siempre hacia el mismo lado, la rueda lo va absorbiendo hasta saturarse en \(t = \dfrac{L_{\max}}{\tau} = 12\,600\ \text{s}\),
+      unas 3,5 horas.</li>
+    </ol>
+    <p>Cuando la rueda está saturada ya no puede acelerar más, entonces el satélite pierde el control en ese eje. La
+    solución es "descargarla": se aplica un torque externo con magnetorquers (como Hubble) o con propulsores (como Kepler en
+    K2) mientras la rueda frena. El momento angular sale del sistema por ese torque externo, y la rueda vuelve a quedar
+    lista para trabajar.</p>
+  </div>
+</section>
+
+<!-- ============================ TEMA 9 ============================ -->
+<section id="tema9" class="tema">
+  <p class="tema-num">Tema 9</p>
+  <h2>Asistencia gravitatoria: cómo la Voyager ganó velocidad sin gastar combustible</h2>
+
+  <h3>a) Caso de uso en ingeniería del software</h3>
+
+  <h4>i. El caso</h4>
+  <p>La Voyager 2 salió el 20 de agosto de 1977 y pasó por Júpiter (1979), Saturno (1981), Urano (1986) y Neptuno (1989)
+  (NASA, s. f.-b). No llevaba combustible para llegar tan lejos: usó cada planeta para cambiar de rumbo y de velocidad. La
+  NASA explica que, al pasar por Júpiter, la sonda se llevó parte del momento angular orbital del planeta, y que respecto
+  a Júpiter salió con la misma rapidez con la que llegó, pero respecto al Sol salió más rápido (NASA, s. f.-a).</p>
+  <p>Estas trayectorias se diseñan con software que integra numéricamente la gravedad del Sol y de los planetas. El sistema
+  Horizons del JPL, que usé para la gráfica, calcula así la posición y la velocidad de las sondas y de los planetas para
+  cualquier fecha (Jet Propulsion Laboratory, 2026).</p>
+
+  <h4>ii. La ecuación</h4>
+  <p>La gravitación universal da la fuerza y la energía potencial entre la sonda y el Sol (o un planeta)
+  (Serway y Jewett, 2015):</p>
+  <div class="eq-grupo">
+    <div class="eq">$$F = \frac{G M m}{r^{2}}$$</div>
+    <div class="eq">$$U = -\,\frac{G M m}{r}$$</div>
+    <div class="eq">$$v_{\text{esc}} = \sqrt{\frac{2 G M}{r}}$$</div>
+  </div>
+  <p>Si la sonda va más rápido que \(v_{\text{esc}}\) del Sol, su energía total \(E = \tfrac12 m v^2 - GMm/r\) es positiva
+  y ya no regresa. En el marco del planeta el encuentro es como un choque elástico: la sonda entra y sale con la misma
+  rapidez relativa, solo cambia de dirección. Al pasar al marco del Sol se suma la velocidad del planeta:</p>
+  <div class="eq-grupo">
+    <div class="eq">$$|\vec v_{\text{sale}}'| = |\vec v_{\text{entra}}'|$$</div>
+    <div class="eq">$$\vec v_{\text{Sol}} = \vec v_{\text{planeta}} + \vec v^{\,\prime}$$</div>
+  </div>
+  <p>Como la dirección de \(\vec v^{\,\prime}\) cambia, la suma da otra rapidez respecto al Sol, que puede crecer hasta
+  \(2\,v_{\text{planeta}}\) en el mejor caso. El momento se conserva: lo que gana la sonda lo pierde el planeta,
+  \(m\,\Delta v = -M\,\Delta V\). Para Júpiter, con una sonda de unos 800 kg y \(\Delta v \approx 10\ \text{km/s}\):</p>
+  <div class="eq-grupo">
+    <div class="eq">$$\Delta V = \frac{(800)(10\,000)}{1{,}9 \times 10^{27}}$$</div>
+    <div class="eq">$$\Delta V \approx 4 \times 10^{-21}\ \text{m/s}$$</div>
+  </div>
+  <p>Júpiter frena, pero tan poco que no se puede medir.</p>
+
+  <h4>iii. Por qué conviene modelar la física</h4>
+  <p>Sin asistencia gravitatoria, la Voyager hubiera necesitado muchísimo más combustible, y cada kilo de combustible
+  necesita a su vez más combustible para despegar. Una trayectoria "dibujada" no sirve: la ganancia depende de por dónde y
+  a qué distancia se pasa cada planeta, y un error pequeño en Júpiter se vuelve un error enorme en Neptuno. Solo con la
+  ley de gravitación y la conservación de la energía y del momento se puede calcular un camino que pase por cuatro
+  planetas.</p>
+  <p>El costo es que hay que integrar numéricamente la gravedad de varios cuerpos, que no tiene una fórmula cerrada, y
+  hacer correcciones durante el vuelo. Además, los planetas tienen que estar en las posiciones correctas, así que la fecha
+  de salida no se puede escoger libremente.</p>
+  <p>Este tema junta varios anteriores: la gravedad del tema 2 (aquí ya no es constante, depende de \(r\)), el movimiento
+  circular del tema 3 (las órbitas de los planetas), el "rebote" elástico del tema 7 y la conservación del momento de los
+  temas 7 y 8.</p>
+
+  <h3>b) Recurso de apoyo: visualización de datos</h3>
+  <figure class="figura">
+    <p class="fig-num">Figura 9.1</p>
+    <p class="fig-titulo">Rapidez de la Voyager 2 respecto al Sol, 1977 a 1990</p>
+    <div class="grafica grafica-alta"><canvas id="g9vel" role="img" aria-label="Gráfica de la rapidez de la Voyager 2 respecto al Sol contra el tiempo, con saltos en Júpiter, Saturno, Urano y Neptuno"></canvas></div>
+  </figure>
+  <p class="nota"><em>Nota.</em> Datos de JPL Horizons (Jet Propulsion Laboratory, 2026): vectores de posición y
+  velocidad de la Voyager 2 respecto al centro del Sol, uno por día. Yo calculé la rapidez \(|\vec v|\) y la velocidad de
+  escape \(v_{\text{esc}} = \sqrt{2GM/r}\) con \(GM_{\odot} = 1{,}327 \times 10^{11}\ \text{km}^3/\text{s}^2\). Las fechas
+  de los encuentros son de la NASA (s. f.-b).</p>
+  <p>En la gráfica se ve que entre planetas la sonda va frenando, porque se aleja del Sol y la gravedad le quita energía
+  cinética. En cada encuentro hay un salto. En Júpiter pasó de unos 10 km/s a unos 20 km/s, y quedó por encima de la
+  velocidad de escape del Sol: desde ahí la Voyager 2 ya no podía regresar. En Saturno subió de 15,6 a 20,4 km/s y en Urano
+  de 17,9 a 19,7 km/s. En Neptuno la rapidez bajó de 18,9 a 16,7 km/s, porque la sonda pasó cerca del polo norte del
+  planeta y se desvió hacia el sur, hacia Tritón. Eso muestra que la asistencia no siempre acelera: depende de cómo se pase
+  el planeta.</p>
+</section>
+
 <!-- ========================= PRÓXIMOS TEMAS ========================= -->
 <section id="proximos">
   <h2>Próximos temas</h2>
-  <p>Los temas 6 a 9 se agregan en el Avance 2 y los temas 10 a 13 en la entrega final.</p>
-  <ol class="proximos" id="listaProximos" start="6"><!-- se llena desde script.js --></ol>
+  <p>Los temas 10 a 13 se agregan en la entrega final.</p>
+  <ol class="proximos" id="listaProximos" start="10"><!-- se llena desde script.js --></ol>
 </section>
 
 <!-- =========================== REFERENCIAS =========================== -->
@@ -590,17 +949,29 @@
   <h2>Referencias</h2>
   <ul class="refs">
     <li>Bogie, A. (2019, 18 de febrero). <em>Pirelli 2019 Formula 1 tyres: What's new?</em> Tyrepress. <a href="https://www.tyrepress.com/2019/02/pirelli-2019-formula-1-tyres-whats-new/">https://www.tyrepress.com/2019/02/pirelli-2019-formula-1-tyres-whats-new/</a></li>
+    <li>Catto, E. (s. f.). <em>Simulation</em>. Box2D. <a href="https://box2d.org/documentation/md_simulation.html">https://box2d.org/documentation/md_simulation.html</a></li>
+    <li>EPA. (s. f.). <em>Dynamometer drive schedules</em>. United States Environmental Protection Agency. <a href="https://www.epa.gov/vehicle-and-fuel-emissions-testing/dynamometer-drive-schedules">https://www.epa.gov/vehicle-and-fuel-emissions-testing/dynamometer-drive-schedules</a></li>
     <li>Hall, T. W. (2018). <em>SpinCalc: An artificial-gravity calculator in JavaScript</em>. Artificial Gravity. <a href="http://www.artificial-gravity.com/sw/SpinCalc/">http://www.artificial-gravity.com/sw/SpinCalc/</a></li>
+    <li>Jet Propulsion Laboratory. (s. f.). <em>K2 mission</em>. JPL Science. <a href="https://science.jpl.nasa.gov/projects/k2">https://science.jpl.nasa.gov/projects/k2</a></li>
+    <li>Jet Propulsion Laboratory. (2026). <em>Horizons System</em> [Efemérides de Voyager 2 respecto al Sol, 1977-1990; consultado el 28 de octubre de 2026]. <a href="https://ssd.jpl.nasa.gov/horizons/">https://ssd.jpl.nasa.gov/horizons/</a></li>
     <li>Johnson, R. D., y Holbrow, C. (Eds.). (1977). <em>Space settlements: A design study</em> (NASA SP-413). National Aeronautics and Space Administration. <a href="https://ntrs.nasa.gov/citations/19770014162">https://ntrs.nasa.gov/citations/19770014162</a></li>
     <li>Milliken, W. F., y Milliken, D. L. (1995). <em>Race car vehicle dynamics</em>. SAE International.</li>
+    <li>NASA. (s. f.-a). <em>Basics of space flight, chapter 4: Trajectories</em>. NASA Science. <a href="https://science.nasa.gov/learn/basics-of-space-flight/chapter4-1/">https://science.nasa.gov/learn/basics-of-space-flight/chapter4-1/</a></li>
+    <li>NASA. (s. f.-b). <em>Voyager 2</em>. NASA Science. <a href="https://science.nasa.gov/mission/voyager/voyager-2">https://science.nasa.gov/mission/voyager/voyager-2</a></li>
+    <li>NASA. (2013, 15 de agosto). <em>NASA ends attempts to fully recover Kepler spacecraft, potential new missions considered</em>. <a href="https://www.nasa.gov/news-release/nasa-ends-attempts-to-fully-recover-kepler-spacecraft-potential-new-missions-considered/">https://www.nasa.gov/news-release/nasa-ends-attempts-to-fully-recover-kepler-spacecraft-potential-new-missions-considered/</a></li>
+    <li>NASA. (2025). <em>Pointing control</em>. NASA Science. <a href="https://science.nasa.gov/mission/hubble/observatory/design/pointing-control">https://science.nasa.gov/mission/hubble/observatory/design/pointing-control</a></li>
     <li>Pacejka, H. B. (2012). <em>Tire and vehicle dynamics</em> (3.ª ed.). Butterworth-Heinemann.</li>
     <li>Pirelli. (2017, 5 de junio). <em>Seeing through the window: How working range affects tyre performance</em>. <a href="https://www.pirelli.com/global/en-ww/race/racingspot/seeing-through-the-window-50931/">https://www.pirelli.com/global/en-ww/race/racingspot/seeing-through-the-window-50931/</a></li>
     <li>Pittman, K. (2016, marzo). <em>Math for game programmers: Building a better jump</em> [Presentación en conferencia]. Game Developers Conference, San Francisco, CA, Estados Unidos. <a href="https://www.gdcvault.com/play/1023559/Math-for-Game-Programmers-Building">https://www.gdcvault.com/play/1023559/Math-for-Game-Programmers-Building</a></li>
-    <li>Restore Technique. (2021). <em>PS5 adaptive trigger live mechanics in game: Full teardown</em> [Video]. YouTube. <a href="https://www.youtube.com/watch?v=11VBZ1upH93w">https://www.youtube.com/watch?v=11VBZ1upH93w</a></li>
+    <li>Restore Technique. (2021). <em>PS5 adaptive trigger live mechanics in game: Full teardown</em> [Video]. YouTube. <a href="https://www.youtube.com/watch?v=8VBZ1upH93w">https://www.youtube.com/watch?v=8VBZ1upH93w</a></li>
     <li>Serway, R. A., y Jewett, J. W. (2015). <em>Física para ciencias e ingeniería</em> (9.ª ed., Vol. 1). Cengage Learning.</li>
     <li>Siemens. (s. f.). <em>Simcenter Tire</em>. <a href="https://www.siemens.com/en-us/products/simcenter/mechanical-simulation/tire-simulation/">https://www.siemens.com/en-us/products/simcenter/mechanical-simulation/tire-simulation/</a></li>
     <li>Sony Interactive Entertainment. (s. f.). <em>Mando inalámbrico DualSense</em>. PlayStation. <a href="https://www.playstation.com/es-es/accessories/dualsense-wireless-controller/">https://www.playstation.com/es-es/accessories/dualsense-wireless-controller/</a></li>
-    <li>Unity Technologies. (s. f.). <em>Physics2D.gravity</em>. Unity Scripting API. <a href="https://docs.unity3d.com/ScriptReference/Physics2D-gravity.html">https://docs.unity3d.com/ScriptReference/Physics2D-gravity.html</a></li>
+    <li>Tesla. (2026). <em>Model 3 owner's manual</em>. <a href="https://www.tesla.com/ownersmanual/model3/en_us/Owners_Manual.pdf">https://www.tesla.com/ownersmanual/model3/en_us/Owners_Manual.pdf</a></li>
+    <li>Unity Technologies. (s. f.-a). <em>PhysicMaterial.bounceCombine</em>. Unity Scripting API (versión 2017.1). <a href="https://docs.unity3d.com/2017.1/Documentation/ScriptReference/PhysicMaterial-bounceCombine.html">https://docs.unity3d.com/2017.1/Documentation/ScriptReference/PhysicMaterial-bounceCombine.html</a></li>
+    <li>Unity Technologies. (s. f.-b). <em>PhysicsMaterial.bounciness</em>. Unity Scripting API. <a href="https://docs.unity3d.com/ScriptReference/PhysicsMaterial-bounciness.html">https://docs.unity3d.com/ScriptReference/PhysicsMaterial-bounciness.html</a></li>
+    <li>Unity Technologies. (s. f.-c). <em>Physics2D.gravity</em>. Unity Scripting API. <a href="https://docs.unity3d.com/ScriptReference/Physics2D-gravity.html">https://docs.unity3d.com/ScriptReference/Physics2D-gravity.html</a></li>
+    <li>U.S. Department of Energy. (s. f.). <em>All-electric vehicles</em>. FuelEconomy.gov. <a href="https://www.fueleconomy.gov/feg/atv-ev.shtml">https://www.fueleconomy.gov/feg/atv-ev.shtml</a></li>
     <li>Wing. (s. f.-a). <em>Technology</em>. <a href="https://wing.com/technology">https://wing.com/technology</a></li>
     <li>Wing. (s. f.-b). <em>Wing drone delivery: The future of delivery is here</em>. <a href="https://wing.com/">https://wing.com/</a></li>
   </ul>

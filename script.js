@@ -1,15 +1,11 @@
 // Portafolio Física I · script principal
-// Ecuaciones (KaTeX), índice, gráficas (Chart.js) y simulación del salto.
+// Ecuaciones (KaTeX), índice, temas desplegables, gráficas (Chart.js) y simulaciones del salto y del rebote.
 
 // Temas de los próximos avances. Cuando agregue uno a la página:
 // 1) copio una <section class="tema"> en index.html,
 // 2) agrego su enlace al índice,
 // 3) lo borro de esta lista.
 const PROXIMOS = [
-  "Frenado regenerativo en un vehículo eléctrico",
-  "El coeficiente de restitución en un motor de videojuego",
-  "Ruedas de reacción en satélites",
-  "Asistencia gravitatoria de la Voyager",
   "Spring animations en interfaces",
   "Síntesis de sonido y armónicos",
   "Resonancia estructural y Tacoma Narrows",
@@ -20,21 +16,24 @@ const G_TIERRA = 9.81;
 const LOCAL = "es-CR";
 
 document.addEventListener("DOMContentLoaded", () => {
+  prepararTemas();
   mostrarEcuaciones();
   prepararIndice();
   llenarProximos();
   const sim = prepararSimulacion();
+  const rebote = prepararRebote();
 
   // Las gráficas esperan a que carguen las fuentes para no dibujarse con otra letra.
   const listas = document.fonts ? document.fonts.ready : Promise.resolve();
   listas.then(() => {
     if (window.Chart) crearGraficas();
     sim.dibujar();
+    rebote.dibujar();
   });
 
   // Si el sistema cambia entre modo claro y oscuro, se vuelven a pintar con los colores nuevos.
   const oscuro = window.matchMedia("(prefers-color-scheme: dark)");
-  const alCambiar = () => { if (window.Chart) crearGraficas(); sim.dibujar(); };
+  const alCambiar = () => { if (window.Chart) crearGraficas(); sim.dibujar(); rebote.dibujar(); };
   if (oscuro.addEventListener) oscuro.addEventListener("change", () => { prepararBotonTema.texto(); alCambiar(); });
   prepararBotonTema(alCambiar);
 });
@@ -133,6 +132,74 @@ function prepararIndice() {
   document.querySelectorAll("main section[id]").forEach(s => observador.observe(s));
 }
 
+// ---------- Temas desplegables ----------
+
+// Cada tema queda como un rectángulo cerrado con su número, su título y una flecha.
+// Se abre o se cierra al hacer clic en el título o en el borde del rectángulo.
+function prepararTemas() {
+  const temas = [...document.querySelectorAll("section.tema")];
+
+  temas.forEach(tema => {
+    const num = tema.querySelector(".tema-num");
+    const titulo = tema.querySelector("h2");
+
+    const cabecera = document.createElement("div");
+    cabecera.className = "tema-cabecera";
+    cabecera.setAttribute("role", "button");
+    cabecera.tabIndex = 0;
+    cabecera.setAttribute("aria-expanded", "false");
+    const textos = document.createElement("div");
+    textos.append(num, titulo);
+    const flecha = document.createElement("span");
+    flecha.className = "tema-flecha";
+    flecha.setAttribute("aria-hidden", "true");
+    flecha.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>';
+    cabecera.append(textos, flecha);
+
+    // Todo lo demás va dentro del cuerpo que se despliega.
+    const cuerpo = document.createElement("div");
+    cuerpo.className = "tema-cuerpo";
+    const contenido = document.createElement("div");
+    contenido.className = "tema-contenido";
+    while (tema.firstChild) contenido.append(tema.firstChild);
+    cuerpo.append(contenido);
+    contenido.inert = true;
+    tema.append(cabecera, cuerpo);
+
+    cabecera.addEventListener("click", () => alternar(tema));
+    cabecera.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); alternar(tema); }
+    });
+    // Clic en el borde: el clic cae en la propia sección, no en su contenido.
+    tema.addEventListener("click", e => { if (e.target === tema) alternar(tema); });
+  });
+
+  // Los enlaces del menú (y una dirección con #temaN) abren el tema antes de bajar a él.
+  const abrirDesdeHash = () => {
+    const destino = document.querySelector(`section.tema${location.hash}`);
+    if (destino) abrir(destino);
+  };
+  document.querySelectorAll('a[href^="#tema"]').forEach(a =>
+    a.addEventListener("click", () => {
+      const destino = document.querySelector(a.getAttribute("href"));
+      if (destino) abrir(destino);
+    }));
+  window.addEventListener("hashchange", abrirDesdeHash);
+  if (location.hash) abrirDesdeHash();
+}
+
+function abrir(tema) { if (!tema.classList.contains("abierto")) alternar(tema); }
+
+function alternar(tema) {
+  clearTimeout(tema.fijar);
+  tema.classList.remove("fijo");
+  const abierto = tema.classList.toggle("abierto");
+  tema.querySelector(".tema-cabecera").setAttribute("aria-expanded", String(abierto));
+  tema.querySelector(".tema-contenido").inert = !abierto;
+  // Por si el navegador pausa la animación, al terminar el tema queda fijo en su altura completa.
+  if (abierto) tema.fijar = setTimeout(() => tema.classList.add("fijo"), 400);
+}
+
 // Candado dibujado en SVG (usa el color del texto).
 const CANDADO = '<svg class="candado" viewBox="0 0 24 24" aria-hidden="true">' +
   '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
@@ -178,6 +245,8 @@ function crearGraficas() {
   graficasTema1();
   graficasTema4();
   graficaTema5();
+  if (typeof UDDS_MPH !== "undefined") graficasTema6();
+  if (typeof VOYAGER2 !== "undefined") graficaTema9();
 }
 
 // Gráfica de líneas con ejes lineales. unidad se usa en la etiqueta emergente.
@@ -331,6 +400,93 @@ function lineaVertical(valor, texto) {
       ctx.restore();
     },
   };
+}
+
+// Plugin: varias líneas verticales punteadas con su etiqueta (por ejemplo, los encuentros de la Voyager).
+function lineasVerticales(lista) {
+  return {
+    id: "lineasVerticales",
+    afterDatasetsDraw(chart) {
+      const { ctx, chartArea: a, scales: { x } } = chart;
+      ctx.save();
+      ctx.strokeStyle = color("--tenue");
+      ctx.fillStyle = color("--tenue");
+      ctx.font = `12px ${Chart.defaults.font.family}`;
+      ctx.textAlign = "center";
+      ctx.setLineDash([4, 4]);
+      lista.forEach(l => {
+        const px = x.getPixelForValue(l.x);
+        ctx.beginPath(); ctx.moveTo(px, a.top + 18); ctx.lineTo(px, a.bottom); ctx.stroke();
+        ctx.fillText(l.texto, px, a.top + 12);
+      });
+      ctx.restore();
+    },
+  };
+}
+
+// Tema 6: balance de energía en el ciclo UDDS de la EPA (datos en datos/udds.js).
+// Valores aproximados del carro; están explicados en la nota de la figura.
+function graficasTema6() {
+  const m = 1800, g = G_TIERRA, Crr = 0.010, rho = 1.2, CdA = 0.23 * 2.22, eta = 0.80;
+  const v = UDDS_MPH.map(mph => mph * 0.44704); // m/s
+  const rapidez = [], traccion = [], frenado = [], recuperada = [], perdidas = [];
+  let Etr = 0, Ef = 0, Ep = 0;
+
+  for (let t = 0; t < v.length; t++) {
+    rapidez.push({ x: t, y: v[t] * 3.6 });
+    if (t > 0) {
+      const vm = (v[t - 1] + v[t]) / 2;          // rapidez media en ese segundo
+      const a = v[t] - v[t - 1];                 // aceleración (Δt = 1 s)
+      const Fr = (vm > 0 ? Crr * m * g : 0) + 0.5 * rho * CdA * vm * vm;
+      const P = (m * a + Fr) * vm;               // potencia en las ruedas (W)
+      if (P > 0) Etr += P; else Ef += -P;        // energía en J (P · 1 s)
+      Ep += Fr * vm;
+    }
+    traccion.push({ x: t, y: Etr / 1000 });
+    frenado.push({ x: t, y: Ef / 1000 });
+    recuperada.push({ x: t, y: eta * Ef / 1000 });
+    perdidas.push({ x: t, y: Ep / 1000 });
+  }
+
+  lineas("g6vel", {
+    ejeX: "Tiempo, t (s)", ejeY: "Rapidez (km/h)", unidad: "km/h",
+    series: [serie("Rapidez del ciclo UDDS", rapidez, color("--s1"))],
+    extra: { x: { min: 0, max: 1369 }, y: { min: 0 } },
+  });
+
+  lineas("g6energia", {
+    ejeX: "Tiempo, t (s)", ejeY: "Energía acumulada (kJ)", unidad: "kJ",
+    series: [
+      serie("Entregada a las ruedas (tracción)", traccion, color("--s1")),
+      serie("Quitada al frenar", frenado, color("--s2")),
+      serie("Recuperada a la batería (η = 0,80)", recuperada, color("--s3")),
+      serie("Perdida en aire y rodadura", perdidas, color("--tenue"), { borderDash: [6, 4] }),
+    ],
+    extra: { x: { min: 0, max: 1369 }, y: { min: 0 } },
+  });
+}
+
+// Tema 9: rapidez de la Voyager 2 respecto al Sol (datos de JPL Horizons en datos/voyager2.js).
+function graficaTema9() {
+  const rapidez = VOYAGER2.map(([t, v]) => ({ x: t, y: v }));
+  const escape = VOYAGER2.map(([t, , ve]) => ({ x: t, y: ve }));
+  lineas("g9vel", {
+    ejeX: "Año", ejeY: "Rapidez respecto al Sol (km/s)", unidad: "km/s",
+    series: [
+      serie("Rapidez de la Voyager 2", rapidez, color("--s1")),
+      serie("Velocidad de escape del Sol en su posición", escape, color("--s2"), { borderDash: [6, 4] }),
+    ],
+    extra: {
+      x: { min: 1977.6, max: 1990, ticks: { stepSize: 1, callback: v => String(Math.round(v)) } },
+      y: { min: 0, max: 45 },
+    },
+    plugins: [lineasVerticales([
+      { x: 1979.52, texto: "Júpiter" },
+      { x: 1981.65, texto: "Saturno" },
+      { x: 1986.07, texto: "Urano" },
+      { x: 1989.65, texto: "Neptuno" },
+    ])],
+  });
 }
 
 // Tema 4: agarre según temperatura y fuerza lateral según carga (datos aproximados).
@@ -547,6 +703,181 @@ function prepararSimulacion() {
     cancelAnimationFrame(animacion);
     dibujar();
   });
+
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(() => { ajustarTamano(); dibujar(); }).observe(lienzo.parentElement);
+  } else {
+    window.addEventListener("resize", () => { ajustarTamano(); dibujar(); });
+  }
+
+  ajustarTamano();
+  dibujar();
+  return { dibujar: () => { ajustarTamano(); dibujar(); } };
+}
+
+// ---------- Tema 7: simulación del rebote ----------
+
+function prepararRebote() {
+  const lienzo = document.getElementById("simRebote");
+  const ctx = lienzo.getContext("2d");
+  const $ = id => document.getElementById(id);
+  const control = { e: $("eRest"), h0: $("h0Rebote"), umbral: $("umbral") };
+  const UMBRAL = 1;      // m/s, choques más lentos no rebotan (como Box2D)
+  const T_MAX = 15;      // s, tiempo máximo que se dibuja
+  let animacion = null;
+  let ancho = 0, alto = 0;
+
+  function ajustarTamano() {
+    const dpr = window.devicePixelRatio || 1;
+    ancho = lienzo.clientWidth || 600;
+    alto = Math.round(Math.min(Math.max(ancho * 0.5, 230), 360));
+    lienzo.style.height = alto + "px";
+    lienzo.width = Math.round(ancho * dpr);
+    lienzo.height = Math.round(alto * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  // Calcula los tramos de caída libre entre choques. En cada choque v' = -e·v.
+  function trayectoria(e, h0, conUmbral) {
+    const g = G_TIERRA;
+    const tramos = [];               // { t0, y0, v0, dur }
+    const alturas = [];              // altura máxima después de cada rebote
+    let t = 0, y = h0, v = 0, quieta = null;
+    for (let n = 0; n < 300 && t < T_MAX; n++) {
+      const dur = (v + Math.sqrt(v * v + 2 * g * y)) / g;   // tiempo hasta tocar el piso
+      tramos.push({ t0: t, y0: y, v0: v, dur });
+      t += dur;
+      const choque = Math.abs(v - g * dur);                   // rapidez al llegar al piso
+      if (conUmbral && choque < UMBRAL) { quieta = t; break; }
+      v = e * choque; y = 0;
+      const h = v * v / (2 * g);
+      if (h < 0.0005) { quieta = t; break; }
+      alturas.push(h);
+    }
+    return { tramos, alturas, quieta };
+  }
+
+  const altura = (tr, t) => {
+    for (const s of tr.tramos) {
+      if (t <= s.t0 + s.dur) {
+        const u = t - s.t0;
+        return Math.max(s.y0 + s.v0 * u - 0.5 * G_TIERRA * u * u, 0);
+      }
+    }
+    return 0;
+  };
+
+  function pasoBonito(bruto) {
+    const p = Math.pow(10, Math.floor(Math.log10(bruto)));
+    const n = bruto / p;
+    return (n < 1.5 ? 1 : n < 3.5 ? 2 : n < 7.5 ? 5 : 10) * p;
+  }
+
+  function dibujar(tAnim = null) {
+    if (!ancho) ajustarTamano();
+    const e = +control.e.value, h0 = +control.h0.value, conUmbral = control.umbral.checked;
+    const tr = trayectoria(e, h0, conUmbral);
+    const ideal = trayectoria(e, h0, false);
+
+    // Resultados
+    $("eOut").textContent = num(e, 2);
+    $("h0Out").textContent = num(h0, 1) + " m";
+    $("h1Out").textContent = num(e * e * h0, 2) + " m";
+    $("perdidaOut").textContent = e <= 1
+      ? num((1 - e * e) * 100, 0) + " %"
+      : "gana " + num((e * e - 1) * 100, 0) + " % (no es físico)";
+    const rebotes = tr.alturas.filter(h => h >= 0.01).length;
+    $("nOut").textContent = tr.quieta === null ? "nunca se detiene" : String(rebotes);
+    $("tParOut").textContent = tr.quieta === null ? "nunca se detiene" : num(tr.quieta, 2) + " s";
+
+    // Escalas
+    const fin = Math.max(tr.quieta || 0, ideal.quieta || 0);
+    const tFin = tr.quieta === null ? T_MAX : Math.min(fin * 1.08 + 0.3, T_MAX);
+    const yMax = Math.max(h0, ...tr.alturas.slice(0, 40)) * 1.12;
+    const m = { izq: 46, der: 16, arr: 14, aba: 36 };
+    const px = t => m.izq + t / tFin * (ancho - m.izq - m.der);
+    const py = y => alto - m.aba - y / yMax * (alto - m.arr - m.aba);
+
+    const tinta = color("--tinta"), tenue = color("--tenue"), linea = color("--linea");
+    ctx.clearRect(0, 0, ancho, alto);
+    ctx.font = `12px ${color("--sans") || "sans-serif"}`;
+    ctx.lineWidth = 1;
+
+    // Cuadrícula y números de los ejes
+    ctx.strokeStyle = linea;
+    ctx.fillStyle = tenue;
+    const pasoT = pasoBonito(tFin / 7), pasoY = pasoBonito(yMax / 5);
+    ctx.textAlign = "center";
+    for (let t = 0; t <= tFin + 1e-9; t += pasoT) {
+      ctx.beginPath(); ctx.moveTo(px(t), py(0)); ctx.lineTo(px(t), m.arr); ctx.stroke();
+      ctx.fillText(num(t, pasoT < 1 ? 1 : 0), px(t), py(0) + 16);
+    }
+    ctx.textAlign = "right";
+    for (let y = pasoY; y <= yMax + 1e-9; y += pasoY) {
+      ctx.beginPath(); ctx.moveTo(m.izq, py(y)); ctx.lineTo(ancho - m.der, py(y)); ctx.stroke();
+      ctx.fillText(num(y, pasoY < 1 ? 1 : 0), m.izq - 6, py(y) + 4);
+    }
+
+    // Piso y nombres de los ejes
+    ctx.strokeStyle = tinta;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(m.izq, py(0)); ctx.lineTo(ancho - m.der, py(0)); ctx.stroke();
+    ctx.fillStyle = tinta;
+    ctx.textAlign = "right";
+    ctx.fillText("t (s)", ancho - m.der, alto - 6);
+    ctx.save();
+    ctx.translate(13, m.arr + (alto - m.arr - m.aba) / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = "center";
+    ctx.fillText("altura (m)", 0, 0);
+    ctx.restore();
+
+    // Curvas: la ideal punteada (solo si el umbral cambia algo) y la elegida continua
+    const curva = (tray, c, grosor, guiones) => {
+      ctx.strokeStyle = c;
+      ctx.lineWidth = grosor;
+      ctx.setLineDash(guiones);
+      ctx.beginPath();
+      const pasos = 600;
+      for (let i = 0; i <= pasos; i++) {
+        const t = tFin * i / pasos;
+        const X = px(t), Y = py(altura(tray, t));
+        if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
+    };
+    if (conUmbral) curva(ideal, tenue, 1.6, [5, 5]);
+    curva(tr, color("--s1"), 2.4, []);
+
+    // Pelota
+    const t = tAnim === null ? 0 : tAnim;
+    ctx.fillStyle = color("--s2");
+    ctx.beginPath(); ctx.arc(px(t), py(altura(tr, t)) - 7, 7, 0, 2 * Math.PI); ctx.fill();
+  }
+
+  function soltar() {
+    cancelAnimationFrame(animacion);
+    const tr = trayectoria(+control.e.value, +control.h0.value, control.umbral.checked);
+    const tFin = tr.quieta === null ? T_MAX : tr.quieta;
+    const inicio = performance.now();
+    const cuadro = ahora => {
+      const t = Math.min((ahora - inicio) / 1000, tFin); // en tiempo real
+      dibujar(t);
+      if (t < tFin) animacion = requestAnimationFrame(cuadro);
+    };
+    animacion = requestAnimationFrame(cuadro);
+  }
+
+  [control.e, control.h0].forEach(c => c.addEventListener("input", () => {
+    cancelAnimationFrame(animacion);
+    dibujar();
+  }));
+  control.umbral.addEventListener("change", () => {
+    cancelAnimationFrame(animacion);
+    dibujar();
+  });
+  $("btnSoltar").addEventListener("click", soltar);
 
   if ("ResizeObserver" in window) {
     new ResizeObserver(() => { ajustarTamano(); dibujar(); }).observe(lienzo.parentElement);
