@@ -202,7 +202,10 @@ function prepararEnfoque() {
 
   const formula = el => {
     if (!el.closest || el.closest(".sim, .diagrama, .grafica, .indice, .tema-cabecera")) return null;
-    return el.closest(".eq") || el.closest(".katex");
+    // En las fórmulas en bloque se resalta la fórmula misma, no toda la fila.
+    const bloque = el.closest(".eq");
+    if (bloque) return bloque.querySelector(".katex-display > .katex");
+    return el.closest(".katex");
   };
   const quitar = () => {
     if (actual) actual.classList.remove("resaltada");

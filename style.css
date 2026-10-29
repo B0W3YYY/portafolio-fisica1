@@ -280,7 +280,9 @@ section { padding-top: 20px; }
 }
 .tema.abierto .tema-cuerpo { grid-template-rows: 1fr; }
 .tema.fijo .tema-cuerpo { transition: none; }
-.tema-contenido { min-height: 0; overflow: hidden; cursor: auto; }
+/* ya abierto, nada se recorta (así el brillo de las fórmulas no se corta en los bordes) */
+.tema.fijo .tema-contenido { overflow: visible; }
+.tema-contenido { min-height: 0; min-width: 0; overflow: hidden; cursor: auto; }
 .tema.abierto .tema-contenido { padding-bottom: 20px; border-top: 2px solid var(--acento); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -331,9 +333,15 @@ body.enfoque .velo { opacity: 1; }
   z-index: 51;
   background: var(--hoja);
   border-radius: 6px;
-  box-shadow: 0 0 0 6px var(--hoja), 0 0 24px 6px var(--brillo);
+  box-shadow: 0 0 0 6px var(--hoja), 0 0 20px 6px var(--brillo);
   filter: brightness(1.15);
 }
+
+/* Cada fórmula en bloque mide lo que mide la fórmula (centrada), así el resaltado le queda justo.
+   Mientras está resaltada, su contenedor no la recorta. */
+.eq .katex-display { display: flex; }
+.eq .katex-display > .katex { margin: 0 auto; }
+.eq:has(.resaltada) { overflow: visible; }
 
 /* ===== Figuras ===== */
 
