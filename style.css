@@ -249,7 +249,6 @@ section { padding-top: 20px; }
   padding: 0 20px;
   background: var(--hoja);
   border: 1px solid var(--linea);
-  border-left: 4px solid var(--acento);
   border-radius: 8px;
   cursor: pointer;                       /* el borde también abre y cierra */
   transition: box-shadow 0.2s, border-color 0.2s;
