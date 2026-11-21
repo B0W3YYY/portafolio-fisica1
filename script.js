@@ -1,16 +1,6 @@
 // Portafolio Física I · script principal
-// Ecuaciones (KaTeX), índice, temas desplegables, gráficas (Chart.js) y simulaciones del salto y del rebote.
-
-// Temas de los próximos avances. Cuando agregue uno a la página:
-// 1) copio una <section class="tema"> en index.html,
-// 2) agrego su enlace al índice,
-// 3) lo borro de esta lista.
-const PROXIMOS = [
-  "Spring animations en interfaces",
-  "Síntesis de sonido y armónicos",
-  "Resonancia estructural y Tacoma Narrows",
-  "Enfriamiento líquido de un centro de datos",
-];
+// Ecuaciones (KaTeX), índice, temas desplegables, gráficas (Chart.js) y simulaciones del salto, del rebote,
+// del resorte amortiguado y del tanque de Torricelli.
 
 const G_TIERRA = 9.81;
 const LOCAL = "es-CR";
@@ -20,21 +10,18 @@ document.addEventListener("DOMContentLoaded", () => {
   mostrarEcuaciones();
   prepararEnfoque();
   prepararIndice();
-  llenarProximos();
-  const sim = prepararSimulacion();
-  const rebote = prepararRebote();
+  const sims = [prepararSimulacion(), prepararRebote(), prepararResorte(), prepararTanque()];
 
   // Las gráficas esperan a que carguen las fuentes para no dibujarse con otra letra.
   const listas = document.fonts ? document.fonts.ready : Promise.resolve();
   listas.then(() => {
     if (window.Chart) crearGraficas();
-    sim.dibujar();
-    rebote.dibujar();
+    sims.forEach(x => x.dibujar());
   });
 
   // Si el sistema cambia entre modo claro y oscuro, se vuelven a pintar con los colores nuevos.
   const oscuro = window.matchMedia("(prefers-color-scheme: dark)");
-  const alCambiar = () => { if (window.Chart) crearGraficas(); sim.dibujar(); rebote.dibujar(); };
+  const alCambiar = () => { if (window.Chart) crearGraficas(); sims.forEach(x => x.dibujar()); };
   if (oscuro.addEventListener) oscuro.addEventListener("change", () => { prepararBotonTema.texto(); alCambiar(); });
   prepararBotonTema(alCambiar);
 });
@@ -242,29 +229,6 @@ function alternar(tema) {
   if (abierto) tema.fijar = setTimeout(() => tema.classList.add("fijo"), 400);
 }
 
-// Candado dibujado en SVG (usa el color del texto).
-const CANDADO = '<svg class="candado" viewBox="0 0 24 24" aria-hidden="true">' +
-  '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
-
-// Cada tema que falta sale como una caja con "Tema N" y un candado.
-// Los nombres siguen en PROXIMOS para saber cuántos son y para cuando los agregue.
-function llenarProximos() {
-  const ol = document.getElementById("listaProximos");
-  const primero = Number(ol.getAttribute("start")) || 6;
-  ol.innerHTML = "";
-  PROXIMOS.forEach((titulo, i) => {
-    const li = document.createElement("li");
-    li.innerHTML = `<strong>Tema ${primero + i}</strong>${CANDADO}`;
-    ol.append(li);
-
-    // También en el menú, bloqueado y sin enlace.
-    const item = document.createElement("li");
-    item.className = "bloqueado";
-    item.innerHTML = `<span><span class="n"></span>Tema ${primero + i}</span>${CANDADO}`;
-    document.getElementById("submenu").append(item);
-  });
-}
-
 // ---------- Gráficas ----------
 
 const graficas = [];
@@ -289,6 +253,10 @@ function crearGraficas() {
   graficaTema5();
   if (typeof UDDS_MPH !== "undefined") graficasTema6();
   if (typeof VOYAGER2 !== "undefined") graficaTema9();
+  graficasTema11();
+  graficaTema12();
+  graficasTema13();
+  graficasTema14();
 }
 
 // Gráfica de líneas con ejes lineales. unidad se usa en la etiqueta emergente.
@@ -930,4 +898,524 @@ function prepararRebote() {
   ajustarTamano();
   dibujar();
   return { dibujar: () => { ajustarTamano(); dibujar(); } };
+}
+
+// ---------- Temas 10 a 15: utilidades de los lienzos ----------
+
+// Ajusta un lienzo al ancho de su contenedor y a la densidad de la pantalla. altoDe(ancho) da el alto en píxeles.
+function ajustarLienzo(lienzo, altoDe) {
+  const ctx = lienzo.getContext("2d");
+  const dpr = window.devicePixelRatio || 1;
+  const ancho = lienzo.clientWidth || 600;
+  const alto = Math.round(altoDe(ancho));
+  lienzo.style.height = alto + "px";
+  lienzo.width = Math.round(ancho * dpr);
+  lienzo.height = Math.round(alto * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { ctx, ancho, alto };
+}
+
+function pasoRedondo(bruto) {
+  const p = Math.pow(10, Math.floor(Math.log10(bruto)));
+  const n = bruto / p;
+  return (n < 1.5 ? 1 : n < 3.5 ? 2 : n < 7.5 ? 5 : 10) * p;
+}
+
+// Dibuja ejes con cuadrícula en el rectángulo r = {x, y, w, h} y devuelve las funciones de escala.
+function ejes(ctx, r, { xMax, yMin = 0, yMax, nombreX, nombreY }) {
+  const px = v => r.x + v / xMax * r.w;
+  const py = v => r.y + r.h - (v - yMin) / (yMax - yMin) * r.h;
+  const tinta = color("--tinta"), tenue = color("--tenue"), linea = color("--linea");
+  ctx.font = `12px ${color("--sans") || "sans-serif"}`;
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = linea;
+  ctx.fillStyle = tenue;
+  const pX = pasoRedondo(xMax / 6), pY = pasoRedondo((yMax - yMin) / 5);
+  ctx.textAlign = "center";
+  for (let v = 0; v <= xMax + 1e-9; v += pX) {
+    ctx.beginPath(); ctx.moveTo(px(v), r.y); ctx.lineTo(px(v), r.y + r.h); ctx.stroke();
+    ctx.fillText(num(v, pX < 1 ? 1 : 0), px(v), r.y + r.h + 15);
+  }
+  ctx.textAlign = "right";
+  for (let v = Math.ceil(yMin / pY) * pY; v <= yMax + 1e-9; v += pY) {
+    ctx.beginPath(); ctx.moveTo(r.x, py(v)); ctx.lineTo(r.x + r.w, py(v)); ctx.stroke();
+    ctx.fillText(num(v, pY < 1 ? 1 : 0), r.x - 5, py(v) + 4);
+  }
+  ctx.strokeStyle = tinta;
+  ctx.beginPath(); ctx.moveTo(r.x, r.y); ctx.lineTo(r.x, r.y + r.h); ctx.lineTo(r.x + r.w, r.y + r.h); ctx.stroke();
+  ctx.fillStyle = tinta;
+  ctx.textAlign = "right";
+  ctx.fillText(nombreX, r.x + r.w, r.y + r.h + 31);
+  ctx.save();
+  ctx.translate(r.x - 34, r.y + r.h / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = "center";
+  ctx.fillText(nombreY, 0, 0);
+  ctx.restore();
+  return { px, py };
+}
+
+function observarTamano(lienzo, fn) {
+  if ("ResizeObserver" in window) new ResizeObserver(fn).observe(lienzo.parentElement);
+  else window.addEventListener("resize", fn);
+}
+
+// ---------- Tema 10: simulación del resorte amortiguado ----------
+
+function prepararResorte() {
+  const lienzo = document.getElementById("simResorte");
+  const $ = id => document.getElementById(id);
+  const control = { k: $("kRes"), c: $("cRes"), m: $("mRes") };
+  let animacion = null, tam = null;
+
+  // m x'' = -k (x - 1) - c x', saliendo del reposo en x = 0 (Euler semiimplícito, dt = 1 ms)
+  function integrar(k, c, m, tMax) {
+    const dt = 0.001, puntos = [];
+    let x = 0, v = 0, ultimoFuera = 0, maximo = 0;
+    for (let i = 0, t = 0; t <= tMax; i++, t = i * dt) {
+      if (i % 5 === 0) puntos.push([t, x]);
+      if (Math.abs(x - 1) > 0.01) ultimoFuera = t;
+      maximo = Math.max(maximo, x);
+      const a = (-k * (x - 1) - c * v) / m;
+      v += a * dt;
+      x += v * dt;
+    }
+    return { puntos, asentado: ultimoFuera < tMax - 0.01 ? ultimoFuera : null, sobrepaso: Math.max(0, maximo - 1) };
+  }
+
+  const posicion = (puntos, t) => puntos[Math.min(Math.max(Math.round(t / 0.005), 0), puntos.length - 1)][1];
+
+  function dibujar(tAnim = null) {
+    if (!tam) tam = ajustarLienzo(lienzo, w => Math.min(Math.max(w * 0.62, 300), 420));
+    const { ctx, ancho, alto } = tam;
+    const k = +control.k.value, c = +control.c.value, m = +control.m.value;
+    const w0 = Math.sqrt(k / m), zeta = c / (2 * Math.sqrt(k * m)), cCrit = 2 * Math.sqrt(k * m);
+
+    const largo = integrar(k, c, m, 12);
+    const tFin = Math.min(Math.max((largo.asentado || 12) * 1.25, 1), 6);
+    const sim = integrar(k, c, m, tFin);
+    const crit = integrar(k, cCrit, m, tFin);
+
+    $("kOut").textContent = num(k, 0) + " N/m";
+    $("cOut").textContent = num(c, 1) + " N·s/m";
+    $("mOut").textContent = num(m, 1) + " kg";
+    $("zetaOut").textContent = num(zeta, 2);
+    $("regimenOut").textContent = zeta < 0.995 ? "subamortiguado (rebota)" : zeta <= 1.005 ? "crítico" : "sobreamortiguado (lento, sin rebote)";
+    $("w0Out").textContent = num(w0, 2) + " rad/s";
+    $("sobrepasoOut").textContent = num(largo.sobrepaso * 100, 1) + " %";
+    $("tAsentOut").textContent = largo.asentado === null ? "más de 12 s (casi no se detiene)" : num(largo.asentado, 2) + " s";
+
+    ctx.clearRect(0, 0, ancho, alto);
+
+    // Pista con la tarjeta
+    const izq = 54, der = 16, pista = 64;
+    const xPista = v => izq + v * (ancho - izq - der - 60);
+    const xActual = posicion(sim.puntos, tAnim === null ? tFin : Math.min(tAnim, tFin));
+    ctx.strokeStyle = color("--linea");
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    [0, 1].forEach(v => { ctx.beginPath(); ctx.moveTo(xPista(v) + 20, 8); ctx.lineTo(xPista(v) + 20, pista - 4); ctx.stroke(); });
+    ctx.setLineDash([]);
+    ctx.fillStyle = color("--tenue");
+    ctx.font = `12px ${color("--sans") || "sans-serif"}`;
+    ctx.textAlign = "center";
+    ctx.fillText("inicio", xPista(0) + 20, pista + 8);
+    ctx.fillText("meta", xPista(1) + 20, pista + 8);
+    ctx.fillStyle = color("--s2");
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(xPista(xActual), 14, 40, 40, 8); else ctx.rect(xPista(xActual), 14, 40, 40);
+    ctx.fill();
+
+    // Gráfica de x(t)
+    const r = { x: izq, y: pista + 26, w: ancho - izq - der, h: alto - pista - 26 - 40 };
+    const yMax = Math.max(1.25, 1 + largo.sobrepaso + 0.1);
+    const { px, py } = ejes(ctx, r, { xMax: tFin, yMin: 0, yMax, nombreX: "t (s)", nombreY: "posición x" });
+    ctx.strokeStyle = color("--tenue");
+    ctx.setLineDash([2, 3]);
+    ctx.beginPath(); ctx.moveTo(px(0), py(1)); ctx.lineTo(px(tFin), py(1)); ctx.stroke();
+    ctx.setLineDash([]);
+    const curva = (pts, col, grosor, guiones) => {
+      ctx.strokeStyle = col; ctx.lineWidth = grosor; ctx.setLineDash(guiones);
+      ctx.beginPath();
+      pts.forEach(([t, x], i) => (i ? ctx.lineTo(px(t), py(x)) : ctx.moveTo(px(t), py(x))));
+      ctx.stroke(); ctx.setLineDash([]);
+    };
+    curva(crit.puntos, color("--tenue"), 1.6, [5, 5]);
+    curva(sim.puntos, color("--s1"), 2.6, []);
+    if (tAnim !== null && tAnim < tFin) {
+      ctx.fillStyle = color("--s2");
+      ctx.beginPath(); ctx.arc(px(tAnim), py(xActual), 4.5, 0, 2 * Math.PI); ctx.fill();
+    }
+    return tFin;
+  }
+
+  function animar() {
+    cancelAnimationFrame(animacion);
+    const tFin = dibujar(0);
+    const inicio = performance.now();
+    const cuadro = ahora => {
+      // el primer cuadro puede traer una hora un poco anterior a "inicio"
+      const t = Math.min(Math.max((ahora - inicio) / 1000, 0), tFin);
+      dibujar(t);
+      if (t < tFin) animacion = requestAnimationFrame(cuadro);
+    };
+    animacion = requestAnimationFrame(cuadro);
+  }
+
+  Object.values(control).forEach(e => e.addEventListener("input", () => { cancelAnimationFrame(animacion); dibujar(); }));
+  $("btnAnimar").addEventListener("click", animar);
+  lienzo.parentElement.querySelectorAll("[data-zeta]").forEach(b => b.addEventListener("click", () => {
+    const k = +control.k.value, m = +control.m.value;
+    control.c.value = Math.min(+b.dataset.zeta * 2 * Math.sqrt(k * m), +control.c.max);
+    animar();
+  }));
+  observarTamano(lienzo, () => { tam = null; dibujar(); });
+  dibujar();
+  return { dibujar: () => { tam = null; dibujar(); } };
+}
+
+// ---------- Tema 11: forma de onda y armónicos ----------
+
+const ARMONICOS_A = [1, 0.25, 0.06];
+const ARMONICOS_B = Array.from({ length: 20 }, (_, i) => 1 / (i + 1));
+
+function graficasTema11() {
+  const f1 = 220;
+  const rms = A => Math.sqrt(A.reduce((s, a) => s + a * a, 0) / 2);
+  const onda = A => {
+    const esc = 1 / rms(A), datos = [];
+    for (let i = 0; i <= 500; i++) {
+      const t = i / 500 * 2 / f1;
+      const y = A.reduce((s, a, n) => s + a * Math.sin(2 * Math.PI * (n + 1) * f1 * t), 0);
+      datos.push({ x: t * 1000, y: y * esc });
+    }
+    return datos;
+  };
+  lineas("g11onda", {
+    ejeX: "Tiempo, t (ms)", ejeY: "Amplitud (relativa)", unidad: "",
+    series: [
+      serie("Muestra A (suave)", onda(ARMONICOS_A), color("--s1")),
+      serie("Muestra B (brillante)", onda(ARMONICOS_B), color("--s2")),
+    ],
+    extra: { x: { min: 0, max: 2000 / f1 } },
+  });
+
+  const lienzo = document.getElementById("g11espectro");
+  if (!lienzo) return;
+  const n = ARMONICOS_B.length;
+  const norma = A => { const e = 1 / rms(A); return Array.from({ length: n }, (_, i) => (A[i] || 0) * e); };
+  graficas.push(new Chart(lienzo, {
+    type: "bar",
+    data: {
+      labels: Array.from({ length: n }, (_, i) => String((i + 1) * f1)),
+      datasets: [
+        { label: "Muestra A (suave)", data: norma(ARMONICOS_A), backgroundColor: color("--s1") },
+        { label: "Muestra B (brillante)", data: norma(ARMONICOS_B), backgroundColor: color("--s2") },
+      ],
+    },
+    options: {
+      plugins: {
+        legend: { position: "bottom", labels: { color: color("--tinta") } },
+        tooltip: { callbacks: { title: c => `Armónico ${c[0].dataIndex + 1}: ${c[0].label} Hz`, label: c => ` ${c.dataset.label}: ${num(c.parsed.y, 3)}` } },
+      },
+      scales: {
+        x: { title: { display: true, text: "Frecuencia del armónico (Hz)", color: color("--tinta") } },
+        y: { min: 0, title: { display: true, text: "Amplitud Aₙ (relativa)", color: color("--tinta") } },
+      },
+    },
+  }));
+}
+
+// ---------- Tema 12: curvas de resonancia ----------
+
+function graficaTema12() {
+  const curva = zeta => {
+    const d = [];
+    for (let i = 0; i <= 1500; i++) {
+      const r = i / 1500 * 2.5;
+      d.push({ x: r, y: 1 / Math.sqrt((1 - r * r) ** 2 + (2 * zeta * r) ** 2) });
+    }
+    return d;
+  };
+  lineas("g12res", {
+    ejeX: "Frecuencia de excitación / frecuencia natural, ω/ω₀", ejeY: "Amplitud / amplitud estática", unidad: "veces",
+    series: [
+      serie("ζ = 0,01 (puente de acero)", curva(0.01), color("--s2")),
+      serie("ζ = 0,05", curva(0.05), color("--s1")),
+      serie("ζ = 0,2", curva(0.2), color("--s3")),
+      serie("ζ = 0,7 (animación del tema 10)", curva(0.7), color("--tenue"), { borderDash: [6, 4] }),
+    ],
+    extra: {
+      x: { min: 0, max: 2.5 },
+      y: { type: "logarithmic", min: 0.1, max: 100, ticks: { callback: v => [0.1, 1, 10, 100].some(m => Math.abs(v - m) < 1e-9) ? num(v, v < 1 ? 1 : 0) : "" } },
+    },
+  });
+}
+
+// ---------- Tema 13: circuito de enfriamiento ----------
+
+function graficasTema13() {
+  const rho = 997, mu = 0.89e-3, g = G_TIERRA, P0 = 250e3, Qt = 2e-3, N = 18, q = Qt / N;
+  const area = D => Math.PI * D * D / 4;
+  const friccion = (v, D) => { const Re = rho * v * D / mu; return Re < 2300 ? 64 / Re : 0.316 * Re ** -0.25; };
+
+  // Tramos: largo (m), diámetro (m), caudal (m³/s), altura al inicio y al final (m)
+  const tramos = [{ L: 5, D: 0.05, Q: Qt, h0: 0, h1: 0 }, { L: 0.2, D: 0.04, Q: Qt, h0: 0, h1: 0.2 }];
+  for (let k = 1; k < N; k++) {
+    const h = 0.2 + 0.1 * (k - 1);
+    tramos.push({ L: 0.1, D: 0.04, Q: Qt - k * q, h0: h, h1: h + 0.1 });
+  }
+  tramos.push({ L: 1, D: 0.012, Q: q, h0: 1.9, h1: 1.9 }, { L: 0.3, D: 0.008, Q: q, h0: 1.9, h1: 1.9 });
+
+  const v0 = Qt / area(0.05);
+  const vel = [], ideal = [], real = [];
+  let x = 0, perdida = 0;
+  tramos.forEach(t => {
+    const v = t.Q / area(t.D);
+    const dPdx = friccion(v, t.D) / t.D * 0.5 * rho * v * v;
+    for (let i = 0; i <= 10; i++) {
+      const s = i / 10, h = t.h0 + (t.h1 - t.h0) * s;
+      const P = P0 + 0.5 * rho * (v0 * v0 - v * v) - rho * g * h;
+      const xx = x + s * t.L, pf = perdida + dPdx * s * t.L;
+      vel.push({ x: xx, y: v });
+      ideal.push({ x: xx, y: P / 1000 });
+      real.push({ x: xx, y: (P - pf) / 1000 });
+    }
+    x += t.L;
+    perdida += dPdx * t.L;
+  });
+
+  lineas("g13vel", {
+    ejeX: "Posición a lo largo del circuito (m)", ejeY: "Velocidad, v (m/s)", unidad: "m/s",
+    series: [serie("Velocidad del agua", vel, color("--s1"))],
+    extra: { x: { min: 0, max: 8.2 }, y: { min: 0, max: 2.6 } },
+    plugins: [rotulos([
+      { texto: "principal Ø50", x: 2.5, y: 2.4 },
+      { texto: "colector Ø40", x: 5.95, y: 2.4 },
+      { texto: "Ø12", x: 7.35, y: 2.4 },
+      { texto: "Ø8", x: 8.05, y: 2.4 },
+    ])],
+  });
+  lineas("g13pres", {
+    ejeX: "Posición a lo largo del circuito (m)", ejeY: "Presión manométrica (kPa)", unidad: "kPa",
+    series: [
+      serie("Bernoulli ideal", ideal, color("--s1")),
+      serie("Con fricción (Darcy-Weisbach)", real, color("--s2"), { borderDash: [6, 4] }),
+    ],
+    extra: { x: { min: 0, max: 8.2 }, y: { min: 220, max: 252 } },
+  });
+
+  const porDiametro = Q => {
+    const d = [];
+    for (let D = 5; D <= 80; D += 0.5) d.push({ x: D, y: Q / area(D / 1000) });
+    return d;
+  };
+  lineas("g13diam", {
+    ejeX: "Diámetro interno de la tubería, D (mm)", ejeY: "Velocidad, v (m/s)", unidad: "m/s",
+    series: [
+      serie("Una bandeja: 0,111 L/s (6,7 L/min)", porDiametro(q), color("--s1")),
+      serie("Rack completo: 2 L/s (120 L/min)", porDiametro(Qt), color("--s2")),
+    ],
+    extra: { x: { min: 5, max: 80 }, y: { min: 0, max: 4 } },
+    plugins: [{
+      id: "rango",
+      beforeDatasetsDraw(chart) {
+        const { ctx, chartArea: a, scales: { y } } = chart;
+        ctx.save();
+        ctx.fillStyle = color("--ventana");
+        ctx.fillRect(a.left, y.getPixelForValue(2), a.right - a.left, y.getPixelForValue(0.5) - y.getPixelForValue(2));
+        ctx.fillStyle = color("--s3");
+        ctx.font = `12px ${Chart.defaults.font.family}`;
+        ctx.textAlign = "right";
+        ctx.fillText("rango razonable (0,5 a 2 m/s)", a.right - 6, y.getPixelForValue(2) - 5);
+        ctx.restore();
+      },
+    }],
+  });
+}
+
+// ---------- Tema 14: Poiseuille ----------
+
+function graficasTema14() {
+  const mu = 0.89e-3, R = 0.5, vProm = 0.5;          // R en mm, v en m/s
+  const plano = [], parabola = [];
+  for (let i = 0; i <= 100; i++) {
+    const r = -R + i / 100 * 2 * R;
+    plano.push({ x: r, y: vProm });
+    parabola.push({ x: r, y: 2 * vProm * (1 - (r / R) ** 2) });
+  }
+  lineas("g14perfil", {
+    ejeX: "Posición desde el centro del canal, r (mm)", ejeY: "Velocidad, u (m/s)", unidad: "m/s",
+    series: [
+      serie("Sin viscosidad (Bernoulli): perfil plano", plano, color("--s2"), { borderDash: [6, 4] }),
+      serie("Con viscosidad (Navier-Stokes, Poiseuille)", parabola, color("--s1")),
+    ],
+    extra: { x: { min: -0.5, max: 0.5 }, y: { min: 0, max: 1.15 } },
+  });
+
+  const Q = Math.PI * (R / 1000) ** 2 * vProm;
+  const caida = [];
+  for (let i = 0; i <= 60; i++) {
+    const D = 0.3 * Math.pow(10, i / 60);           // de 0,3 a 3 mm
+    caida.push({ x: D, y: 128 * mu * Q / (Math.PI * (D / 1000) ** 4) / 1000 });
+  }
+  const marcas = lista => v => lista.some(m => Math.abs(v - m) < 1e-6 * m) ? num(v, v < 1 ? 1 : 0) : "";
+  lineas("g14caida", {
+    ejeX: "Diámetro del canal, D (mm)", ejeY: "Caída de presión por metro (kPa/m)", unidad: "kPa/m",
+    series: [serie("Hagen-Poiseuille: ΔP/L = 128μQ/(πD⁴)", caida, color("--s1"))],
+    extra: {
+      x: { type: "logarithmic", min: 0.3, max: 3, ticks: { callback: marcas([0.3, 0.5, 1, 2, 3]) } },
+      y: { type: "logarithmic", ticks: { callback: marcas([1, 10, 100, 1000]) } },
+    },
+  });
+}
+
+// ---------- Tema 15: simulación del tanque (Torricelli) ----------
+
+function prepararTanque() {
+  const lienzo = document.getElementById("simTanque");
+  const $ = id => document.getElementById(id);
+  const control = { d: $("dOrif"), h0: $("h0Tanque"), q: $("qEntra"), cd: $("cdReal") };
+  const D_TANQUE = 0.5, ALTO_TANQUE = 1.8, BASE = 0.6, A = Math.PI * D_TANQUE ** 2 / 4, g = G_TIERRA;
+  let animacion = null, tam = null;
+
+  const valores = () => ({
+    d: +control.d.value / 1000, h0: +control.h0.value, q: +control.q.value / 1000, cd: control.cd.checked ? 0.61 : 1,
+  });
+
+  // A dh/dt = Q_entra − Cd a √(2gh)
+  function integrar({ d, h0, q, cd }) {
+    const a = Math.PI * d * d / 4, dt = 0.05, puntos = [[0, h0]];
+    const hEq = q > 0 ? (q / (cd * a)) ** 2 / (2 * g) : 0;
+    const meta = Math.min(hEq, ALTO_TANQUE);
+    let h = h0, t = 0, i = 0, vacio = null, estable = null;
+    while (t < 4000) {
+      const dh = (q - cd * a * Math.sqrt(2 * g * Math.max(h, 0))) / A;
+      h = Math.min(Math.max(h + dh * dt, 0), ALTO_TANQUE);
+      t = ++i * dt;
+      if (i % 4 === 0) puntos.push([t, h]);
+      if (q === 0 && h <= 1e-5) { vacio = t; puntos.push([t, 0]); break; }
+      if (q > 0 && estable === null && Math.abs(h - meta) < 0.003) estable = t;
+      if (estable !== null && t > estable * 1.3 + 5) break;
+    }
+    return { puntos, vacio, hEq, a, fin: t };
+  }
+
+  const alturaEn = (puntos, t) => {
+    const i = puntos.findIndex(p => p[0] >= t);
+    if (i < 0) return puntos[puntos.length - 1][1];
+    if (i === 0) return puntos[0][1];
+    const [t1, h1] = puntos[i - 1], [t2, h2] = puntos[i];
+    return h1 + (h2 - h1) * (t - t1) / (t2 - t1);
+  };
+
+  function dibujar(tAnim = null) {
+    if (!tam) tam = ajustarLienzo(lienzo, w => (w < 560 ? 540 : Math.min(Math.max(w * 0.45, 300), 380)));
+    const { ctx, ancho, alto } = tam;
+    const val = valores();
+    const res = integrar(val);
+    const tFin = res.fin;
+
+    $("dOut").textContent = num(val.d * 1000, 0) + " mm";
+    $("h0TOut").textContent = num(val.h0, 2) + " m";
+    $("qOut").textContent = num(val.q * 1000, 2) + " L/s";
+    const v0 = Math.sqrt(2 * g * val.h0);
+    $("vSalOut").textContent = num(v0, 2) + " m/s";
+    $("qSalOut").textContent = num(val.cd * res.a * v0 * 1000, 2) + " L/s";
+    $("tVacOut").textContent = val.q > 0 ? "no se vacía (entra agua)" : num(res.vacio, 0) + " s (" + num(res.vacio / 60, 1) + " min)";
+    $("hEqOut").textContent = val.q === 0 ? "0 m (se vacía)"
+      : res.hEq > ALTO_TANQUE ? num(res.hEq, 2) + " m: se rebalsa (el tanque mide 1,8 m)" : num(res.hEq, 2) + " m";
+
+    ctx.clearRect(0, 0, ancho, alto);
+    const apilado = ancho < 560;
+    const zonaT = apilado ? { x: 0, y: 0, w: ancho, h: 250 } : { x: 0, y: 0, w: ancho * 0.45, h: alto };
+    const zonaG = apilado
+      ? { x: 54, y: 280, w: ancho - 70, h: alto - 280 - 42 }
+      : { x: ancho * 0.45 + 56, y: 12, w: ancho * 0.55 - 72, h: alto - 12 - 42 };
+
+    // --- Tanque y chorro (misma escala en x y en y) ---
+    const t = tAnim === null ? 0 : tAnim;
+    const h = alturaEn(res.puntos, t);
+    const esc = Math.min((zonaT.w - 20) / 3.7, (zonaT.h - 20) / 2.75);
+    const X = m => zonaT.x + 12 + m * esc;
+    const Y = m => zonaT.y + zonaT.h - 10 - m * esc;
+    const tinta = color("--tinta");
+    ctx.font = `12px ${color("--sans") || "sans-serif"}`;
+    ctx.strokeStyle = tinta; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(X(0) - 6, Y(0)); ctx.lineTo(zonaT.x + zonaT.w - 4, Y(0)); ctx.stroke();   // suelo
+    ctx.fillStyle = color("--linea");
+    ctx.fillRect(X(0.04), Y(BASE), 4, BASE * esc);
+    ctx.fillRect(X(D_TANQUE - 0.04) - 4, Y(BASE), 4, BASE * esc);                                         // patas
+    ctx.fillStyle = color("--s1"); ctx.globalAlpha = 0.45;
+    ctx.fillRect(X(0), Y(BASE + h), D_TANQUE * esc, h * esc);                                              // agua
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = tinta; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(X(0), Y(BASE + ALTO_TANQUE)); ctx.lineTo(X(0), Y(BASE)); ctx.lineTo(X(D_TANQUE), Y(BASE));
+    ctx.lineTo(X(D_TANQUE), Y(BASE + ALTO_TANQUE)); ctx.stroke();
+    ctx.fillStyle = tinta; ctx.textAlign = "center";
+    if (h > 0.08) ctx.fillText("h = " + num(h, 2) + " m", X(D_TANQUE / 2), Y(BASE + h / 2) + 4);
+    // agua que entra desde un tubo arriba
+    if (val.q > 0) {
+      ctx.strokeStyle = color("--s1"); ctx.lineWidth = Math.max(1.5, val.q * 3000);
+      ctx.beginPath(); ctx.moveTo(X(0.15), Y(BASE + ALTO_TANQUE + 0.2)); ctx.lineTo(X(0.15), Y(BASE + h)); ctx.stroke();
+      ctx.strokeStyle = tinta; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(X(0), Y(BASE + ALTO_TANQUE + 0.2)); ctx.lineTo(X(0.18), Y(BASE + ALTO_TANQUE + 0.2)); ctx.stroke();
+    }
+    // chorro: sale horizontal con v = √(2gh) y cae como tiro parabólico
+    if (h > 1e-4) {
+      const v = Math.sqrt(2 * g * h), tCaida = Math.sqrt(2 * BASE / g), alcance = v * tCaida;
+      ctx.strokeStyle = color("--s1"); ctx.lineWidth = Math.max(1.5, val.d * 1000 / 6);
+      ctx.beginPath();
+      for (let i = 0; i <= 40; i++) {
+        const s = tCaida * i / 40;
+        const px = X(D_TANQUE + v * s), py = Y(BASE - 0.5 * g * s * s);
+        i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+      }
+      ctx.stroke();
+      ctx.fillStyle = color("--tenue"); ctx.textAlign = "left";
+      ctx.fillText("v = " + num(v, 2) + " m/s", X(D_TANQUE) + 6, Y(BASE) - 8);
+      ctx.textAlign = "center";
+      ctx.fillText("alcance " + num(alcance, 2) + " m", Math.min(X(D_TANQUE + alcance), zonaT.x + zonaT.w - 50), Y(0) - 6);
+    }
+
+    // --- Gráfica h(t) ---
+    const { px, py } = ejes(ctx, zonaG, { xMax: tFin, yMin: 0, yMax: ALTO_TANQUE, nombreX: "t (s)", nombreY: "altura del agua, h (m)" });
+    if (val.q === 0) {
+      ctx.strokeStyle = color("--tenue"); ctx.lineWidth = 1.6; ctx.setLineDash([5, 5]);
+      ctx.beginPath(); ctx.moveTo(px(0), py(val.h0)); ctx.lineTo(px(res.vacio), py(0)); ctx.stroke(); ctx.setLineDash([]);
+    } else if (res.hEq <= ALTO_TANQUE) {
+      ctx.strokeStyle = color("--s3"); ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(px(0), py(res.hEq)); ctx.lineTo(px(tFin), py(res.hEq)); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = color("--s3"); ctx.textAlign = "right";
+      ctx.fillText("equilibrio", px(tFin) - 4, py(res.hEq) - 5);
+    }
+    ctx.strokeStyle = color("--s1"); ctx.lineWidth = 2.6;
+    ctx.beginPath();
+    res.puntos.forEach(([tt, hh], i) => (i ? ctx.lineTo(px(tt), py(hh)) : ctx.moveTo(px(tt), py(hh))));
+    ctx.stroke();
+    if (tAnim !== null) {
+      ctx.fillStyle = color("--s2");
+      ctx.beginPath(); ctx.arc(px(t), py(h), 4.5, 0, 2 * Math.PI); ctx.fill();
+    }
+    return tFin;
+  }
+
+  function vaciar() {
+    cancelAnimationFrame(animacion);
+    const tFin = dibujar(0);
+    const inicio = performance.now(), DURACION = 8;
+    const cuadro = ahora => {
+      const p = Math.min((ahora - inicio) / 1000 / DURACION, 1);
+      dibujar(p * tFin);
+      if (p < 1) animacion = requestAnimationFrame(cuadro);
+    };
+    animacion = requestAnimationFrame(cuadro);
+  }
+
+  [control.d, control.h0, control.q].forEach(e => e.addEventListener("input", () => { cancelAnimationFrame(animacion); dibujar(); }));
+  control.cd.addEventListener("change", () => { cancelAnimationFrame(animacion); dibujar(); });
+  $("btnVaciar").addEventListener("click", vaciar);
+  observarTamano(lienzo, () => { tam = null; dibujar(); });
+  dibujar();
+  return { dibujar: () => { tam = null; dibujar(); } };
 }

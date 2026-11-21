@@ -117,7 +117,7 @@ a { color: var(--enlace); }
 .indice-lista a:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
 .indice-lista a.activo { background: #fff; color: var(--barra); font-weight: 600; }
 
-/* Submenú "Temas" con los 13 temas (6 a 13 bloqueados) */
+/* Submenú "Temas" con los 13 temas y los 2 extra */
 .desplegable { position: relative; }
 
 .desplegable-boton {
@@ -149,12 +149,22 @@ a { color: var(--enlace); }
 }
 /* el borde transparente de arriba evita que se cierre al bajar el mouse */
 .submenu::before { content: ""; position: absolute; left: 0; right: 0; top: -10px; height: 10px; }
+.submenu { max-height: calc(100vh - 70px); overflow-y: auto; }
+.submenu .submenu-titulo {
+  margin-top: 4px;
+  padding: 9px 10px 4px;
+  border-top: 1px solid var(--linea);
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--tenue);
+}
 .desplegable:hover .submenu,
 .desplegable:focus-within .submenu,
 .submenu.abierto { display: block; }
 
-.submenu a,
-.submenu .bloqueado {
+.submenu a {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -167,11 +177,6 @@ a { color: var(--enlace); }
 .submenu a:hover,
 .submenu a.activo { background: var(--caja); color: var(--acento); font-weight: normal; }
 .submenu .n { min-width: 20px; font-weight: bold; color: var(--acento); }
-.submenu .bloqueado { justify-content: space-between; color: var(--tenue); cursor: default; }
-.submenu .bloqueado > span { display: flex; gap: 8px; }
-.submenu .bloqueado .n { color: var(--tenue); }
-.submenu .bloqueado .candado { width: 18px; height: 18px; }
-.submenu .bloqueado:first-of-type { border-top: 1px solid var(--linea); border-radius: 0 0 6px 6px; margin-top: 4px; padding-top: 9px; }
 
 /* En computadora la barra "desaparece" y sus hijos se acomodan en la fila del menú;
    así el botón de tema queda a la derecha. */
@@ -410,7 +415,7 @@ body.enfoque .velo { opacity: 1; }
 
 .sim { border: 1px solid var(--linea); padding: 15px; background: var(--hoja); }
 
-#simSalto, #simRebote { display: block; width: 100%; border: 1px solid var(--linea); background: var(--papel); }
+#simSalto, #simRebote, #simResorte, #simTanque { display: block; width: 100%; border: 1px solid var(--linea); background: var(--papel); }
 
 .sim-leyenda { font-size: 15px; color: var(--tenue); }
 .sim-leyenda .item { margin-right: 20px; white-space: nowrap; }
@@ -473,49 +478,28 @@ body.enfoque .velo { opacity: 1; }
 .video { position: relative; aspect-ratio: 16 / 9; background: #000; }
 .video iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-/* ===== Próximos temas ===== */
+/* ===== Audios (tema 11) ===== */
 
-.proximos {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 12px;
-}
+.audios { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 20px; }
+.audios audio { width: 100%; display: block; }
 
-.proximos li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px;
+/* El video del tema 12 es 4:3 */
+.video-43 { aspect-ratio: 4 / 3; max-width: 640px; }
+
+/* ===== Qué aprendí ===== */
+
+#aprendi h3 { margin-top: 24px; }
+.conexion {
   background: var(--caja);
   border: 1px solid var(--linea);
   border-left: 4px solid var(--acento);
   border-radius: 6px;
-  cursor: default;
-  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  padding: 4px 20px;
+  margin: 16px 0;
 }
-
-.proximos li:hover {
-  border-color: var(--acento);
-  box-shadow: 0 0 14px var(--brillo);
-  transform: translateY(-2px);
-}
-
-.proximos li:hover .candado { stroke: var(--acento); }
-
-.proximos strong { display: block; font-size: 18px; }
-
-.candado {
-  width: 26px;
-  height: 26px;
-  flex-shrink: 0;
-  fill: none;
-  stroke: var(--tenue);
-  stroke-width: 2;
-  stroke-linecap: round;
-  transition: stroke 0.2s;
-}
+.conexion-par { font-weight: bold; margin-top: 12px; }
+.conexion-par span:not(.y) { color: var(--acento); margin-right: 4px; }
+.conexion-par .y { color: var(--tenue); margin: 0 8px; }
 
 /* ===== Referencias (sangría francesa) ===== */
 
@@ -568,15 +552,14 @@ body.enfoque .velo { opacity: 1; }
     border: 0;
     box-shadow: none;
   }
+  .submenu { max-height: none; overflow: visible; }
   .submenu a { color: #dddddd; }
+  .submenu .submenu-titulo { color: #999; border-top-color: rgba(255, 255, 255, 0.2); }
   .submenu a:hover, .submenu a.activo { background: #fff; color: var(--barra); }
-  .submenu .bloqueado, .submenu .bloqueado .n { color: #999; }
-  .submenu .bloqueado .candado { stroke: #999; }
-  .submenu .bloqueado:first-of-type { border-top-color: rgba(255, 255, 255, 0.2); }
-}
+      }
 
 @media (max-width: 800px) {
-  .figuras { grid-template-columns: minmax(0, 1fr); }
+  .figuras, .audios { grid-template-columns: minmax(0, 1fr); }
 
   .contenido { padding: 0 15px 30px; }
   .portada h1 { font-size: 28px; }
@@ -589,13 +572,11 @@ body.enfoque .velo { opacity: 1; }
   .tema-flecha { width: 26px; height: 26px; }
   .grafica-alta { height: 300px !important; }
   .grafica { height: 260px; padding: 4px; }
-  .caso, .analisis { padding: 5px 12px; }
+  .caso, .analisis, .conexion { padding: 5px 12px; }
   .sim { padding: 10px; }
   .eq-larga .katex { font-size: 0.85em; }
   .tabla-apa { font-size: 14px; }
   .tabla-apa th, .tabla-apa td { padding: 5px 6px; }
-  .proximos { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .proximos li { padding: 12px; }
 
   /* En celular el diagrama se achica completo, así que agrando sus textos */
   .diagrama { padding: 4px; }

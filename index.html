@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Física I · Portafolio de evidencias</title>
-  <meta name="description" content="Portafolio de evidencias de Física I: cinemática y dinámica aplicadas en software real. Braden Lee Knuter Córdoba.">
+  <meta name="description" content="Portafolio de evidencias de Física I: la física del curso aplicada en software real. Braden Lee Knuter Córdoba.">
   <meta name="author" content="Braden Lee Knuter Córdoba">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23a5402d'/%3E%3Ctext x='16' y='22.5' font-size='19' text-anchor='middle' fill='white' font-family='Georgia,serif'%3EF%3C/text%3E%3C/svg%3E">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-  <link rel="stylesheet" href="style.css?v=19">
+  <link rel="stylesheet" href="style.css?v=21">
   <script>
     // Modo oscuro por defecto; si la persona ya escogió otro con el switch, se respeta.
     let tema = "oscuro";
@@ -22,7 +22,7 @@
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script defer src="datos/udds.js"></script>
   <script defer src="datos/voyager2.js"></script>
-  <script defer src="script.js?v=14"></script>
+  <script defer src="script.js?v=16"></script>
 </head>
 <body>
 
@@ -53,10 +53,16 @@
         <li><a href="#tema7"><span class="n">7</span>El coeficiente de restitución en un motor de videojuego: por qué la pelota rebota mal</a></li>
         <li><a href="#tema8"><span class="n">8</span>Ruedas de reacción: cómo un satélite se gira sin empujarse contra nada</a></li>
         <li><a href="#tema9"><span class="n">9</span>Asistencia gravitatoria: cómo la Voyager ganó velocidad sin gastar combustible</a></li>
-        <!-- los temas 10 a 13 (bloqueados) se agregan desde script.js -->
+        <li><a href="#tema10"><span class="n">10</span>Spring animations: el resorte amortiguado detrás de las animaciones de iOS y de Framer Motion</a></li>
+        <li><a href="#tema11"><span class="n">11</span>Síntesis de sonido: armónicos, timbre y el sintetizador</a></li>
+        <li><a href="#tema12"><span class="n">12</span>Resonancia estructural: Tacoma Narrows y por qué las tropas rompen el paso al cruzar un puente</a></li>
+        <li><a href="#tema13"><span class="n">13</span>Enfriamiento líquido de un centro de datos: continuidad, caudal y Bernoulli</a></li>
+        <li class="submenu-titulo">Temas extra</li>
+        <li><a href="#tema14"><span class="n">14</span>Ecuaciones de Navier-Stokes</a></li>
+        <li><a href="#tema15"><span class="n">15</span>Teorema de Torricelli</a></li>
       </ol>
     </li>
-    <li><a href="#proximos">Próximos temas</a></li>
+    <li><a href="#aprendi">Qué aprendí</a></li>
     <li><a href="#referencias">Referencias</a></li>
   </ol>
 </nav>
@@ -64,13 +70,13 @@
 <div class="contenido">
 
 <header class="portada">
-  <p class="portada-sup">Portafolio de evidencias · Avance 2</p>
+  <p class="portada-sup">Portafolio de evidencias · Entrega final</p>
   <h1>La física detrás del software</h1>
   <dl class="datos">
     <dt>Estudiante</dt><dd>Braden Lee Knuter Córdoba</dd>
     <dt>Curso</dt><dd>Física I</dd>
     <dt>Profesor</dt><dd>Andrés Castro Núñez</dd>
-    <dt>Entrega</dt><dd>31 de octubre de 2026</dd>
+    <dt>Entrega</dt><dd>21 de noviembre de 2026</dd>
   </dl>
 </header>
 
@@ -79,11 +85,12 @@
 <section id="introduccion">
   <h2>Introducción</h2>
   <p>
-    En este portafolio busco casos reales en los que un programa usa la cinemática y la dinámica que vemos en Física I.
+    En este portafolio busco casos reales en los que un programa usa la física que vemos en Física I.
     Para cada tema escogí un producto o sistema que existe, escribí la ecuación que lo describe y expliqué por qué conviene
-    calcular la física en vez de usar valores fijos o animaciones hechas a mano. Este es el segundo avance: trae los temas 1 a 5 de
-    cinemática y dinámica y los temas 6 a 9 de leyes de conservación y gravitación. La página va a seguir creciendo
-    hasta completar los 13 temas.
+    calcular la física en vez de usar valores fijos o animaciones hechas a mano. Esta es la entrega final: trae los temas 1 a 5
+    de cinemática y dinámica, los temas 6 a 9 de leyes de conservación y gravitación, los temas 10 a 13 de oscilaciones y
+    mecánica de fluidos, y dos temas extra de fluidos, Navier-Stokes y Torricelli. Al final, en "Qué aprendí", junto los
+    temas que comparten el mismo principio y propongo una aplicación propia.
   </p>
 </section>
 
@@ -937,25 +944,683 @@
   el planeta.</p>
 </section>
 
-<!-- ========================= PRÓXIMOS TEMAS ========================= -->
-<section id="proximos">
-  <h2>Próximos temas</h2>
-  <p>Los temas 10 a 13 se agregan en la entrega final.</p>
-  <ol class="proximos" id="listaProximos" start="10"><!-- se llena desde script.js --></ol>
+<!-- ============================ TEMA 10 ============================ -->
+<section id="tema10" class="tema">
+  <p class="tema-num">Tema 10</p>
+  <h2>Spring animations: el resorte amortiguado detrás de las animaciones de iOS y de Framer Motion</h2>
+
+  <h3>a) Caso de uso en ingeniería del software</h3>
+
+  <h4>i. El caso</h4>
+  <p>En iOS, Core Animation trae una clase llamada <code>CASpringAnimation</code>. En vez de pedir cuánto dura la animación,
+  pide cuatro números: masa (<code>mass</code>), rigidez (<code>stiffness</code>), amortiguamiento (<code>damping</code>) y
+  velocidad inicial (<code>initialVelocity</code>) (Apple, s. f.-a). SwiftUI hace lo mismo con
+  <code>.spring(response:dampingFraction:)</code> (Apple, s. f.-b). En la charla <cite>Designing Fluid Interfaces</cite> de la
+  WWDC 2018, los diseñadores de Apple explican que usan resortes porque la animación puede arrancar con la velocidad que
+  traía el dedo y se puede interrumpir a medio camino sin saltos (Apple, 2018).</p>
+  <p>En la web pasa igual. Motion (antes Framer Motion), una de las librerías de animación más usadas en React, tiene un
+  tipo de transición <code>"spring"</code> que se configura con <code>stiffness</code>, <code>damping</code> y
+  <code>mass</code>. Su documentación dice que con <code>damping</code> en 0 el resorte oscila para siempre (Motion, s. f.).</p>
+
+  <h4>ii. La ecuación</h4>
+  <p>El elemento que se anima se trata como una masa pegada con un resorte a su posición final \(x_f\), con una fuerza de
+  amortiguamiento que se opone a la velocidad. Por la segunda ley de Newton (Serway y Jewett, 2015):</p>
+  <div class="eq">$$m\,\ddot x = -k\,(x - x_f) - c\,\dot x$$</div>
+  <p>donde \(k\) es la rigidez (la constante elástica de la ley de Hooke del tema 5) y \(c\) el coeficiente de
+  amortiguamiento. De ahí salen la frecuencia natural y la razón de amortiguamiento:</p>
+  <div class="eq-grupo">
+    <div class="eq">$$\omega_0 = \sqrt{\frac{k}{m}}$$</div>
+    <div class="eq">$$\zeta = \frac{c}{2\sqrt{k\,m}}$$</div>
+    <div class="eq">$$\omega_d = \omega_0\sqrt{1 - \zeta^{2}}$$</div>
+  </div>
+  <p>El valor de \(\zeta\) decide cómo se mueve el elemento:</p>
+  <ul>
+    <li>\(\zeta &lt; 1\), <strong>subamortiguado</strong>: se pasa de la meta y rebota unas veces antes de quedarse quieto.
+    Con el elemento saliendo de \(x_0\) desde el reposo,
+    \(x(t) = x_f - (x_f - x_0)\,e^{-\zeta\omega_0 t}\left[\cos\omega_d t + \tfrac{\zeta\omega_0}{\omega_d}\sin\omega_d t\right]\).</li>
+    <li>\(\zeta = 1\), <strong>crítico</strong>: llega lo más rápido posible sin pasarse,
+    \(x(t) = x_f - (x_f - x_0)(1 + \omega_0 t)\,e^{-\omega_0 t}\).</li>
+    <li>\(\zeta &gt; 1\), <strong>sobreamortiguado</strong>: llega sin pasarse, pero más lento, como si se arrastrara.</li>
+  </ul>
+  <p>En SwiftUI los parámetros tienen otro nombre pero son lo mismo: <code>response</code> es el período del resorte sin
+  amortiguar, \(2\pi/\omega_0\), y <code>dampingFraction</code> es \(\zeta\). Un ejemplo con números: con \(m = 1\),
+  \(k = 100\) y \(c = 10\) (en las unidades de la librería), \(\omega_0 = 10\ \text{rad/s}\) y
+  \(\zeta = 10/(2\sqrt{100}) = 0{,}5\). Es subamortiguado: se pasa de la meta un
+  \(e^{-\pi\zeta/\sqrt{1-\zeta^2}} \approx 16\ \%\) y queda prácticamente quieto en unos \(4/(\zeta\omega_0) = 0{,}8\ \text{s}\).</p>
+
+  <h4>iii. Por qué conviene modelar la física</h4>
+  <p>Una animación por duración ("de A a B en 300 ms con esta curva") está bien si nadie la toca. El problema aparece cuando
+  el usuario interrumpe: si a mitad de camino arrastra el elemento con el dedo y lo suelta, la animación nueva arranca con
+  velocidad cero y se nota un frenón. Con el resorte, la posición y la velocidad en el momento de soltar son las
+  condiciones iniciales de la ecuación, así que el movimiento sigue de forma continua. Además la duración sale sola: un
+  elemento que está lejos o que se lanzó rápido tarda lo que tiene que tardar, sin que el programador calcule nada. Por eso
+  el diseñador describe la animación con dos números, rigidez y amortiguamiento, en vez de con una duración.</p>
+  <p>Lo que cuesta: la duración ya no se sabe de antemano, y eso complica encadenar animaciones (por eso
+  <code>CASpringAnimation</code> trae una propiedad, <code>settlingDuration</code>, que estima cuánto tarda el resorte en
+  asentarse). Hay que integrar la ecuación en cada cuadro, y con
+  \(\zeta\) muy bajo la interfaz rebota demasiado y se siente como un juguete. Por eso conviene dejar \(\zeta\) cerca de 1 y
+  bajarlo solo donde se quiere un rebote a propósito.</p>
+  <p>La fuerza \(-k(x - x_f)\) es la ley de Hooke del tema 5, ahora moviendo píxeles en vez de empujar un dedo. El término
+  \(-c\dot x\) le quita energía al sistema, como el coeficiente de restitución del tema 7. Y la misma ecuación con una
+  fuerza externa periódica es la del tema 12 (resonancia).</p>
+
+  <h3>b) Recurso de apoyo: simulación interactiva</h3>
+  <figure class="figura">
+    <p class="fig-num">Figura 10.1</p>
+    <p class="fig-titulo">Resorte amortiguado animando una tarjeta: rigidez y amortiguamiento ajustables</p>
+    <div class="sim">
+      <canvas id="simResorte" role="img" aria-label="Simulación de una tarjeta animada con un resorte amortiguado y gráfica de su posición contra el tiempo"></canvas>
+      <p class="sim-leyenda">
+        <span class="item"><span class="muestra muestra-elegida"></span>posición con los valores elegidos</span>
+        <span class="item"><span class="muestra muestra-tierra"></span>amortiguamiento crítico con la misma \(k\)</span>
+      </p>
+      <div class="sim-controles">
+        <label for="kRes">Rigidez \(k\) (<code>stiffness</code>): <output id="kOut"></output></label>
+        <input type="range" id="kRes" min="20" max="500" step="1" value="170">
+        <label for="cRes">Amortiguamiento \(c\) (<code>damping</code>): <output id="cOut"></output></label>
+        <input type="range" id="cRes" min="0" max="150" step="0.5" value="8">
+        <label for="mRes">Masa \(m\) (<code>mass</code>): <output id="mOut"></output></label>
+        <input type="range" id="mRes" min="0.2" max="4" step="0.1" value="1">
+      </div>
+      <div class="sim-botones">
+        <button type="button" id="btnAnimar">Animar</button>
+        <button type="button" data-zeta="0.3">Subamortiguado (ζ = 0,3)</button>
+        <button type="button" data-zeta="1">Crítico (ζ = 1)</button>
+        <button type="button" data-zeta="2.5">Sobreamortiguado (ζ = 2,5)</button>
+      </div>
+      <table class="sim-datos">
+        <tr><th scope="row">Razón de amortiguamiento \(\zeta\)</th><td id="zetaOut"></td></tr>
+        <tr><th scope="row">Régimen</th><td id="regimenOut"></td></tr>
+        <tr><th scope="row">Frecuencia natural \(\omega_0\)</th><td id="w0Out"></td></tr>
+        <tr><th scope="row">Cuánto se pasa de la meta</th><td id="sobrepasoOut"></td></tr>
+        <tr><th scope="row">Tiempo hasta quedar a menos de 1 % de la meta</th><td id="tAsentOut"></td></tr>
+      </table>
+    </div>
+  </figure>
+  <p class="nota"><em>Nota.</em> Simulación de elaboración propia. Cada vez que se mueve un control, la ecuación
+  \(m\ddot x = -k(x - x_f) - c\dot x\) se integra de nuevo (método de Euler semiimplícito, paso de 1 ms) con la tarjeta
+  saliendo del reposo en \(x = 0\) hacia \(x_f = 1\). Arriba se ve la tarjeta y abajo su posición contra el tiempo; la
+  línea punteada es el caso crítico (\(c = 2\sqrt{km}\)) como referencia. Los botones de ζ cambian solo \(c\). El botón
+  "Animar" mueve la tarjeta en tiempo real, igual que se vería en una interfaz.</p>
+</section>
+
+<!-- ============================ TEMA 11 ============================ -->
+<section id="tema11" class="tema">
+  <p class="tema-num">Tema 11</p>
+  <h2>Síntesis de sonido: armónicos, timbre y el sintetizador</h2>
+
+  <h3>a) Caso de uso en ingeniería del software</h3>
+
+  <h4>i. El caso</h4>
+  <p>Todos los navegadores modernos traen un sintetizador: la Web Audio API. Su <code>OscillatorNode</code> genera ondas
+  seno, cuadrada, diente de sierra y triangular (MDN, s. f.-b), y el método <code>createPeriodicWave(real, imag)</code>
+  deja definir una onda cualquiera dando directamente las amplitudes de sus armónicos, es decir, los coeficientes de su
+  serie de Fourier (MDN, s. f.-a). Con eso se programan sintetizadores, efectos de sonido de juegos web y apps de música
+  que corren en el navegador sin descargar grabaciones.</p>
+  <p>La pregunta física es por qué una flauta y un violín que tocan la misma nota suenan distinto. La respuesta es el
+  contenido armónico, y un sintetizador es justamente un programa que controla ese contenido.</p>
+
+  <h4>ii. La ecuación</h4>
+  <p>Una cuerda fija en los dos extremos solo puede vibrar con ondas estacionarias cuya frecuencia es un múltiplo entero de
+  la fundamental (Serway y Jewett, 2015):</p>
+  <div class="eq-grupo">
+    <div class="eq">$$f_n = n\,\frac{v}{2L} = n\,f_1$$</div>
+    <div class="eq">$$v = \sqrt{\frac{T}{\mu}}$$</div>
+  </div>
+  <p>Un sonido real es la suma de varios de esos armónicos a la vez, cada uno con su amplitud \(A_n\):</p>
+  <div class="eq">$$y(t) = \sum_{n=1}^{N} A_n\,\sin(2\pi\,n f_1\,t + \varphi_n)$$</div>
+  <p>La frecuencia \(f_1\) fija la nota que oímos (el tono). Las amplitudes \(A_n\) fijan el timbre. Dos casos típicos de
+  sintetizador:</p>
+  <div class="eq-grupo">
+    <div class="eq">$$\text{diente de sierra: } A_n = \frac{1}{n}$$</div>
+    <div class="eq">$$\text{cuadrada: } A_n = \frac{1}{n},\ n \text{ impar}$$</div>
+  </div>
+  <p>Hay un límite que el programa tiene que respetar: si el audio se genera con \(f_s\) muestras por segundo, ningún
+  armónico puede pasar de \(f_s/2\) (la frecuencia de Nyquist). Con \(f_s = 22\,050\ \text{Hz}\) y una nota de 220 Hz caben
+  \(11\,025/220 \approx 50\) armónicos; si se ponen más, aparecen tonos falsos (<i>aliasing</i>).</p>
+
+  <h4>iii. Por qué conviene modelar la física</h4>
+  <p>La alternativa sin física es grabar cada instrumento tocando cada nota (un <i>sampler</i>). Eso ocupa mucha memoria,
+  y cada grabación tiene un tono y un timbre fijos: si se quiere un sonido "un poco más brillante" hay que grabar otro. Con
+  la suma de armónicos, un sonido se describe con una lista corta de amplitudes, se puede tocar en cualquier nota cambiando
+  solo \(f_1\) y se puede cambiar el timbre mientras suena, moviendo una perilla. Para un juego web o una app que se
+  descarga, pasar de megabytes de audio a unos pocos números es una diferencia grande.</p>
+  <p>El costo es que un instrumento real no se reduce a unas amplitudes fijas: el ataque de una nota de piano tiene ruido,
+  los armónicos cambian mientras la nota se apaga y no siempre son múltiplos exactos. Imitar eso con síntesis aditiva pide
+  muchos osciladores y mucho procesador, y por eso los instrumentos "realistas" siguen usando grabaciones.</p>
+  <p>Es la misma idea de oscilador del tema 10, pero ahora hay muchos a la vez y lo que interesa es la suma. Las frecuencias
+  propias de la cuerda (\(f_n = n f_1\)) son frecuencias naturales, el mismo concepto que en el tema 12 hace caer un
+  puente.</p>
+
+  <h3>b) Recurso de apoyo: multimedia con análisis</h3>
+  <p>Generé dos muestras de audio con la misma nota, La 3 (\(f_1 = 220\ \text{Hz}\)), y la misma duración, pero con
+  distintos armónicos. Las dos tienen un volumen parecido (misma energía promedio) para que la diferencia que se oiga sea de
+  timbre y no de volumen.</p>
+  <div class="audios">
+    <figure class="figura">
+      <p class="fig-num">Audio 11.1</p>
+      <p class="fig-titulo">Muestra A, timbre suave: 3 armónicos (\(A_1 = 1\), \(A_2 = 0{,}25\), \(A_3 = 0{,}06\))</p>
+      <audio controls preload="metadata" src="audio/muestra-a-suave.wav">Tu navegador no reproduce audio.</audio>
+    </figure>
+    <figure class="figura">
+      <p class="fig-num">Audio 11.2</p>
+      <p class="fig-titulo">Muestra B, timbre brillante: 20 armónicos con \(A_n = 1/n\) (diente de sierra)</p>
+      <audio controls preload="metadata" src="audio/muestra-b-brillante.wav">Tu navegador no reproduce audio.</audio>
+    </figure>
+  </div>
+  <p class="nota"><em>Nota.</em> Audios de elaboración propia, generados con un programa en Python con la ecuación
+  \(y(t) = \sum A_n \sin(2\pi n f_1 t)\): \(f_1 = 220\ \text{Hz}\), 22 050 muestras por segundo, 2 s, con 30 ms de subida y
+  250 ms de bajada para que no suenen clics.</p>
+
+  <div class="figuras">
+    <figure class="figura">
+      <p class="fig-num">Figura 11.1</p>
+      <p class="fig-titulo">Forma de onda de las dos muestras (dos períodos)</p>
+      <div class="grafica"><canvas id="g11onda" role="img" aria-label="Gráfica de la forma de onda de las dos muestras contra el tiempo"></canvas></div>
+    </figure>
+    <figure class="figura">
+      <p class="fig-num">Figura 11.2</p>
+      <p class="fig-titulo">Contenido armónico de las dos muestras</p>
+      <div class="grafica"><canvas id="g11espectro" role="img" aria-label="Gráfica de barras de la amplitud de cada armónico de las dos muestras"></canvas></div>
+    </figure>
+  </div>
+  <p class="nota"><em>Nota.</em> Elaboración propia, calculado en <code>script.js</code> con las mismas amplitudes de los
+  audios. Las ondas están escaladas a la misma energía promedio, igual que los audios.</p>
+
+  <div class="analisis">
+    <h4>Análisis</h4>
+    <p><strong>Lo que se oye.</strong> Las dos muestras dan la misma nota: si uno las canta, canta lo mismo. Eso es porque
+    las dos se repiten 220 veces por segundo; en la figura 11.1 las dos completan un período en
+    \(T = 1/f_1 = 4{,}55\ \text{ms}\). Pero la muestra A suena redonda y opaca, parecida a una flauta o a alguien silbando, y
+    la muestra B suena áspera y brillante, como una cuerda frotada o un sintetizador de los años ochenta.</p>
+    <p><strong>De dónde sale la diferencia.</strong> En la figura 11.2 se ve que la muestra A casi no tiene nada por encima
+    del segundo armónico (440 Hz). La muestra B tiene energía hasta el armónico 20, a 4400 Hz. El oído es más sensible entre
+    2000 y 5000 Hz, y es justo ahí donde la muestra B tiene armónicos y la A no: eso es lo que percibimos como "brillo".</p>
+    <p><strong>Cómo se ve en la forma de onda.</strong> La muestra A es casi una sinusoide, con una pequeña joroba que pone el
+    segundo armónico. La muestra B baja despacio en rampa y luego sube de golpe (la forma de diente de sierra). Ese salto
+    brusco solo se puede armar sumando senos de frecuencia alta: mientras más armónicos, más vertical el salto. Las
+    pequeñas ondulaciones que se ven junto al salto son del armónico 20, el último de la suma. Si en la ecuación se cortara
+    la suma en \(N = 3\), la muestra B perdería el salto brusco y empezaría a sonar como la A.</p>
+    <p><strong>Conclusión.</strong> El tono depende solo de \(f_1\). El timbre depende de los \(A_n\). Un sintetizador como
+    <code>createPeriodicWave</code> recibe exactamente esa lista de \(A_n\), y por eso con la misma nota puede sonar a cosas
+    tan distintas.</p>
+  </div>
+</section>
+
+<!-- ============================ TEMA 12 ============================ -->
+<section id="tema12" class="tema">
+  <p class="tema-num">Tema 12</p>
+  <h2>Resonancia estructural: Tacoma Narrows y por qué las tropas rompen el paso al cruzar un puente</h2>
+
+  <h3>a) Caso de uso en ingeniería del software</h3>
+
+  <h4>i. El caso</h4>
+  <p>Hoy ningún puente grande se construye sin un análisis modal hecho por computadora: un programa de elementos finitos
+  calcula las frecuencias naturales de la estructura y la respuesta a las fuerzas que la van a excitar (viento, tráfico,
+  gente caminando). El caso que mejor muestra por qué importa es el Millennium Bridge de Londres. Se abrió el 10 de junio
+  de 2000 y se cerró dos días después porque se mecía de lado a lado cuando lo cruzaba mucha gente. Arup, la empresa que lo
+  diseñó, investigó el problema, lo llamó "excitación lateral sincrónica" y lo corrigió con 37 amortiguadores viscosos,
+  además de amortiguadores de masa sintonizada para el movimiento vertical; el puente reabrió en febrero de 2002
+  (Ingenia, s. f.). El programa de diseño original no fallaba en las cuentas: simplemente no tenía en el modelo la fuerza
+  lateral de los peatones sincronizados.</p>
+  <p>El otro caso clásico es el puente de Tacoma Narrows, en Washington, que se abrió en julio de 1940 y se cayó el 7 de
+  noviembre del mismo año con un viento de 42 millas por hora, unos 68 km/h (Stillman Fires Collection y Tacoma Fire
+  Department, 1940). Y la regla de las tropas viene del puente colgante de Broughton, en Inglaterra, que se cayó en 1831
+  mientras lo cruzaba una columna de soldados marchando al paso. La vibración hizo fallar un perno que ya era débil, y
+  desde entonces el ejército británico ordena romper el paso al cruzar un puente (Live Science, s. f.).</p>
+
+  <h4>ii. La ecuación</h4>
+  <p>Una estructura que vibra en uno de sus modos se comporta como el oscilador amortiguado del tema 10, ahora con una
+  fuerza externa periódica de frecuencia \(\omega\) (Serway y Jewett, 2015):</p>
+  <div class="eq">$$m\,\ddot x + c\,\dot x + k\,x = F_0\cos(\omega t)$$</div>
+  <p>Después de un rato el puente oscila a la frecuencia de la fuerza, con una amplitud que depende de qué tan cerca está
+  \(\omega\) de la frecuencia natural \(\omega_0 = \sqrt{k/m}\):</p>
+  <div class="eq">$$A(\omega) = \frac{F_0/m}{\sqrt{(\omega_0^{2} - \omega^{2})^{2} + (2\zeta\omega_0\,\omega)^{2}}}$$</div>
+  <p>Si \(\omega = \omega_0\) queda \(A = \dfrac{F_0}{2\zeta k}\): la amplitud estática \(F_0/k\) multiplicada por
+  \(1/(2\zeta)\). Las estructuras de acero tienen \(\zeta\) muy pequeño, del orden de 0,01, así que en resonancia la
+  amplitud puede ser unas 50 veces la que produciría la misma fuerza aplicada sin oscilar. Eso es lo que pasa con una
+  columna de soldados: si dan unos 2 pasos por segundo todos a la vez y esa frecuencia cae cerca de una frecuencia natural
+  del puente, cada paso empuja justo cuando el puente ya va en esa dirección. Al romper el paso, las fuerzas de los
+  soldados llegan desordenadas y se cancelan en promedio.</p>
+  <p>Tacoma Narrows es más complicado, y es un error común explicarlo como resonancia simple (Billah y Scanlan, 1991). El
+  viento no empujaba con una frecuencia fija que coincidiera con la del puente. Lo que pasó es que, al torcerse, el tablero
+  cambiaba cómo le pegaba el viento, y el viento le devolvía energía en cada ciclo. Eso se puede escribir como un
+  amortiguamiento que se vuelve negativo con la rapidez \(U\) del viento:</p>
+  <div class="eq-grupo">
+    <div class="eq">$$I\,\ddot\theta + \big(c - c_{\text{aero}}(U)\big)\,\dot\theta + k_\theta\,\theta = 0$$</div>
+    <div class="eq">$$\theta(t) \propto e^{\,\sigma t},\quad \sigma = \frac{c_{\text{aero}} - c}{2I}$$</div>
+  </div>
+  <p>Cuando \(c_{\text{aero}} &gt; c\), \(\sigma\) es positivo y la amplitud crece sola hasta que algo se rompe. A esto se le
+  llama <i>flutter</i> (aleteo) y es una oscilación autoexcitada.</p>
+
+  <h4>iii. Por qué conviene modelar la física</h4>
+  <p>Una regla fija ("el puente aguanta tantas toneladas") revisa la fuerza, pero no la frecuencia, y la resonancia puede
+  tumbar una estructura con fuerzas mucho menores que las que soporta quieta. Con el modelo del oscilador forzado el
+  software calcula las frecuencias naturales y avisa si alguna cae donde están las fuerzas que la van a excitar, antes de
+  construir. Si cae ahí, se puede cambiar la rigidez o agregar amortiguamiento (subir \(\zeta\)), que fue lo que se hizo en
+  Londres.</p>
+  <p>El costo es que el modelo solo sabe de las fuerzas que uno le mete. El Millennium Bridge se calculó bien para la carga
+  vertical de la gente, pero nadie había incluido que los peatones se sincronizan con el puente cuando este empieza a
+  moverse. Además \(\zeta\) es difícil de saber antes de construir, y el aleteo de Tacoma pide pruebas en túnel de viento o
+  simulación de fluidos (el tema 14) porque la fuerza del viento depende del propio movimiento.</p>
+  <p>Es el mismo oscilador del tema 10 con una fuerza externa, y las frecuencias naturales son el mismo concepto que los
+  armónicos de la cuerda del tema 11. En el tema 10 se busca un \(\zeta\) cercano a 1 para que la animación no rebote; en un
+  puente, con \(\zeta \approx 0{,}01\), es imposible, y por eso hay que alejarse de la resonancia.</p>
+
+  <h3>b) Recurso de apoyo: multimedia con análisis</h3>
+  <figure class="figura">
+    <p class="fig-num">Video 12.1</p>
+    <p class="fig-titulo">Colapso del puente de Tacoma Narrows, 7 de noviembre de 1940</p>
+    <div class="video video-43">
+      <iframe src="https://archive.org/embed/CEP176"
+        title="Tacoma Narrows Bridge Collapse (1940)"
+        allow="fullscreen" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </figure>
+  <p class="nota"><em>Nota.</em> Película de dominio público, sin sonido, de la Stillman Fires Collection y el Tacoma Fire
+  Department (1940), en Internet Archive. Dura 2:05.</p>
+
+  <div class="analisis">
+    <h4>Análisis</h4>
+    <p><strong>0:12 a 0:27, el modo de torsión.</strong> La cámara está sobre la calzada mirando a lo largo del puente. El
+    tablero no sube y baja entero: se inclina hacia un lado y luego hacia el otro, como si alguien lo torciera desde los
+    extremos. Es el modo de torsión, con la línea central de la calzada casi quieta (un nodo) y las orillas moviéndose en
+    sentidos opuestos.</p>
+    <p><strong>0:56 a 1:03, la frecuencia natural.</strong> Desde la orilla se ve el borde del tablero levantarse y bajar
+    varias veces. Billah y Scanlan (1991) reportan que esta torsión ocurría a unos 0,2 Hz, o sea, un ciclo cada 5 s. En el
+    video el ciclo dura menos, entre 2 y 3 s; supongo que la película se filmó a menos cuadros por segundo de los que se
+    reproduce, así que el video no sirve para medir la frecuencia, pero sí para ver el modo.</p>
+    <p><strong>1:13 a 1:19, la amplitud.</strong> Otra vez desde la calzada: las luminarias y el horizonte se inclinan con
+    ángulos grandes, de varios grados, y la amplitud no baja de un ciclo al siguiente. En un oscilador amortiguado normal
+    cada ciclo debería ser más pequeño que el anterior (\(e^{-\zeta\omega_0 t}\)). Que no lo sea quiere decir que alguien está
+    metiendo energía en cada ciclo: el viento.</p>
+    <p><strong>La fuente de excitación.</strong> El viento soplaba de forma bastante constante, a unos 68 km/h, no a pulsos.
+    Por eso no es resonancia en el sentido de la ecuación de \(A(\omega)\): no hay una fuerza externa con frecuencia
+    \(\omega = \omega_0\). Billah y Scanlan (1991) calcularon que los vórtices que suelta el viento al pasar el tablero tenían
+    una frecuencia varias veces mayor que la de torsión, así que no podían ser la causa. Lo que pasaba es que el tablero, al
+    torcerse, cambiaba su ángulo frente al viento, y la fuerza resultante empujaba a favor del movimiento. El viento ponía la
+    energía y el propio puente marcaba el ritmo, a su frecuencia natural.</p>
+    <p><strong>1:52, por qué la amplitud crece hasta romperlo.</strong> El tablero se parte y cae al agua. En la ecuación del
+    flutter, mientras \(c_{\text{aero}} &gt; c\), la amplitud crece como \(e^{\sigma t}\), sin un tope propio. El tope lo puso
+    el material: los cables y el acero llegaron a su límite. El puente tenía un tablero muy delgado y flexible (era muy
+    angosto para su largo), y por eso su amortiguamiento estructural no alcanzaba para sacar la energía que metía el
+    viento.</p>
+    <p><strong>Comparación con las tropas.</strong> En una columna marchando sí hay una fuerza periódica externa (los pasos)
+    con una frecuencia fija, y ahí sí aplica \(A(\omega)\) directamente. La figura 12.1 muestra por qué es peligroso: con el
+    amortiguamiento de un puente, la amplitud en resonancia es decenas de veces mayor que lejos de ella.</p>
+  </div>
+
+  <figure class="figura">
+    <p class="fig-num">Figura 12.1</p>
+    <p class="fig-titulo">Amplitud de un oscilador forzado según la frecuencia de excitación</p>
+    <div class="grafica"><canvas id="g12res" role="img" aria-label="Curvas de resonancia: amplitud relativa contra frecuencia de excitación para varios amortiguamientos"></canvas></div>
+  </figure>
+  <p class="nota"><em>Nota.</em> Elaboración propia con la ecuación de \(A(\omega)\), dividida entre la amplitud estática
+  \(F_0/k\). El eje vertical es logarítmico. \(\zeta = 0{,}01\) es un valor típico de una estructura de acero; \(\zeta = 0{,}7\)
+  es el de una buena animación de interfaz (tema 10), que casi no tiene pico.</p>
+</section>
+
+<!-- ============================ TEMA 13 ============================ -->
+<section id="tema13" class="tema">
+  <p class="tema-num">Tema 13</p>
+  <h2>Enfriamiento líquido de un centro de datos: continuidad, caudal y Bernoulli</h2>
+
+  <h3>a) Caso de uso en ingeniería del software</h3>
+
+  <h4>i. El caso</h4>
+  <p>Los servidores de inteligencia artificial calientan tanto que ya no se pueden enfriar solo con aire. El rack
+  NVIDIA GB200 NVL72, con 72 GPU, consume unos 120 kW y se enfría con agua que pasa por placas frías montadas directamente
+  sobre los chips. Al presentarlo, Jensen Huang dijo que el refrigerante entra al rack a 25 °C con un caudal de 2 litros
+  por segundo (The Register, 2024). El circuito lo maneja una unidad de distribución de refrigerante (CDU), con bombas y
+  sensores controlados por software, que reparte el agua entre las bandejas del rack.</p>
+  <p>El problema de diseño es que cada bandeja reciba suficiente caudal: si una queda corta, sus chips se calientan y el
+  sistema les baja la velocidad.</p>
+
+  <h4>ii. La ecuación</h4>
+  <p>Primero, cuánta agua hace falta. El calor que se lleva el agua depende del caudal másico y de cuánto se calienta:</p>
+  <div class="eq">$$\dot Q = \dot m\,c\,\Delta T = \rho\,Q\,c\,\Delta T$$</div>
+  <p>Con los datos de NVIDIA: \(\Delta T = \dfrac{120\,000\ \text{W}}{(997)(0{,}002)(4186)} \approx 14\ \text{K}\); el agua entra
+  a 25 °C y sale a unos 39 °C. Después, la continuidad: el agua no se comprime, así que el caudal que entra a una tubería
+  es el que sale, aunque cambie la sección, y en una bifurcación el caudal se reparte (Serway y Jewett, 2015):</p>
+  <div class="eq-grupo">
+    <div class="eq">$$Q = A_1 v_1 = A_2 v_2$$</div>
+    <div class="eq">$$Q_{\text{total}} = \sum_i Q_i$$</div>
+    <div class="eq">$$v = \frac{4Q}{\pi D^{2}}$$</div>
+  </div>
+  <p>Y Bernoulli, que es la conservación de la energía por unidad de volumen a lo largo de una línea de corriente:</p>
+  <div class="eq">$$P_1 + \tfrac12\rho v_1^{2} + \rho g h_1 = P_2 + \tfrac12\rho v_2^{2} + \rho g h_2$$</div>
+  <p>Dice dos cosas útiles para el diseño. Donde la tubería se angosta, el agua va más rápido y la presión baja. Y para
+  subir el agua a la bandeja de arriba del rack se pierde \(\rho g h\) de presión: con \(h = 1{,}9\ \text{m}\) son
+  \((997)(9{,}81)(1{,}9) \approx 18{,}6\ \text{kPa}\). Una tubería real además pierde presión por fricción, que se calcula con
+  la ecuación de Darcy-Weisbach, \(\Delta P_f = f\,\dfrac{L}{D}\,\tfrac12\rho v^{2}\), y que en el fondo sale de las
+  ecuaciones de Navier-Stokes del tema 14.</p>
+
+  <h4>iii. Por qué conviene modelar la física</h4>
+  <p>La alternativa sin física sería poner tuberías "grandes por si acaso" o la misma manguera para todo. Lo primero gasta
+  espacio, peso y refrigerante; lo segundo hace que las bandejas de arriba, o las más lejanas, reciban menos agua sin que
+  nadie lo note hasta que se calientan. Con continuidad y Bernoulli el diseñador calcula qué diámetro deja la velocidad en un
+  rango razonable (muy rápido erosiona y hace ruido; muy lento enfría mal), cuánta presión tiene que dar la bomba para que
+  llegue suficiente agua a la bandeja más alta, y cuánta diferencia de presión hay entre la primera y la última bandeja. El
+  software de la CDU usa las mismas relaciones al revés: mide presiones y temperaturas y ajusta la bomba para mantener el
+  caudal.</p>
+  <p>El costo es que Bernoulli supone un fluido sin viscosidad. Sirve para ver cómo cambian la velocidad y la presión, pero
+  no da las pérdidas por fricción, que en las placas frías, con canales muy finos, son grandes. Para eso hacen falta
+  coeficientes medidos o una simulación con Navier-Stokes, que es mucho más cara.</p>
+  <p>Bernoulli es la conservación de la energía del tema 6, escrita por unidad de volumen: \(\tfrac12\rho v^2\) es energía
+  cinética y \(\rho g h\) energía potencial. La continuidad es una conservación de masa, parecida a la conservación del
+  momento del tema 7. Y la misma ecuación de Bernoulli da la velocidad de salida de un tanque en el tema 15.</p>
+
+  <h3>b) Recurso de apoyo: visualización de datos</h3>
+  <p>Modelé el camino del agua desde la CDU hasta la bandeja más alta de un rack como el GB200 NVL72. Parámetros del
+  cálculo:</p>
+  <div class="tabla-scroll">
+    <table class="tabla-apa">
+      <thead>
+        <tr><th>Tramo</th><th>Posición (m)</th><th>\(D\) (mm)</th><th>Caudal</th><th>Altura</th><th>\(v\) (m/s)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Tubería principal desde la CDU</td><td>0 a 5</td><td>50</td><td>2 L/s (18 bandejas)</td><td>0 m</td><td>1,02</td></tr>
+        <tr><td>Colector vertical (manifold)</td><td>5 a 6,9</td><td>40</td><td>baja 0,111 L/s en cada bandeja</td><td>0 a 1,9 m</td><td>1,59 a 0,09</td></tr>
+        <tr><td>Manguera a la bandeja de arriba</td><td>6,9 a 7,9</td><td>12</td><td>0,111 L/s</td><td>1,9 m</td><td>0,98</td></tr>
+        <tr><td>Conexión a la placa fría</td><td>7,9 a 8,2</td><td>8</td><td>0,111 L/s</td><td>1,9 m</td><td>2,21</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="nota"><em>Nota.</em> Caudal total y temperatura de entrada de The Register (2024). El resto son valores
+  supuestos por mí: 18 bandejas de cómputo con el mismo caudal (2 L/s ÷ 18 = 0,111 L/s, unos 6,7 L/min), una cada 10 cm
+  entre 0,2 y 1,9 m de altura, presión de salida de la CDU de 250 kPa (manométrica), agua a 25 °C
+  (\(\rho = 997\ \text{kg/m}^3\), \(\mu = 0{,}89 \times 10^{-3}\ \text{Pa}\cdot\text{s}\)). La fricción se calculó con Darcy-Weisbach y el
+  factor de Blasius, \(f = 0{,}316\,Re^{-1/4}\) (todos los tramos son turbulentos, \(Re\) entre 13 000 y 57 000). No incluí
+  las pérdidas en codos y conexiones ni la caída dentro de los microcanales de la placa (esa se ve en el tema 14).</p>
+
+  <div class="figuras">
+    <figure class="figura">
+      <p class="fig-num">Figura 13.1</p>
+      <p class="fig-titulo">Velocidad del agua a lo largo del circuito</p>
+      <div class="grafica"><canvas id="g13vel" role="img" aria-label="Gráfica de la velocidad del agua contra la posición en el circuito"></canvas></div>
+    </figure>
+    <figure class="figura">
+      <p class="fig-num">Figura 13.2</p>
+      <p class="fig-titulo">Presión a lo largo del circuito</p>
+      <div class="grafica"><canvas id="g13pres" role="img" aria-label="Gráfica de la presión contra la posición en el circuito, con Bernoulli ideal y con fricción"></canvas></div>
+    </figure>
+  </div>
+  <figure class="figura">
+    <p class="fig-num">Figura 13.3</p>
+    <p class="fig-titulo">Velocidad del agua según el diámetro de la tubería, para dos caudales</p>
+    <div class="grafica"><canvas id="g13diam" role="img" aria-label="Gráfica de la velocidad contra el diámetro para el caudal de una bandeja y el de todo el rack"></canvas></div>
+  </figure>
+  <p class="nota"><em>Nota.</em> Elaboración propia, calculada en <code>script.js</code> con \(v = 4Q/(\pi D^2)\),
+  Bernoulli y Darcy-Weisbach con los parámetros de la tabla. La franja de la figura 13.3, entre 0,5 y 2 m/s, es el rango
+  que tomé como razonable para este cálculo, no un valor de una norma.</p>
+  <p>Lo que muestran las gráficas: en la figura 13.1 la velocidad salta cada vez que cambia el diámetro, como pide
+  \(A_1 v_1 = A_2 v_2\), y en el colector va bajando en escalones porque en cada bandeja sale una parte del caudal. En la
+  figura 13.2, en el colector la presión baja aunque el agua frena; eso es porque está subiendo, y la pérdida por altura
+  (18,6 kPa) pesa más que lo que se gana al frenar. Al llegar a la placa fría el agua acelera a 2,2 m/s y la presión baja
+  otro poco. Contando la fricción, la bandeja de abajo recibe el agua a unos 246 kPa y la de arriba a unos 224 kPa: si todas las
+  placas fueran iguales, la de arriba recibiría menos caudal. Por eso estos circuitos se diseñan con placas frías que tienen
+  una caída de presión grande comparada con esa diferencia, o con válvulas de balance. La figura 13.3 sirve para escoger el
+  diámetro: para el caudal de una bandeja, entre 8 y 17 mm; para el del rack completo, entre 36 y 71 mm.</p>
+</section>
+
+<!-- ============================ TEMA 14 (EXTRA) ============================ -->
+<section id="tema14" class="tema">
+  <p class="tema-num">Tema 14 · extra</p>
+  <h2>Ecuaciones de Navier-Stokes: la viscosidad que Bernoulli no ve, en la simulación de fluidos</h2>
+
+  <h3>a) Caso de uso en ingeniería del software</h3>
+
+  <h4>i. El caso</h4>
+  <p>Cuando un ingeniero diseña la placa fría del tema 13, el ala de un avión o el flujo de aire dentro de un centro de
+  datos, usa un programa de dinámica de fluidos computacional (CFD), como Ansys Fluent. Lo que esos programas hacen es
+  resolver numéricamente las ecuaciones de Navier-Stokes en millones de celdas (Ansys, s. f.).</p>
+  <p>Las mismas ecuaciones están en los videojuegos. En la Game Developers Conference de 2003, Jos Stam, investigador de
+  Alias|Wavefront (después Autodesk), presentó <cite>Real-Time Fluid Dynamics for Games</cite>: un método para resolver
+  Navier-Stokes en tiempo real, con el código completo en C, pensado para humo, fuego y agua en juegos (Stam, 2003). Y son
+  tan difíciles que el Clay Mathematics Institute ofrece un millón de dólares a quien demuestre si sus soluciones en tres
+  dimensiones siempre existen y se mantienen suaves (Clay Mathematics Institute, s. f.).</p>
+
+  <h4>ii. La ecuación</h4>
+  <p>Para un fluido incompresible como el agua, Navier-Stokes es la segunda ley de Newton para cada pedacito de fluido,
+  más la continuidad:</p>
+  <div class="eq eq-larga">$$\rho\left(\frac{\partial \vec u}{\partial t} + (\vec u\cdot\nabla)\,\vec u\right) = -\nabla P + \mu\,\nabla^{2}\vec u + \rho\,\vec g$$</div>
+  <div class="eq">$$\nabla\cdot\vec u = 0$$</div>
+  <p>A la izquierda está masa por aceleración (por unidad de volumen). A la derecha, las fuerzas: la diferencia de presión,
+  la viscosidad \(\mu\) (la fricción entre capas de fluido) y la gravedad. Si se borra el término \(\mu\nabla^2\vec u\) y el
+  flujo es estable, lo que queda se integra y da Bernoulli. O sea, Bernoulli es Navier-Stokes sin viscosidad.</p>
+  <p>Qué tanto importa la viscosidad lo dice el número de Reynolds, que compara la inercia con la viscosidad:</p>
+  <div class="eq">$$Re = \frac{\rho\,v\,D}{\mu}$$</div>
+  <p>Con \(Re\) menor a unos 2300 el flujo en un tubo es laminar (capas ordenadas); con valores mucho mayores, turbulento.
+  Para flujo laminar en un tubo recto, Navier-Stokes sí tiene solución exacta, el flujo de Poiseuille: la velocidad es
+  cero en la pared y máxima en el centro, con forma de parábola:</p>
+  <div class="eq-grupo">
+    <div class="eq">$$u(r) = \frac{\Delta P}{4\mu L}\left(R^{2} - r^{2}\right)$$</div>
+    <div class="eq">$$\frac{\Delta P}{L} = \frac{128\,\mu\,Q}{\pi D^{4}}$$</div>
+  </div>
+  <p>La segunda ecuación (Hagen-Poiseuille) es la clave: con el mismo caudal, si el diámetro se reduce a la mitad, la
+  caída de presión se multiplica por \(2^4 = 16\). Bernoulli, en un tubo de sección constante, predice una caída de cero.</p>
+
+  <h4>iii. Por qué conviene modelar la física</h4>
+  <p>Con Bernoulli se puede pensar el circuito del tema 13, pero no se puede diseñar una placa fría: dentro de los
+  microcanales casi toda la presión se gasta en fricción viscosa, y eso Bernoulli no lo ve. Sin Navier-Stokes habría que
+  fabricar cada diseño y medirlo, lo que es lento y caro. Con CFD se prueban decenas de formas de canal en la computadora y
+  solo se fabrica la mejor. En un juego, la alternativa es animar el humo a mano o con partículas que no se afectan entre
+  sí; con Navier-Stokes el humo se enrosca alrededor de un personaje que pasa, sin que nadie lo anime.</p>
+  <p>El costo es enorme. Las ecuaciones no tienen solución exacta salvo en casos simples como el tubo, y resolverlas en
+  tres dimensiones con turbulencia puede tomar horas o días en un clúster. Por eso Stam (2003) sacrifica precisión a cambio
+  de estabilidad: su método nunca "explota" numéricamente, aunque el fluido pierda energía más rápido que uno real. Es la
+  misma decisión del tema 2: para un juego importa que se vea bien, no que sea exacto.</p>
+  <p>Este tema completa el 13: allá la fricción salía de una fórmula con un coeficiente medido, aquí se ve de dónde sale.
+  El término \(\mu\nabla^2\vec u\) es una fuerza de fricción como la del tema 4, solo que entre capas de fluido. Y el
+  aleteo de Tacoma (tema 12) es un problema de Navier-Stokes acoplado a la estructura.</p>
+
+  <h3>b) Recurso de apoyo: visualización de datos</h3>
+  <p>Para ver qué agrega la viscosidad tomé un microcanal de una placa fría: \(D = 1\ \text{mm}\), agua a 25 °C y velocidad
+  promedio de 0,5 m/s, con lo que \(Re = (997)(0{,}5)(0{,}001)/(0{,}89 \times 10^{-3}) \approx 560\): flujo laminar, así que
+  aplica Poiseuille.</p>
+  <div class="figuras">
+    <figure class="figura">
+      <p class="fig-num">Figura 14.1</p>
+      <p class="fig-titulo">Perfil de velocidad dentro del microcanal: sin viscosidad y con viscosidad</p>
+      <div class="grafica"><canvas id="g14perfil" role="img" aria-label="Gráfica de la velocidad contra la posición radial en el canal, perfil plano de Bernoulli y parábola de Poiseuille"></canvas></div>
+    </figure>
+    <figure class="figura">
+      <p class="fig-num">Figura 14.2</p>
+      <p class="fig-titulo">Caída de presión por metro según el diámetro, con el mismo caudal</p>
+      <div class="grafica"><canvas id="g14caida" role="img" aria-label="Gráfica logarítmica de la caída de presión por metro contra el diámetro del canal"></canvas></div>
+    </figure>
+  </div>
+  <p class="nota"><em>Nota.</em> Elaboración propia, calculada en <code>script.js</code> con \(u(r)\) y Hagen-Poiseuille.
+  Caudal por canal \(Q = 3{,}93 \times 10^{-7}\ \text{m}^3/\text{s}\) (0,39 mL/s), \(\mu = 0{,}89 \times 10^{-3}\ \text{Pa}\cdot\text{s}\).
+  En la figura 14.2 los dos ejes son logarítmicos y todos los puntos tienen \(Re &lt; 2300\).</p>
+  <p>En la figura 14.1 los dos perfiles llevan el mismo caudal. Sin viscosidad el agua va pareja a 0,5 m/s; con viscosidad
+  está quieta en la pared y va a 1,0 m/s en el centro, el doble del promedio. Eso importa para enfriar: el agua pegada a la
+  pared, que es la que toca el metal caliente, es la más lenta. En la figura 14.2 la línea es recta en escala log-log con
+  pendiente \(-4\): con \(D = 1\ \text{mm}\) se pierden 14 kPa por metro de canal, y con \(D = 0{,}5\ \text{mm}\) unos 228 kPa
+  por metro, casi la presión entera de la CDU del tema 13. Bernoulli diría que en los dos casos la caída es cero.</p>
+</section>
+
+<!-- ============================ TEMA 15 (EXTRA) ============================ -->
+<section id="tema15" class="tema">
+  <p class="tema-num">Tema 15 · extra</p>
+  <h2>Teorema de Torricelli: cuánto tarda en vaciarse un tanque, en el modelo de control de nivel de Simulink</h2>
+
+  <h3>a) Caso de uso en ingeniería del software</h3>
+
+  <h4>i. El caso</h4>
+  <p>Uno de los ejemplos que trae MATLAB para enseñar control automático es <code>watertank</code>: un modelo de Simulink
+  de un tanque de agua con una bomba que lo llena y un orificio en el fondo por donde sale el agua. Un controlador PI ajusta
+  el voltaje de la bomba para mantener el nivel en una altura deseada. La documentación da la ecuación del tanque:
+  \(A\,\dfrac{dH}{dt} = bV - a\sqrt{H}\), donde el término \(-a\sqrt{H}\) es el agua que sale por el orificio
+  (MathWorks, s. f.).</p>
+  <p>Esa raíz cuadrada es el teorema de Torricelli. El mismo modelo aparece en el software de control de tanques de
+  plantas de agua, de procesos químicos o del combustible de un avión: para saber cuánto falta para que un tanque se vacíe o
+  qué tan fuerte bombear.</p>
+
+  <h4>ii. La ecuación</h4>
+  <p>Se aplica Bernoulli entre la superficie del agua (presión atmosférica, velocidad casi cero porque el tanque es mucho
+  más ancho que el orificio) y el chorro que sale (presión atmosférica, altura \(h\) más abajo) (Serway y Jewett, 2015):</p>
+  <div class="eq-grupo">
+    <div class="eq">$$P_0 + \rho g h = P_0 + \tfrac12\rho v^{2}$$</div>
+    <div class="eq">$$v = \sqrt{2 g h}$$</div>
+  </div>
+  <p>El agua sale con la misma rapidez que tendría si cayera libremente desde la superficie (la caída libre del tema 2).
+  Por continuidad, lo que sale por el orificio de área \(a\) es lo que baja el nivel en el tanque de área \(A\). Un
+  orificio real deja salir menos que el ideal, porque el chorro se angosta al salir; eso se corrige con un coeficiente de
+  descarga \(C_d \approx 0{,}61\) para un orificio de borde recto:</p>
+  <div class="eq">$$A\,\frac{dh}{dt} = Q_{\text{entra}} - C_d\,a\sqrt{2 g h}$$</div>
+  <p>Si no entra agua, la ecuación se puede resolver a mano. La altura baja como una parábola y el tiempo de vaciado
+  es:</p>
+  <div class="eq-grupo">
+    <div class="eq">$$\sqrt{h(t)} = \sqrt{h_0} - \frac{C_d\,a}{A}\sqrt{\frac{g}{2}}\;t$$</div>
+    <div class="eq">$$t_{\text{vacío}} = \frac{A}{C_d\,a}\sqrt{\frac{2h_0}{g}}$$</div>
+  </div>
+  <p>Y si entra un caudal constante, el nivel tiende a una altura de equilibrio donde lo que entra iguala lo que sale:
+  \(h_{\text{eq}} = \dfrac{1}{2g}\left(\dfrac{Q_{\text{entra}}}{C_d\,a}\right)^{2}\).</p>
+  <p>Un ejemplo con números: tanque de 0,5 m de diámetro (\(A = 0{,}196\ \text{m}^2\)), orificio de 2 cm
+  (\(a = 3{,}14 \times 10^{-4}\ \text{m}^2\)) y \(h_0 = 1\ \text{m}\). Sale a \(v = \sqrt{2(9{,}81)(1)} = 4{,}43\ \text{m/s}\). Con
+  \(C_d = 1\) se vaciaría en \(t = 625\sqrt{2/9{,}81} = 282\ \text{s}\); con \(C_d = 0{,}61\), en 463 s, casi 8 minutos.</p>
+
+  <h4>iii. Por qué conviene modelar la física</h4>
+  <p>La alternativa más simple sería suponer que el tanque se vacía a ritmo constante, o sea, \(h\) bajando en línea recta.
+  Eso falla justo donde importa: al principio sale agua rápido y al final muy lento, porque \(v\) depende de \(\sqrt h\). Un
+  controlador diseñado con el modelo lineal bombearía de más cuando el tanque está lleno y de menos cuando está casi vacío.
+  Con Torricelli, el software sabe que la salida no es proporcional a la altura y puede, por ejemplo, predecir cuándo se
+  vacía un tanque, calcular el caudal de la bomba para mantener un nivel o detectar una fuga si el nivel baja más rápido de
+  lo que dice la ecuación. MathWorks usa este tanque precisamente porque esa raíz cuadrada lo vuelve no lineal y obliga a
+  pensar el controlador.</p>
+  <p>El costo es que \(C_d\) hay que medirlo para cada orificio o válvula, y el modelo supone que el tanque es mucho más
+  ancho que el orificio y que el agua no tiene viscosidad (otra vez Bernoulli; con orificios muy pequeños entra en juego
+  la viscosidad del tema 14). Cerca del fondo, cuando queda poca agua, se forman remolinos y el modelo se aleja de la
+  realidad.</p>
+  <p>Este tema junta varios: la velocidad de salida es la de la caída libre (tema 2), el chorro sigue un tiro parabólico
+  (tema 2 otra vez) y la ecuación sale de Bernoulli y continuidad (tema 13).</p>
+
+  <h3>b) Recurso de apoyo: simulación interactiva</h3>
+  <figure class="figura">
+    <p class="fig-num">Figura 15.1</p>
+    <p class="fig-titulo">Tanque que se vacía por un orificio: nivel y chorro según Torricelli</p>
+    <div class="sim">
+      <canvas id="simTanque" role="img" aria-label="Simulación de un tanque que se vacía, con el chorro de salida y la gráfica de la altura contra el tiempo"></canvas>
+      <p class="sim-leyenda">
+        <span class="item"><span class="muestra muestra-elegida"></span>altura \(h(t)\) con Torricelli</span>
+        <span class="item"><span class="muestra muestra-tierra"></span>si bajara a ritmo constante (modelo lineal)</span>
+      </p>
+      <div class="sim-controles">
+        <label for="dOrif">Diámetro del orificio \(d\): <output id="dOut"></output></label>
+        <input type="range" id="dOrif" min="5" max="40" step="1" value="20">
+        <label for="h0Tanque">Altura inicial del agua \(h_0\): <output id="h0TOut"></output></label>
+        <input type="range" id="h0Tanque" min="0.2" max="1.6" step="0.05" value="1">
+        <label for="qEntra">Caudal que entra (bomba) \(Q_{\text{entra}}\): <output id="qOut"></output></label>
+        <input type="range" id="qEntra" min="0" max="1.5" step="0.05" value="0">
+        <label><input type="checkbox" id="cdReal" checked> Orificio real (\(C_d = 0{,}61\)); sin marcar, ideal (\(C_d = 1\))</label>
+      </div>
+      <div class="sim-botones">
+        <button type="button" id="btnVaciar">Abrir el orificio</button>
+      </div>
+      <table class="sim-datos">
+        <tr><th scope="row">Velocidad de salida al inicio \(\sqrt{2gh_0}\)</th><td id="vSalOut"></td></tr>
+        <tr><th scope="row">Caudal que sale al inicio</th><td id="qSalOut"></td></tr>
+        <tr><th scope="row">Tiempo de vaciado</th><td id="tVacOut"></td></tr>
+        <tr><th scope="row">Altura de equilibrio</th><td id="hEqOut"></td></tr>
+      </table>
+    </div>
+  </figure>
+  <p class="nota"><em>Nota.</em> Simulación de elaboración propia. Tanque de 0,5 m de diámetro y 1,8 m de alto, con el
+  fondo a 0,6 m del suelo. Cada vez que se mueve un control se integra
+  \(A\,dh/dt = Q_{\text{entra}} - C_d a\sqrt{2gh}\) (paso de 0,05 s) y se redibujan la curva y el chorro. El chorro sale
+  horizontal con \(v = \sqrt{2gh}\) y cae como un tiro parabólico, así que llega a \(x = v\sqrt{2y_0/g}\) del tanque. El botón
+  anima el vaciado acelerado (unos 8 s de animación para todo el proceso) para ver cómo el chorro se acorta mientras baja el
+  nivel.</p>
+</section>
+
+<!-- ========================= QUÉ APRENDÍ ========================= -->
+<section id="aprendi">
+  <h2>Qué aprendí</h2>
+
+  <h3>a) El mapa de conexiones</h3>
+
+  <div class="conexion">
+    <p class="conexion-par"><span>Tema 5</span> El resorte virtual del control háptico <span class="y">+</span> <span>Tema 10</span> Spring animations</p>
+    <p><strong>Principio: la ley de Hooke, \(F = -kx\), y la segunda ley de Newton.</strong> Un gatillo del PS5 y una
+    tarjeta que rebota en el iPhone parecen no tener nada que ver: uno empuja un dedo de verdad y el otro mueve píxeles. Pero
+    en los dos casos no hay ningún resorte; hay un programa que calcula \(F = -kx\) en cada instante y la aplica, en un caso
+    con un motor y en el otro sobre una posición en la pantalla. En los dos el diseñador cambia \(k\) para cambiar "cómo se
+    siente" (un arco más duro, una animación más rápida). La diferencia es el amortiguamiento: en el gatillo lo pone el dedo,
+    y en la animación hay que agregarlo en la ecuación con \(-c\dot x\), porque si no la tarjeta oscilaría para siempre.</p>
+  </div>
+
+  <div class="conexion">
+    <p class="conexion-par"><span>Tema 7</span> El coeficiente de restitución <span class="y">+</span> <span>Tema 9</span> Asistencia gravitatoria</p>
+    <p><strong>Principio: la conservación del momento lineal en un choque.</strong> Una pelota en Unity y la Voyager 2
+    pasando junto a Júpiter son el mismo problema. En el marco del planeta, la sonda entra y sale con la misma rapidez: es un
+    choque elástico (\(e = 1\)) aunque nunca se toquen, porque la fuerza es la gravedad. Lo que en el tema 7 era "la pelota
+    rebota contra el piso que casi no se mueve", en el tema 9 es "la sonda rebota contra un planeta que casi no se mueve"
+    (\(\Delta V \approx 4 \times 10^{-21}\ \text{m/s}\)). Y la ganancia de velocidad de la sonda es lo mismo que pasa cuando una
+    pelota rebota contra una raqueta que viene hacia ella: sale más rápido porque el otro cuerpo se movía.</p>
+  </div>
+
+  <div class="conexion">
+    <p class="conexion-par"><span>Tema 6</span> Frenado regenerativo <span class="y">+</span> <span>Tema 13</span> Enfriamiento líquido</p>
+    <p><strong>Principio: la conservación de la energía.</strong> En el carro eléctrico la energía cinética
+    \(\tfrac12 mv^2\) se convierte en energía de la batería al frenar, y el software lleva la cuenta de cuánta se recupera y
+    cuánta se pierde. En el circuito de enfriamiento, Bernoulli es exactamente la misma cuenta escrita por unidad de volumen:
+    \(\tfrac12\rho v^2\) es energía cinética, \(\rho g h\) es potencial y \(P\) es el trabajo que hace la presión. En los dos
+    casos la versión ideal conserva todo y la real pierde una parte en calor (las pastillas de freno en el tema 6, la fricción
+    viscosa en el 13 y 14), y en los dos el diseño consiste en saber cuánto se pierde. Además los dos tienen un \(\dot Q\):
+    el calor que sale de los frenos y el calor que se lleva el agua.</p>
+  </div>
+
+  <h3>b) La aplicación propia: detectar caídas con el celular</h3>
+  <p>Un problema de software que me interesa es una app para celular que detecte cuando una persona mayor se cae y avise
+  a su familia sin que tenga que tocar nada. No está entre los trece temas, y creo que se resuelve con dos cosas del curso:
+  la caída libre y el impulso.</p>
+  <p><strong>El concepto físico.</strong> El acelerómetro del celular no mide la aceleración "real", sino la fuerza que lo
+  sostiene dividida entre la masa. Quieto en la bolsa marca 1 g (9,81 m/s²), porque la pierna lo sostiene. Pero durante una
+  caída el celular está en caída libre, igual que el personaje del tema 2 en el aire, y el acelerómetro marca casi cero. Si
+  una persona cae desde la altura de la cadera, \(h \approx 1\ \text{m}\), esa etapa dura
+  \(t = \sqrt{2h/g} = \sqrt{2/9{,}81} \approx 0{,}45\ \text{s}\) y llega al suelo con \(v = \sqrt{2gh} \approx 4{,}4\ \text{m/s}\).
+  Después viene el golpe, que se explica con el teorema del impulso: \(\bar F\,\Delta t = m\,\Delta v\). Si el cuerpo se frena
+  de 4,4 m/s a cero en unos 0,05 s, la aceleración promedio es \(4{,}4/0{,}05 = 88\ \text{m/s}^2\), unos 9 g. Al final, si la
+  persona no se levanta, el acelerómetro vuelve a marcar 1 g pero en otra dirección (acostada) y casi sin cambios.</p>
+  <p><strong>Cómo lo usaría el programa.</strong> En vez de buscar "un número alto" en el acelerómetro, que se dispara con
+  cualquier cosa (sentarse de golpe, dejar el celular en la mesa), la app buscaría la secuencia que predice la física: unos
+  0,3 a 0,5 s cerca de 0 g (caída libre), seguidos de un pico de varios g en menos de 0,1 s (el impulso del choque),
+  seguidos de unos segundos casi quietos con la gravedad apuntando de lado (la persona en el piso). Las tres partes salen de
+  ecuaciones de clase, y los umbrales se pueden calcular para distintas alturas con \(t = \sqrt{2h/g}\) y
+  \(v = \sqrt{2gh}\) en vez de adivinarlos.</p>
+  <p><strong>Por qué es mejor que la alternativa.</strong> Una app que solo mire el pico daría muchas falsas alarmas, y una
+  que solo mire si la persona está acostada avisaría cada vez que alguien se duerme. La secuencia caída libre, impulso y
+  reposo es muy difícil de producir sin una caída de verdad. El costo es que una caída real no siempre es libre (uno se
+  agarra de algo, cae de rodillas, se desliza), así que el modelo tendría que aceptar caídas "incompletas", y leer el
+  acelerómetro todo el tiempo gasta batería. Igual que en el tema 1, la física daría la estructura y los datos reales
+  servirían para ajustar los números.</p>
 </section>
 
 <!-- =========================== REFERENCIAS =========================== -->
 <section id="referencias">
   <h2>Referencias</h2>
   <ul class="refs">
+    <li>Ansys. (s. f.). <em>Ansys Fluent: Fluid simulation software</em>. <a href="https://www.ansys.com/products/fluids/ansys-fluent">https://www.ansys.com/products/fluids/ansys-fluent</a></li>
+    <li>Apple. (s. f.-a). <em>CASpringAnimation</em>. Apple Developer Documentation. <a href="https://developer.apple.com/documentation/quartzcore/caspringanimation">https://developer.apple.com/documentation/quartzcore/caspringanimation</a></li>
+    <li>Apple. (s. f.-b). <em>spring(response:dampingFraction:blendDuration:)</em>. Apple Developer Documentation. <a href="https://developer.apple.com/documentation/swiftui/animation/spring(response:dampingfraction:blendduration:)">https://developer.apple.com/documentation/swiftui/animation/spring(response:dampingfraction:blendduration:)</a></li>
+    <li>Apple. (2018). <em>Designing fluid interfaces</em> [Video de la WWDC 2018, sesión 803]. Apple Developer. <a href="https://developer.apple.com/videos/play/wwdc2018/803/">https://developer.apple.com/videos/play/wwdc2018/803/</a></li>
+    <li>Billah, K. Y., y Scanlan, R. H. (1991). Resonance, Tacoma Narrows bridge failure, and undergraduate physics textbooks. <em>American Journal of Physics, 59</em>(2), 118-124. <a href="https://doi.org/10.1119/1.16590">https://doi.org/10.1119/1.16590</a></li>
     <li>Bogie, A. (2019, 18 de febrero). <em>Pirelli 2019 Formula 1 tyres: What's new?</em> Tyrepress. <a href="https://www.tyrepress.com/2019/02/pirelli-2019-formula-1-tyres-whats-new/">https://www.tyrepress.com/2019/02/pirelli-2019-formula-1-tyres-whats-new/</a></li>
     <li>Catto, E. (s. f.). <em>Simulation</em>. Box2D. <a href="https://box2d.org/documentation/md_simulation.html">https://box2d.org/documentation/md_simulation.html</a></li>
+    <li>Clay Mathematics Institute. (s. f.). <em>Navier-Stokes equation</em>. <a href="https://www.claymath.org/millennium-problems/navier-stokes">https://www.claymath.org/millennium-problems/navier-stokes</a></li>
     <li>EPA. (s. f.). <em>Dynamometer drive schedules</em>. United States Environmental Protection Agency. <a href="https://www.epa.gov/vehicle-and-fuel-emissions-testing/dynamometer-drive-schedules">https://www.epa.gov/vehicle-and-fuel-emissions-testing/dynamometer-drive-schedules</a></li>
     <li>Hall, T. W. (2018). <em>SpinCalc: An artificial-gravity calculator in JavaScript</em>. Artificial Gravity. <a href="http://www.artificial-gravity.com/sw/SpinCalc/">http://www.artificial-gravity.com/sw/SpinCalc/</a></li>
+    <li>Ingenia. (s. f.). <em>Stabilising the London Millennium Bridge</em>. Royal Academy of Engineering. <a href="https://ingenia.org.uk/articles/stabilising-the-london-millennium-bridge/">https://ingenia.org.uk/articles/stabilising-the-london-millennium-bridge/</a></li>
     <li>Jet Propulsion Laboratory. (s. f.). <em>K2 mission</em>. JPL Science. <a href="https://science.jpl.nasa.gov/projects/k2">https://science.jpl.nasa.gov/projects/k2</a></li>
     <li>Jet Propulsion Laboratory. (2026). <em>Horizons System</em> [Efemérides de Voyager 2 respecto al Sol, 1977-1990; consultado el 28 de octubre de 2026]. <a href="https://ssd.jpl.nasa.gov/horizons/">https://ssd.jpl.nasa.gov/horizons/</a></li>
     <li>Johnson, R. D., y Holbrow, C. (Eds.). (1977). <em>Space settlements: A design study</em> (NASA SP-413). National Aeronautics and Space Administration. <a href="https://ntrs.nasa.gov/citations/19770014162">https://ntrs.nasa.gov/citations/19770014162</a></li>
+    <li>Live Science. (s. f.). <em>Why do soldiers break stride on a bridge?</em> <a href="https://www.livescience.com/34608-break-stride-frequency-of-vibration.html">https://www.livescience.com/34608-break-stride-frequency-of-vibration.html</a></li>
+    <li>MathWorks. (s. f.). <em>watertank Simulink model</em>. Simulink Control Design Documentation. <a href="https://www.mathworks.com/help/slcontrol/ug/watertank-simulink-model.html">https://www.mathworks.com/help/slcontrol/ug/watertank-simulink-model.html</a></li>
+    <li>MDN. (s. f.-a). <em>BaseAudioContext: createPeriodicWave() method</em>. MDN Web Docs. <a href="https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createPeriodicWave">https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createPeriodicWave</a></li>
+    <li>MDN. (s. f.-b). <em>OscillatorNode: type property</em>. MDN Web Docs. <a href="https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode/type">https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode/type</a></li>
     <li>Milliken, W. F., y Milliken, D. L. (1995). <em>Race car vehicle dynamics</em>. SAE International.</li>
+    <li>Motion. (s. f.). <em>Spring</em>. Motion Documentation. <a href="https://motion.dev/docs/spring">https://motion.dev/docs/spring</a></li>
     <li>NASA. (s. f.-a). <em>Basics of space flight, chapter 4: Trajectories</em>. NASA Science. <a href="https://science.nasa.gov/learn/basics-of-space-flight/chapter4-1/">https://science.nasa.gov/learn/basics-of-space-flight/chapter4-1/</a></li>
     <li>NASA. (s. f.-b). <em>Voyager 2</em>. NASA Science. <a href="https://science.nasa.gov/mission/voyager/voyager-2">https://science.nasa.gov/mission/voyager/voyager-2</a></li>
     <li>NASA. (2013, 15 de agosto). <em>NASA ends attempts to fully recover Kepler spacecraft, potential new missions considered</em>. <a href="https://www.nasa.gov/news-release/nasa-ends-attempts-to-fully-recover-kepler-spacecraft-potential-new-missions-considered/">https://www.nasa.gov/news-release/nasa-ends-attempts-to-fully-recover-kepler-spacecraft-potential-new-missions-considered/</a></li>
@@ -967,11 +1632,14 @@
     <li>Serway, R. A., y Jewett, J. W. (2015). <em>Física para ciencias e ingeniería</em> (9.ª ed., Vol. 1). Cengage Learning.</li>
     <li>Siemens. (s. f.). <em>Simcenter Tire</em>. <a href="https://www.siemens.com/en-us/products/simcenter/mechanical-simulation/tire-simulation/">https://www.siemens.com/en-us/products/simcenter/mechanical-simulation/tire-simulation/</a></li>
     <li>Sony Interactive Entertainment. (s. f.). <em>Mando inalámbrico DualSense</em>. PlayStation. <a href="https://www.playstation.com/es-es/accessories/dualsense-wireless-controller/">https://www.playstation.com/es-es/accessories/dualsense-wireless-controller/</a></li>
+    <li>Stam, J. (2003). <em>Real-time fluid dynamics for games</em> [Presentación en conferencia]. Game Developers Conference, San José, CA, Estados Unidos. <a href="https://www.research.autodesk.com/publications/real-time-fluid-dynamics-for-games/">https://www.research.autodesk.com/publications/real-time-fluid-dynamics-for-games/</a></li>
+    <li>Stillman Fires Collection y Tacoma Fire Department. (1940). <em>Tacoma Narrows Bridge collapse</em> [Película, dominio público]. Internet Archive. <a href="https://archive.org/details/CEP176">https://archive.org/details/CEP176</a></li>
     <li>Tesla. (2026). <em>Model 3 owner's manual</em>. <a href="https://www.tesla.com/ownersmanual/model3/en_us/Owners_Manual.pdf">https://www.tesla.com/ownersmanual/model3/en_us/Owners_Manual.pdf</a></li>
+    <li>The Register. (2024, 21 de marzo). <em>A closer look at Nvidia's 120kW DGX GB200 NVL72 rack system</em>. <a href="https://www.theregister.com/on-prem/2024/03/21/a-closer-look-at-nvidias-120kw-dgx-gb200-nvl72-rack-system/912087">https://www.theregister.com/on-prem/2024/03/21/a-closer-look-at-nvidias-120kw-dgx-gb200-nvl72-rack-system/912087</a></li>
+    <li>U.S. Department of Energy. (s. f.). <em>All-electric vehicles</em>. FuelEconomy.gov. <a href="https://www.fueleconomy.gov/feg/atv-ev.shtml">https://www.fueleconomy.gov/feg/atv-ev.shtml</a></li>
     <li>Unity Technologies. (s. f.-a). <em>PhysicMaterial.bounceCombine</em>. Unity Scripting API (versión 2017.1). <a href="https://docs.unity3d.com/2017.1/Documentation/ScriptReference/PhysicMaterial-bounceCombine.html">https://docs.unity3d.com/2017.1/Documentation/ScriptReference/PhysicMaterial-bounceCombine.html</a></li>
     <li>Unity Technologies. (s. f.-b). <em>PhysicsMaterial.bounciness</em>. Unity Scripting API. <a href="https://docs.unity3d.com/ScriptReference/PhysicsMaterial-bounciness.html">https://docs.unity3d.com/ScriptReference/PhysicsMaterial-bounciness.html</a></li>
     <li>Unity Technologies. (s. f.-c). <em>Physics2D.gravity</em>. Unity Scripting API. <a href="https://docs.unity3d.com/ScriptReference/Physics2D-gravity.html">https://docs.unity3d.com/ScriptReference/Physics2D-gravity.html</a></li>
-    <li>U.S. Department of Energy. (s. f.). <em>All-electric vehicles</em>. FuelEconomy.gov. <a href="https://www.fueleconomy.gov/feg/atv-ev.shtml">https://www.fueleconomy.gov/feg/atv-ev.shtml</a></li>
     <li>Wing. (s. f.-a). <em>Technology</em>. <a href="https://wing.com/technology">https://wing.com/technology</a></li>
     <li>Wing. (s. f.-b). <em>Wing drone delivery: The future of delivery is here</em>. <a href="https://wing.com/">https://wing.com/</a></li>
   </ul>
@@ -981,7 +1649,7 @@
 
 <footer class="pie">
   <p>Braden Lee Knuter Córdoba · Física I · 2026</p>
-  <p>Gráficas hechas con Chart.js y ecuaciones con KaTeX.</p>
+  <p>Gráficas hechas con Chart.js, ecuaciones con KaTeX y audios generados con Python.</p>
 </footer>
 
 </div>
